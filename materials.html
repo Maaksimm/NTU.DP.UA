@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Навчальні матеріали — НТУ «ДП»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+ href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap"
+ rel="stylesheet">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/img/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body data-page="materials">
+<div class="preloader">
+<div class="loader">
+<div class="loader-logo"><img src="assets/img/logo.svg" alt=""></div>
+<div class="loader-title">Студентська платформа Політехніки</div>
+<div class="loader-bar"></div><small>частина World Students</small>
+</div>
+</div>
+<div class="topbar">
+<div class="container"><span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>пр. Дмитра Яворницького, 19, Дніпро, Україна, 49005</span><span><b>World
+ Students:</b>локальна студентська платформа НТУ «ДП»</span></div>
+</div>
+<header class="header">
+<div class="scroll-progress-bar" id="scrollProgress"></div>
+<div class="container header-inner">
+<a class="brand" href="index.html"><img src="assets/img/logo.svg" alt="НТУ ДП"><span
+ class="brand-copy"><strong>Students Platform</strong><span>від студентів для студентів</span></span></a>
+<nav class="nav">
+<a href="about.html" class="nav__link" data-nav="about">Про університет</a>
+<a href="education.html" class="nav__link" data-nav="education">Навчання</a>
+<a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
+<a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
+<a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
+<a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
+<a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
+</nav>
+<button class="burger" onclick="toggleMenu()" aria-label="Меню"><span></span><span></span><span></span></button>
+</div>
+</header>
+<div class="mobile-nav" id="mobileNav"><a href="index.html" data-nav="home">Головна</a>
+<a href="about.html" class="nav__link" data-nav="about">Про університет</a>
+<a href="education.html" class="nav__link" data-nav="education">Навчання</a>
+<a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
+<a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
+<a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
+<a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
+<a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
+</div>
+
+<main>
+<section class="page-hero">
+<div class="container reveal">
+<div class="breadcrumb"><a href="index.html">Головна</a>› Навчальні матеріали</div>
+<h1>Навчальні матеріали</h1>
+<p class="lead">Конспекти, презентації, методички й корисні посилання, зібрані студентами Політехніки —
+ щоб не шукати потрібний файл по чатах і групах щосеместру.</p>
+<div class="actions"><a class="btn btn-primary" href="#materials-list">Переглянути матеріали</a><a
+ class="btn btn-secondary" href="library.html">Фонди бібліотеки</a></div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+<div class="section-head reveal">
+<div class="label">Типи матеріалів</div>
+<h2>Що можна знайти в розділі</h2>
+</div>
+<div class="grid-4">
+<div class="card reveal">
+<h3><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5Z"/><path d="M4 5.5v15"/></svg>Конспекти</h3>
+<p>Стислі, структуровані конспекти лекцій від старшокурсників по ключових предметах.</p>
+</div>
+<div class="card reveal">
+<h3><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16.5V20"/></svg>Презентації</h3>
+<p>Слайди з лекцій та семінарів у форматах, зручних для повторення перед парою чи екзаменом.</p>
+</div>
+<div class="card reveal">
+<h3><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Методички</h3>
+<p>Методичні вказівки до лабораторних, курсових і практичних робіт по кафедрах.</p>
+</div>
+<div class="card reveal">
+<h3><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 9.7 4 2.3-4 2.3Z"/><rect x="3" y="6" width="18" height="12" rx="3"/></svg>Відео</h3>
+<p>Записи лекцій, розбори задач і пояснення складних тем у відеоформаті.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section section-soft" id="materials-list">
+<div class="container">
+<div class="section-head reveal">
+<div class="label">Матеріали по предметах</div>
+<h2>Найпопулярніші конспекти й методички</h2>
+</div>
+<div class="table-wrap reveal" style="overflow-x:auto">
+<table class="table">
+<thead>
+<tr><th>Предмет</th><th>Матеріал</th><th>Тип</th><th>Інститут</th></tr>
+</thead>
+<tbody>
+<tr><td>Вища математика</td><td>Конспект «Ряди та диференціальні рівняння»</td><td>Конспект</td><td>ІІФ</td></tr>
+<tr><td>Програмування</td><td>Методичка до лабораторних з C++</td><td>Методичка</td><td>ІКС</td></tr>
+<tr><td>Опір матеріалів</td><td>Презентація «Розрахунок балок на згин»</td><td>Презентація</td><td>ІМЕ</td></tr>
+<tr><td>Електротехніка</td><td>Відеорозбір задач з електричних кіл</td><td>Відео</td><td>ІЕЕ</td></tr>
+<tr><td>Економіка підприємства</td><td>Конспект лекцій за модулями 1–3</td><td>Конспект</td><td>ІЕМ</td></tr>
+<tr><td>Гірництво</td><td>Методичка з безпеки гірничих робіт</td><td>Методичка</td><td>ІГТГ</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+<div class="section-head reveal">
+<div class="label">Корисні посилання</div>
+<h2>Джерела, якими часто користуються студенти</h2>
+</div>
+<div class="social-chip-list reveal">
+<a class="social-chip" href="library.html">Електронний каталог бібліотеки</a>
+<a class="social-chip" href="https://vstup.edbo.gov.ua/" target="_blank" rel="noopener">Єдина державна база освіти (ЄДЕБО)</a>
+<a class="social-chip" href="https://nmu.org.ua/" target="_blank" rel="noopener">Офіційний сайт університету</a>
+<a class="social-chip" href="homework-help.html">Студентська взаємодопомога з ДЗ</a>
+<a class="social-chip" href="exam-prep.html">Підготовка до екзаменів</a>
+</div>
+</div>
+</section>
+
+<section class="section section-soft">
+<div class="container two-col">
+<div class="content reveal">
+<div class="label">Поділись матеріалом</div>
+<h2>Маєш конспект, який може допомогти іншим?</h2>
+<p style="color:var(--muted);font-size:14.5px;margin-top:14px">Надішли нам свій конспект, презентацію чи
+ методичку — додамо в спільну базу матеріалів з посиланням на автора.</p>
+</div>
+<form class="form-card reveal" id="contactForm" action="https://formspree.io/f/mwvgvlay" method="POST"
+ novalidate>
+<div class="form-head">
+<h3>Поділитися матеріалом</h3>
+<p>Відповімо на вказану пошту.</p>
+</div>
+<input type="text" name="_gotcha" class="honeypot-field" tabindex="-1" autocomplete="off">
+<input type="hidden" name="_subject" value="Новий матеріал для розділу «Навчальні матеріали»">
+
+<div class="field">
+<label for="cf-name">Ім'я<span class="required">*</span></label>
+<input id="cf-name" name="name" type="text" required minlength="2" placeholder="Як до вас звертатися">
+<span class="field-error"></span>
+</div>
+<div class="two-field-row">
+<div class="field">
+<label for="cf-email">Email<span class="required">*</span></label>
+<input id="cf-email" name="email" type="email" required placeholder="student@example.com">
+<span class="field-error"></span>
+</div>
+<div class="field">
+<label for="cf-subject">Предмет</label>
+<input id="cf-subject" name="subject" type="text" placeholder="Наприклад, Вища математика">
+<span class="field-error"></span>
+</div>
+</div>
+<div class="field">
+<label for="cf-message">Опис матеріалу<span class="required">*</span></label>
+<input id="cf-message" name="message" type="text" required minlength="10"
+ placeholder="Що це за матеріал і за яку тему">
+<span class="field-error"></span>
+</div>
+<div class="consent-field">
+<input type="checkbox" id="cf-consent" name="consent" required>
+<label for="cf-consent">Погоджуюсь на обробку персональних даних для розгляду цього звернення<span
+ class="required">*</span></label>
+</div>
+<button class="btn btn-primary btn-primary--full" type="submit" data-submit>Надіслати</button>
+<p data-form-status class="form-note-status"></p>
+</form>
+</div>
+</section>
+
+</main>
+<footer class="footer">
+<div class="container footer-grid">
+<div>
+<h4>Студентська платформа Політехніки</h4>
+<p>Dnipro Polytechnic Students — неофіційна студентська платформа НТУ «Дніпровська політехніка», створена студентами для студентів. Зручна, корисна та безкоштовна.
+ Доступна будь-кому та в різних точках світу.</p>
+</div>
+<div>
+<h4>Університет</h4><a href="about.html">Про університет</a><a href="history.html">Історія</a><a
+ href="stories.html">Історії політехніки</a><a
+ href="structure.html">Структура</a><a href="campus.html">Кампус</a>
+</div>
+<div>
+<h4>Навчання</h4><a href="assignments.html">Домашні завдання</a><a href="exam-prep.html">Підготовка до екзаменів</a><a href="materials.html">Навчальні матеріали</a><a href="homework-help.html">Допомога з ДЗ</a><a href="library.html">Бібліотека</a>
+</div>
+<div>
+<h4>Платформа</h4><a href="student-life.html">Студентське
+ життя</a><a href="platform.html">Про платформу</a><a
+ href="events.html">Знайомства та події</a><a href="media.html">Фото і відео</a><a href="authors.html">Автори</a><a
+ href="admission.html">Питання про вступ</a>
+</div>
+</div>
+<div class="container footer-bottom">© <span id="year"></span> · Студентська платформа Політехніки · World Students</div>
+</footer>
+<script src="assets/js/main.js"></script>
+</body>
+
+</html>

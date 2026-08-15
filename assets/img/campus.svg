@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs><linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#eaf3fc"/><stop offset="1" stop-color="#fff8e8"/></linearGradient><linearGradient id="b" x1="0" x2="1"><stop stop-color="#0b5cab"/><stop offset="1" stop-color="#1a6fc4"/></linearGradient></defs>
+<rect width="1600" height="1000" fill="url(#bg)"/>
+<circle cx="180" cy="160" r="120" fill="#1a6fc4" opacity=".08"/><circle cx="1380" cy="180" r="170" fill="#f0a500" opacity=".10"/>
+<g transform="translate(250 210)">
+<path d="M70 250h960L550 0z" fill="#fff" stroke="#d6e1ee" stroke-width="6"/>
+<rect x="105" y="250" width="890" height="360" rx="8" fill="#fff" stroke="#d6e1ee" stroke-width="6"/>
+<rect x="215" y="335" width="90" height="275" rx="10" fill="#f7f9fc" stroke="#c7d7e8" stroke-width="5"/>
+<rect x="380" y="335" width="90" height="275" rx="10" fill="#f7f9fc" stroke="#c7d7e8" stroke-width="5"/>
+<rect x="545" y="335" width="90" height="275" rx="10" fill="#f7f9fc" stroke="#c7d7e8" stroke-width="5"/>
+<rect x="710" y="335" width="90" height="275" rx="10" fill="#f7f9fc" stroke="#c7d7e8" stroke-width="5"/>
+<rect x="455" y="492" width="190" height="118" rx="14" fill="#8d6443"/>
+<g fill="#b8c9dc"><rect x="135" y="390" width="60" height="80" rx="8"/><rect x="925" y="390" width="60" height="80" rx="8"/><rect x="135" y="505" width="60" height="80" rx="8"/><rect x="925" y="505" width="60" height="80" rx="8"/></g>
+<path d="M95 625h910" stroke="url(#b)" stroke-width="10" stroke-linecap="round"/>
+</g>
+<text x="800" y="900" text-anchor="middle" font-family="Arial" font-size="34" fill="#66778a">Замініть на реальне фото корпусу: assets/img/campus.jpg</text>
+</svg>

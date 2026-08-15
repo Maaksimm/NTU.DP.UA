@@ -1,0 +1,173 @@
+<!-- <!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Профіль — НТУ «ДП»</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+
+  </style>
+</head>
+
+<body data-page="pa-profile">
+  <div class="preloader">
+    <div class="loader">
+      <div class="loader-logo"><img src="assets/img/logo.svg" alt=""></div>
+      <div class="loader-title">Дніпровська Політехніка Students</div>
+      <div class="loader-bar"></div><small>частина World Students</small>
+    </div>
+  </div>
+  <div class="personal-layout">
+    <aside class="sidebar">
+      <a class="brand sidevar__brand" href="index.html">
+        <img src="assets/img/logo.svg" alt="">
+        <span class="brand-copy"><strong>Personal Area</strong><span>World Students</span></span>
+      </a>
+      <nav>
+        <a href="personal-area.html">Огляд</a>
+        <a href="pa-schedule.html">Розклад</a>
+        <a href="pa-tasks.html">Завдання</a>
+        <a href="pa-grades.html">Успішність</a>
+        <a class="active" href="pa-profile.html">Профіль</a>
+        <a href="index.html">На головну</a>
+      </nav>
+    </aside>
+    <main class="personal-main">
+      <div class="label">Персональна зона</div>
+      <h1>Профіль</h1>
+      <p class="lead">Особиста інформація, налаштування та досягнення.</p>
+
+      <div class="profile-grid">
+        <div>
+          <div class="profile-card ">
+            <div class="avatar">МП</div>
+            <div class="profile-name">Максим Печерський</div>
+            <div class="profile-role">Студент · Група 122-22-1</div>
+            <div class="profile-info-list">
+              <div class="info-row">
+                <span>Спеціальність</span>
+                <span>Комп'ютерні науки</span>
+              </div>
+              <div class="info-row">
+                <span>Курс</span>
+                <span>4-й рік, 2-й семестр</span>
+              </div>
+              <div class="info-row">
+                <span>Середній бал</span>
+                <span style="color:#1a7a3c">4.3 / 5.0</span>
+              </div>
+              <div class="info-row">
+                <span>Статус</span>
+                <span style="color:#1a7a3c">Активний</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="edit-panel">
+            <div class="section-title">Досягнення</div>
+            <div class="achievements-list">
+              <div class="achievement">
+                <div>
+                  <div class="ach-title">Топ 15% групи</div>
+                  <div class="ach-desc">Рейтинг за 2-й семестр</div>
+                </div>
+              </div>
+              <div class="achievement">
+                <div>
+                  <div class="ach-title">Відмінник</div>
+                  <div class="ach-desc">Не менше 5 відмінних оцінок</div>
+                </div>
+              </div>
+              <div class="achievement">
+                <div>
+                  <div class="ach-title">Активний студент</div>
+                  <div class="ach-desc">20 тижнів без пропусків</div>
+                </div>
+              </div>
+              <div class="achievement">
+                <div>
+                  <div class="ach-title">World Students</div>
+                  <div class="ach-desc">Учасник глобальної мережі</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="edit-panel">
+            <div class="section-title">Особисті дані</div>
+            <form onsubmit="saveProfile(event)">
+              <div class="two-fields">
+                <div class="field">
+                  <label>Ім'я</label>
+                  <input type="text" value="Максим">
+                </div>
+                <div class="field">
+                  <label>Прізвище</label>
+                  <input type="text" value="Печерський">
+                </div>
+              </div>
+              <div class="two-fields">
+                <div class="field">
+                  <label>По батькові</label>
+                  <input type="text" value="Андрійович">
+                </div>
+                <div class="field">
+                  <label>Дата народження</label>
+                  <input type="date" value="2005-04-17">
+                </div>
+              </div>
+              <div class="field">
+                <label>Електронна пошта</label>
+                <input type="email" value="pecerskijmaksim675@gmail.com">
+              </div>
+              <div class="field">
+                <label>Телефон</label>
+                <input type="tel" value="+38 099 367 23 52">
+              </div>
+              <div class="field">
+                <label>Місто</label>
+                <input type="text" value="Дніпро">
+              </div>
+              <button type="submit" class="btn btn-primary">Зберегти зміни</button>
+              <div class="save-note" data-note>Дані збережено в демо-режимі.</div>
+            </form>
+          </div>
+
+          <div class="edit-panel">
+            <div class="section-title">Зміна паролю</div>
+            <form onsubmit="saveProfile(event)">
+              <div class="field">
+                <label>Поточний пароль</label>
+                <input type="password" placeholder="••••••••">
+              </div>
+              <div class="two-fields">
+                <div class="field">
+                  <label>Новий пароль</label>
+                  <input type="password" placeholder="Мінімум 8 символів">
+                </div>
+                <div class="field">
+                  <label>Підтвердження</label>
+                  <input type="password" placeholder="Повторіть пароль">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-secondary">Змінити пароль</button>
+              <div class="save-note" data-note> Пароль оновлено в демо-режимі.</div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/js/main.js"></script>
+</body>
+
+</html> -->

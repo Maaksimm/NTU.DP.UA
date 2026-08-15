@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Домашні завдання — НТУ «ДП»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+ href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap"
+ rel="stylesheet">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/img/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body data-page="assignments">
+<div class="preloader">
+<div class="loader">
+<div class="loader-logo"><img src="assets/img/logo.svg" alt=""></div>
+<div class="loader-title">Студентська платформа Політехніки</div>
+<div class="loader-bar"></div><small>частина World Students</small>
+</div>
+</div>
+<div class="topbar">
+<div class="container"><span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>пр. Дмитра Яворницького, 19, Дніпро, Україна, 49005</span><span><b>World
+ Students:</b>локальна студентська платформа НТУ «ДП»</span></div>
+</div>
+<header class="header">
+<div class="scroll-progress-bar" id="scrollProgress"></div>
+<div class="container header-inner">
+<a class="brand" href="index.html"><img src="assets/img/logo.svg" alt="НТУ ДП"><span
+ class="brand-copy"><strong>Students Platform</strong><span>від студентів для студентів</span></span></a>
+<nav class="nav">
+<a href="about.html" class="nav__link" data-nav="about">Про університет</a>
+<a href="education.html" class="nav__link" data-nav="education">Навчання</a>
+<a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
+<a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
+<a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
+<a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
+<a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
+</nav>
+<button class="burger" onclick="toggleMenu()" aria-label="Меню"><span></span><span></span><span></span></button>
+</div>
+</header>
+<div class="mobile-nav" id="mobileNav"><a href="index.html" data-nav="home">Головна</a>
+<a href="about.html" class="nav__link" data-nav="about">Про університет</a>
+<a href="education.html" class="nav__link" data-nav="education">Навчання</a>
+<a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
+<a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
+<a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
+<a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
+<a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
+</div>
+
+<main>
+<section class="page-hero">
+<div class="container reveal">
+<div class="breadcrumb"><a href="index.html">Головна</a>› Домашні завдання</div>
+<h1>Домашні завдання</h1>
+<p class="lead">Усі дедлайни, статуси та матеріали для підготовки — в одному списку. Це загальний огляд
+ формату розділу; персональний трекер із збереженням прогресу доступний у твоєму Personal Area.</p>
+<div class="actions"><a class="btn btn-primary" href="exam-prep.html">Підготовка до екзаменів</a><a
+ class="btn btn-secondary" href="materials.html">Навчальні матеріали</a></div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+<div class="panel panel-info reveal" style="margin-bottom:34px">
+<div class="label">Нагадування</div>
+<h2 style="font-size:22px">Найближчий дедлайн — за 2 дні</h2>
+<p>«Лабораторна робота №4: Рекурсія» з програмування здається у четвер до 18:00. Постав нагадування,
+ щоб не пропустити.</p>
+</div>
+
+<div class="section-head reveal">
+<div class="label">Список завдань</div>
+<h2>Твої завдання за статусом</h2>
+</div>
+
+<div class="filter-bar reveal">
+<button class="filter-btn active" onclick="filterTasks(this,'all')" type="button">Усі</button>
+<button class="filter-btn" onclick="filterTasks(this,'new')" type="button">Нове</button>
+<button class="filter-btn" onclick="filterTasks(this,'progress')" type="button">В роботі</button>
+<button class="filter-btn" onclick="filterTasks(this,'done')" type="button">Здано</button>
+</div>
+
+<div class="tasks-list reveal">
+
+<div class="task-card overdue" data-status="new">
+<div>
+<div class="task-subject">Програмування</div>
+<div class="task-title">Лабораторна робота №4: Рекурсія</div>
+<div class="task-desc">Реалізувати 5 алгоритмів з використанням рекурсії. Оформити звіт у форматі PDF.</div>
+<div class="task-meta">
+<span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>до 30.07, 18:00</span>
+<span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 12.5 15 4.5a3 3 0 1 1 4.2 4.2L10 18a4.5 4.5 0 1 1-6.4-6.4L12 3.2"/></svg>Умова + шаблон звіту</span>
+</div>
+</div>
+<div class="task-status">
+<span class="status-pill status-new">Терміново</span>
+<div class="task-check" onclick="toggleCheck(this)" title="Позначити виконаним"><svg class="icon-inline" style="margin:0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17 19 7"/></svg></div>
+</div>
+</div>
+
+<div class="task-card" data-status="progress">
+<div>
+<div class="task-subject">Бази даних</div>
+<div class="task-title">Практична робота: ERD-діаграма</div>
+<div class="task-desc">Побудувати сутнісно-зв'язкову діаграму для навчальної системи університету.</div>
+<div class="task-meta">
+<span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>до 03.08</span>
+<span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 12.5 15 4.5a3 3 0 1 1 4.2 4.2L10 18a4.5 4.5 0 1 1-6.4-6.4L12 3.2"/></svg>Приклад ERD</span>
+</div>
+</div>
+<div class="task-status">
+<span class="status-pill status-progress">В роботі</span>
+<div class="task-check" onclick="toggleCheck(this)" title="Позначити виконаним"><svg class="icon-inline" style="margin:0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17 19 7"/></svg></div>
+</div>
+</div>
+
+<div class="task-card" data-status="new">
+<div>
+<div class="task-subject">Вища математика</div>
+<div class="task-title">Домашня робота №7: Інтегрування</div>
+<div class="task-desc">Розв'язати задачі 14–22 зі збірника (розділ «Невизначений інтеграл»).</div>
+<div class="task-meta">
+<span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>до 05.08</span>
+<span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 12.5 15 4.5a3 3 0 1 1 4.2 4.2L10 18a4.5 4.5 0 1 1-6.4-6.4L12 3.2"/></svg>Збірник задач, розділ 3</span>
+</div>
+</div>
+<div class="task-status">
+<span class="status-pill status-new">Нове</span>
+<div class="task-check" onclick="toggleCheck(this)" title="Позначити виконаним"><svg class="icon-inline" style="margin:0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17 19 7"/></svg></div>
+</div>
+</div>
+
+<div class="task-card done" data-status="done">
+<div>
+<div class="task-subject">Програмування</div>
+<div class="task-title">Лабораторна робота №3: Масиви та рядки</div>
+<div class="task-desc">Реалізувати операції роботи з масивами та рядками мовою C++.</div>
+<div class="task-meta">
+<span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>здано 22.07</span>
+</div>
+</div>
+<div class="task-status">
+<span class="status-pill status-done">Здано</span>
+<div class="task-check checked" onclick="toggleCheck(this)" title="Виконано"><svg class="icon-inline" style="margin:0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17 19 7"/></svg></div>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<section class="section section-soft">
+<div class="container">
+<div class="section-head reveal">
+<div class="label">Як це працює</div>
+<h2>Формат розділу «Домашні завдання»</h2>
+</div>
+<div class="grid-3">
+<div class="card reveal">
+<h3><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>Дедлайни</h3>
+<p>Кожне завдання має чіткий термін здачі, а найближчі дедлайни підсвічуються окремо, щоб не загубилися
+ серед інших справ.</p>
+</div>
+<div class="card reveal">
+<h3><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17 19 7"/></svg>Статуси</h3>
+<p>Нове, в роботі або здано — статус завдання видно одразу, без потреби відкривати кожну картку окремо.</p>
+</div>
+<div class="card reveal">
+<h3><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 12.5 15 4.5a3 3 0 1 1 4.2 4.2L10 18a4.5 4.5 0 1 1-6.4-6.4L12 3.2"/></svg>Матеріали та нагадування</h3>
+<p>Умови, шаблони звітів і приклади прикріплюються прямо до завдання, а нагадування приходять
+ заздалегідь.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+<div class="section-head reveal">
+<div class="label">FAQ</div>
+<h2>Часті питання</h2>
+</div>
+<div class="faq-list reveal">
+<div class="faq-item">
+<div class="faq-q" data-faq>Чи бачать викладачі цей список? <span class="faq-q__chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+<div class="faq-a">Ні. Це особистий інструмент студента для самоорганізації, а не електронний журнал і не
+ система здачі робіт університету.</div>
+</div>
+<div class="faq-item">
+<div class="faq-q" data-faq>Звідки беруться завдання у списку? <span class="faq-q__chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+<div class="faq-a">Студент додає їх самостійно за розкладом і силабусом предмета — платформа лише допомагає
+ не забути про дедлайни.</div>
+</div>
+<div class="faq-item">
+<div class="faq-q" data-faq>Де зберігається мій прогрес? <span class="faq-q__chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+<div class="faq-a">Персональний список і статуси зберігаються у твоєму Personal Area після входу в
+ акаунт.</div>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+<footer class="footer">
+<div class="container footer-grid">
+<div>
+<h4>Студентська платформа Політехніки</h4>
+<p>Dnipro Polytechnic Students — неофіційна студентська платформа НТУ «Дніпровська політехніка», створена студентами для студентів. Зручна, корисна та безкоштовна.
+ Доступна будь-кому та в різних точках світу.</p>
+</div>
+<div>
+<h4>Університет</h4><a href="about.html">Про університет</a><a href="history.html">Історія</a><a
+ href="stories.html">Історії політехніки</a><a
+ href="structure.html">Структура</a><a href="campus.html">Кампус</a>
+</div>
+<div>
+<h4>Навчання</h4><a href="assignments.html">Домашні завдання</a><a href="exam-prep.html">Підготовка до екзаменів</a><a href="materials.html">Навчальні матеріали</a><a href="homework-help.html">Допомога з ДЗ</a><a href="library.html">Бібліотека</a>
+</div>
+<div>
+<h4>Платформа</h4><a href="student-life.html">Студентське
+ життя</a><a href="platform.html">Про платформу</a><a
+ href="events.html">Знайомства та події</a><a href="media.html">Фото і відео</a><a href="authors.html">Автори</a><a
+ href="admission.html">Питання про вступ</a>
+</div>
+</div>
+<div class="container footer-bottom">© <span id="year"></span> · Студентська платформа Політехніки · World Students</div>
+</footer>
+<script src="assets/js/main.js"></script>
+</body>
+
+</html>

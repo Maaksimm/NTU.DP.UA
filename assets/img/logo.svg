@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 96" width="300" height="96" role="img" aria-label="НТУ Дніпровська політехніка">
+  <g>
+    <!-- column 1: 2 squares -->
+    <rect x="6" y="65" width="15" height="15" rx="3" fill="#0b3559"/>
+    <rect x="6" y="47" width="15" height="15" rx="3" fill="#155aa0"/>
+    <!-- column 2: 3 squares -->
+    <rect x="24" y="65" width="15" height="15" rx="3" fill="#0b3559"/>
+    <rect x="24" y="47" width="15" height="15" rx="3" fill="#155aa0"/>
+    <rect x="24" y="29" width="15" height="15" rx="3" fill="#1a6fc4"/>
+    <!-- column 3: 4 squares -->
+    <rect x="42" y="65" width="15" height="15" rx="3" fill="#0b3559"/>
+    <rect x="42" y="47" width="15" height="15" rx="3" fill="#155aa0"/>
+    <rect x="42" y="29" width="15" height="15" rx="3" fill="#1a6fc4"/>
+    <rect x="42" y="11" width="15" height="15" rx="3" fill="#4fc3f7"/>
+  </g>
+  <text x="78" y="20" font-family="Montserrat, Arial, sans-serif" font-weight="600" font-size="9" fill="#6b7c93">Національний</text>
+  <text x="78" y="31" font-family="Montserrat, Arial, sans-serif" font-weight="600" font-size="9" fill="#6b7c93">технічний університет</text>
+  <text x="77" y="54" font-family="Montserrat, Arial, sans-serif" font-weight="800" font-size="21" letter-spacing="0.3" fill="#183655">ДНІПРОВСЬКА</text>
+  <text x="77" y="75" font-family="Montserrat, Arial, sans-serif" font-weight="800" font-size="21" letter-spacing="0.3" fill="#183655">ПОЛІТЕХНІКА</text>
+  <text x="77" y="90" font-family="Montserrat, Arial, sans-serif" font-weight="700" font-size="13" letter-spacing="1.5" fill="#1a6fc4">1899</text>
+</svg>

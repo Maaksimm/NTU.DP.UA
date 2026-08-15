@@ -1,0 +1,175 @@
+<!-- <!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Завдання — НТУ «ДП»</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body data-page="pa-tasks">
+  <div class="preloader">
+    <div class="loader">
+      <div class="loader-logo"><img src="assets/img/logo.svg" alt=""></div>
+      <div class="loader-title">Дніпровська Політехніка Students</div>
+      <div class="loader-bar"></div><small>частина World Students</small>
+    </div>
+  </div>
+  <div class="personal-layout">
+    <aside class="sidebar">
+      <a class="brand sidevar__brand" href="index.html">
+        <img src="assets/img/logo.svg" alt="">
+        <span class="brand-copy"><strong>Personal Area</strong><span>World Students</span></span>
+      </a>
+      <nav>
+        <a href="personal-area.html">Огляд</a>
+        <a href="pa-schedule.html">Розклад</a>
+        <a class="active" href="pa-tasks.html">Завдання</a>
+        <a href="pa-grades.html">Успішність</a>
+        <a href="pa-profile.html">Профіль</a>
+        <a href="index.html">На головну</a>
+      </nav>
+    </aside>
+    <main class="personal-main">
+      <div class="label">Персональна зона</div>
+      <h1 >Завдання</h1>
+      <p class="lead">Актуальні завдання, лабораторні та курсові роботи.</p>
+
+      <div class="summary-row">
+        <div class="summary-card">
+          <strong>3</strong>
+          <span>Активні</span>
+        </div>
+        <div class="summary-card">
+          <strong style="color:#e03535">1</strong>
+          <span>Прострочені</span>
+        </div>
+        <div class="summary-card">
+          <strong style="color:#1a7a3c">8</strong>
+          <span>Виконані</span>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterTasks(this,'all')">Усі</button>
+        <button class="filter-btn" onclick="filterTasks(this,'new')">Нові</button>
+        <button class="filter-btn" onclick="filterTasks(this,'progress')">В роботі</button>
+        <button class="filter-btn" onclick="filterTasks(this,'done')">Виконані</button>
+        <button class="filter-btn" onclick="filterTasks(this,'overdue')">Прострочені</button>
+      </div>
+
+      <div class="tasks-list">
+        <div class="task-card overdue" data-status="overdue">
+          <div>
+            <div class="task-subject">Програмування</div>
+            <div class="task-title">Лабораторна робота №4: Рекурсія</div>
+            <div class="task-desc">Реалізувати 5 алгоритмів з використанням рекурсії. Оформити звіт у форматі PDF.</div>
+            <div class="task-meta">
+              <span>Здати до: 24 трав 2025</span>
+              <span>Бойко Д.С.</span>
+              <span>~3 год</span>
+            </div>
+          </div>
+          <div class="task-status">
+            <span class="status-badge status-overdue">Прострочено</span>
+            <div class="task-check" onclick="toggleCheck(this)">✓</div>
+          </div>
+        </div>
+
+        <div class="task-card urgent" data-status="new">
+          <div>
+            <div class="task-subject">Бази даних</div>
+            <div class="task-title">Практична робота: ERD-діаграма</div>
+            <div class="task-desc">Побудувати сутнісно-зв'язкову діаграму для навчальної системи університету.</div>
+            <div class="task-meta">
+              <span>Здати до: 30 трав 2025</span>
+              <span>Сидоренко К.М.</span>
+              <span>~2 год</span>
+            </div>
+          </div>
+          <div class="task-status">
+            <span class="status-badge status-new">Новe</span>
+            <div class="task-check" onclick="toggleCheck(this)">✓</div>
+          </div>
+        </div>
+
+        <div class="task-card" data-status="progress">
+          <div>
+            <div class="task-subject">Алгоритми та структури даних</div>
+            <div class="task-title">Реферат: Порівняння алгоритмів сортування</div>
+            <div class="task-desc">Підготувати реферат з порівняльним аналізом не менше 6 алгоритмів сортування.</div>
+            <div class="task-meta">
+              <span>Здати до: 5 черв 2025</span>
+              <span>Федоренко А.Г.</span>
+              <span>~5 год</span>
+            </div>
+          </div>
+          <div class="task-status">
+            <span class="status-badge status-progress">В роботі</span>
+            <div class="task-check" onclick="toggleCheck(this)">✓</div>
+          </div>
+        </div>
+
+        <div class="task-card" data-status="new">
+          <div>
+            <div class="task-subject">Вища математика</div>
+            <div class="task-title">Домашня робота №7: Інтегрування</div>
+            <div class="task-desc">Розв'язати задачі 14–22 зі збірника (розділ «Невизначений інтеграл»).</div>
+            <div class="task-meta">
+              <span>Здати до: 2 черв 2025</span>
+              <span>Іваненко В.А.</span>
+              <span>~1.5 год</span>
+            </div>
+          </div>
+          <div class="task-status">
+            <span class="status-badge status-new">Нове</span>
+            <div class="task-check" onclick="toggleCheck(this)">✓</div>
+          </div>
+        </div>
+
+        <div class="task-card done" data-status="done">
+          <div>
+            <div class="task-subject">Програмування</div>
+            <div class="task-title">Лабораторна робота №3: Масиви та рядки</div>
+            <div class="task-desc">Реалізувати операції роботи з масивами та рядками мовою C++.</div>
+            <div class="task-meta">
+              <span>Здано: 18 трав 2025</span>
+              <span>Бойко Д.С.</span>
+              <span>Оцінка: 95/100</span>
+            </div>
+          </div>
+          <div class="task-status">
+            <span class="status-badge status-done">Виконано</span>
+            <div class="task-check checked" onclick="toggleCheck(this)">✓</div>
+          </div>
+        </div>
+
+        <div class="task-card done" data-status="done">
+          <div>
+            <div class="task-subject">Англійська мова</div>
+            <div class="task-title">Есе: My Future Career in IT</div>
+            <div class="task-desc">Написати есе на 250–300 слів про майбутню кар'єру у сфері інформаційних технологій.</div>
+            <div class="task-meta">
+              <span>Здано: 15 трав 2025</span>
+              <span>Коваль Н.В.</span>
+              <span>Оцінка: 88/100</span>
+            </div>
+          </div>
+          <div class="task-status">
+            <span class="status-badge status-done">Виконано</span>
+            <div class="task-check checked" onclick="toggleCheck(this)">✓</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/js/main.js"></script>
+</body>
+
+</html> -->

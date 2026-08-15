@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="НТУ Дніпровська політехніка">
+  <rect x="0" y="0" width="64" height="64" rx="14" fill="#123a63"/>
+  <g>
+    <!-- column 1: 2 bars -->
+    <rect x="12" y="34" width="9" height="9" rx="2" fill="#7fb8e8"/>
+    <rect x="12" y="21" width="9" height="9" rx="2" fill="#bfe0f7"/>
+    <!-- column 2: 3 bars -->
+    <rect x="24.5" y="34" width="9" height="9" rx="2" fill="#4fa3dd"/>
+    <rect x="24.5" y="21" width="9" height="9" rx="2" fill="#7fb8e8"/>
+    <rect x="24.5" y="8" width="9" height="9" rx="2" fill="#bfe0f7"/>
+    <!-- column 3: 4 bars -->
+    <rect x="37" y="34" width="9" height="9" rx="2" fill="#1a6fc4"/>
+    <rect x="37" y="21" width="9" height="9" rx="2" fill="#4fa3dd"/>
+    <rect x="37" y="8" width="9" height="9" rx="2" fill="#7fb8e8"/>
+  </g>
+  <rect x="10" y="46" width="44" height="4" rx="2" fill="#ffcb47"/>
+</svg>

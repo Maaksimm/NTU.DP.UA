@@ -1,0 +1,228 @@
+<!-- <!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Розклад — НТУ «ДП»</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body data-page="pa-schedule">
+  <div class="preloader">
+    <div class="loader">
+      <div class="loader-logo"><img src="assets/img/logo.svg" alt=""></div>
+      <div class="loader-title">Дніпровська Політехніка Students</div>
+      <div class="loader-bar"></div><small>частина World Students</small>
+    </div>
+  </div>
+  <div class="personal-layout">
+    <aside class="sidebar">
+      <a class="brand sidevar__brand" href="index.html">
+        <img src="assets/img/logo.svg"  alt="">
+        <span class="brand-copy"><strong>Personal Area</strong><span>World Students</span></span>
+      </a>
+      <nav>
+        <a href="personal-area.html">Огляд</a>
+        <a class="active" href="pa-schedule.html">Розклад</a>
+        <a href="pa-tasks.html">Завдання</a>
+        <a href="pa-grades.html">Успішність</a>
+        <a href="pa-profile.html">Профіль</a>
+        <a href="index.html">На головну</a>
+      </nav>
+    </aside>
+    <main class="personal-main">
+      <div class="label">Персональна зона</div>
+      <h1 >Розклад</h1>
+      <p class="lead">Розклад занять на поточний тиждень. Актуально для групи 122-22-1.</p>
+
+      <div class="week-nav">
+        <button>&#8592;</button>
+        <strong>26 трав — 1 черв 2026</strong>
+        <button>&#8594;</button>
+        <span class="badge">Поточний тиждень</span>
+      </div>
+
+      <div class="day-tabs">
+        <button class="day-tab" onclick="showDay(this,'mon')">Пн 26</button>
+        <button class="day-tab today active" onclick="showDay(this,'tue')">Вт 27</button>
+        <button class="day-tab" onclick="showDay(this,'wed')">Ср 28</button>
+        <button class="day-tab" onclick="showDay(this,'thu')">Чт 29</button>
+        <button class="day-tab" onclick="showDay(this,'fri')">Пт 30</button>
+        <button class="day-tab" onclick="showDay(this,'sat')">Сб 31</button>
+      </div>
+
+      <div id="day-mon" class="schedule-list" style="display:none">
+        <div class="lesson">
+          <div class="lesson-time">08:00<small>до 09:35</small></div>
+          <div>
+            <div class="lesson-title">Вища математика</div>
+            <div class="lesson-meta">
+              <span>Ауд. 203, корп. 1</span>
+              <span>Іваненко В.А.</span>
+            </div>
+          </div>
+          <span class="lesson-badge badge-lec">Лекція</span>
+        </div>
+        <div class="lesson">
+          <div class="lesson-time">09:50<small>до 11:25</small></div>
+          <div>
+            <div class="lesson-title">Фізика</div>
+            <div class="lesson-meta">
+              <span>Лаб. 115, корп. 2</span>
+              <span>Петренко О.І.</span>
+            </div>
+          </div>
+          <span class="lesson-badge badge-lab">Лабораторна</span>
+        </div>
+        <div class="lesson">
+          <div class="lesson-time">13:00<small>до 14:35</small></div>
+          <div>
+            <div class="lesson-title">Англійська мова</div>
+            <div class="lesson-meta">
+              <span>Online (Zoom)</span>
+              <span>Коваль Н.В.</span>
+            </div>
+          </div>
+          <span class="lesson-badge badge-online">Online</span>
+        </div>
+      </div>
+
+      <div id="day-tue" class="schedule-list">
+        <div class="lesson active-now">
+          <div class="lesson-time">09:00<small>до 10:35</small></div>
+          <div>
+            <div class="lesson-title">Програмування</div>
+            <div class="lesson-meta">
+              <span>Кампус, лаб. 401</span>
+              <span>Бойко Д.С.</span>
+            </div>
+          </div>
+          <span class="lesson-badge badge-lab">Лабораторна</span>
+        </div>
+        <div class="lesson">
+          <div class="lesson-time">11:00<small>до 12:35</small></div>
+          <div>
+            <div class="lesson-title">Англійська мова</div>
+            <div class="lesson-meta">
+              <span>Online (Zoom)</span>
+              <span>Коваль Н.В.</span>
+            </div>
+          </div>
+          <span class="lesson-badge badge-online">Online</span>
+        </div>
+        <div class="lesson">
+          <div class="lesson-time">13:00<small>до 14:35</small></div>
+          <div>
+            <div class="lesson-title">Проєктна робота</div>
+            <div class="lesson-meta">
+              <span>Лабораторія інновацій</span>
+              <span>Мельник С.Р.</span>
+            </div>
+          </div>
+          <span class="lesson-badge badge-prac">Практика</span>
+        </div>
+        <div class="lesson">
+          <div class="lesson-time">15:00<small>до 16:35</small></div>
+          <div>
+            <div class="lesson-title">Бази даних</div>
+            <div class="lesson-meta">
+              <span>Ауд. 312, корп. 3</span>
+              <span>Сидоренко К.М.</span>
+            </div>
+          </div>
+          <span class="lesson-badge badge-lec">Лекція</span>
+        </div>
+      </div>
+
+      <div id="day-wed" class="schedule-list" style="display:none">
+        <div class="lesson">
+          <div class="lesson-time">08:00<small>до 09:35</small></div>
+          <div>
+            <div class="lesson-title">Дискретна математика</div>
+            <div class="lesson-meta">
+              <span>Ауд. 104, корп. 1</span>
+              <span>Гриценко П.Л.</span>
+            </div>
+          </div>
+          <span class="lesson-badge badge-lec">Лекція</span>
+        </div>
+        <div class="lesson">
+          <div class="lesson-time">11:00<small>до 12:35</small></div>
+          <div>
+            <div class="lesson-title">Програмування</div>
+            <div class="lesson-meta">
+              <span>Кампус, лаб. 401</span>
+              <span>Бойко Д.С.</span>
+            </div>
+          </div>
+          <span class="lesson-badge badge-prac">Практика</span>
+        </div>
+      </div>
+
+      <div id="day-thu" class="schedule-list" style="display:none">
+        <div class="lesson">
+          <div class="lesson-time">09:50<small>до 11:25</small></div>
+          <div>
+            <div class="lesson-title">Алгоритми та структури даних</div>
+            <div class="lesson-meta">
+              <span>Ауд. 205, корп. 2</span>
+              <span>Федоренко А.Г.</span>
+            </div>
+          </div>
+          <span class="lesson-badge badge-lec">Лекція</span>
+        </div>
+        <div class="lesson">
+          <div class="lesson-time">13:00<small>до 14:35</small></div>
+          <div>
+            <div class="lesson-title">Фізична культура</div>
+            <div class="lesson-meta">
+              <span>Спортзал, корп. 5</span>
+              <span>Ткаченко В.В.</span>
+            </div>
+          </div>
+          <span class="lesson-badge badge-prac">Практика</span>
+        </div>
+      </div>
+
+      <div id="day-fri" class="schedule-list" style="display:none">
+        <div class="lesson">
+          <div class="lesson-time">09:00<small>до 10:35</small></div>
+          <div>
+            <div class="lesson-title">Вища математика</div>
+            <div class="lesson-meta">
+              <span>Ауд. 203, корп. 1</span>
+              <span>Іваненко В.А.</span>
+            </div>
+          </div>
+          <span class="lesson-badge badge-prac">Практика</span>
+        </div>
+        <div class="lesson">
+          <div class="lesson-time">11:00<small>до 12:35</small></div>
+          <div>
+            <div class="lesson-title">Бази даних</div>
+            <div class="lesson-meta">
+              <span>Кампус, лаб. 402</span>
+              <span>Сидоренко К.М.</span>
+            </div>
+          </div>
+          <span class="lesson-badge badge-lab">Лабораторна</span>
+        </div>
+      </div>
+
+      <div id="day-sat" class="schedule-list" style="display:none">
+        <div class="no-lessons">
+          <p>Занять немає — вихідний день!</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/js/main.js"></script>
+</body>
+
+</html> -->

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Автори — Студентська платформа НТУ «ДП»</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="assets/img/favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body data-page="authors">
+  <div class="preloader">
+    <div class="loader">
+      <div class="loader-logo"><img src="assets/img/logo.svg" alt=""></div>
+      <div class="loader-title">Студентська платформа Політехніки</div>
+      <div class="loader-bar"></div><small>частина World Students</small>
+    </div>
+  </div>
+  <div class="topbar">
+    <div class="container"><span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" />
+          <circle cx="12" cy="9.5" r="2.5" />
+        </svg>пр. Дмитра Яворницького, 19, Дніпро, Україна, 49005</span><span><b>World
+          Students:</b>локальна студентська платформа НТУ «ДП»</span></div>
+  </div>
+
+  <header class="header">
+    <div class="scroll-progress-bar" id="scrollProgress"></div>
+    <div class="container header-inner">
+      <a class="brand" href="index.html"><img src="assets/img/logo.svg" alt="НТУ ДП"><span
+          class="brand-copy"><strong>Students Platform</strong><span>від студентів для студентів</span></span></a>
+      <nav class="nav">
+        <a href="about.html" class="nav__link" data-nav="about">Про університет</a>
+        <a href="education.html" class="nav__link" data-nav="education">Навчання</a>
+        <a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
+        <a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
+        <a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
+        <a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
+        <a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
+      </nav>
+      <button class="burger" onclick="toggleMenu()" aria-label="Меню"><span></span><span></span><span></span></button>
+    </div>
+      </header>
+<div class="mobile-nav" id="mobileNav"><a href="index.html" data-nav="home">Головна</a>
+      <a href="about.html" class="nav__link" data-nav="about">Про університет</a>
+      <a href="education.html" class="nav__link" data-nav="education">Навчання</a>
+      <a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
+      <a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
+      <a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
+      <a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
+      <a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
+    </div>
+
+  <main>
+    <section class="page-hero authors-hero">
+      <div class="container reveal">
+        <div class="breadcrumb"><a href="index.html">Головна</a>› Автори</div>
+        <h1>Ті, хто робить цю платформу</h1>
+        <p class="lead">Студентська платформа НТУ «ДП» — незалежний проєкт, який створила невелика команда
+          Дніпровської політехніки. Наведіть курсор на картку — або торкніться її на телефоні — щоб побачити,
+          чим саме займається кожен.</p>
+
+        <div class="authors-ledger">
+          <div class="authors-ledger__item">
+            <span class="authors-ledger__num" data-count="8">0</span>
+            <span class="authors-ledger__label">учасників команди</span>
+          </div>
+          <div class="authors-ledger__item">
+            <span class="authors-ledger__num" data-count="3">0</span>
+            <span class="authors-ledger__label">розробники</span>
+          </div>
+          <div class="authors-ledger__item">
+            <span class="authors-ledger__num" data-count="3">0</span>
+            <span class="authors-ledger__label">дизайнери</span>
+          </div>
+          <div class="authors-ledger__item">
+            <span class="authors-ledger__num" data-count="1">0</span>
+            <span class="authors-ledger__label">контент-менеджери</span>
+          </div>
+          <div class="authors-ledger__item">
+            <span class="authors-ledger__num" data-count="1">0</span>
+            <span class="authors-ledger__label">QA-інженери</span>
+          </div>
+          <div class="authors-ledger__item">
+            <span class="authors-ledger__num">Незалежна команда</span>
+            <span class="authors-ledger__label">поза структурою НТУ «ДП»</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+
+        <div class="authors-filters" role="tablist" aria-label="Фільтр учасників">
+          <button class="authors-filter is-active" data-filter="all" type="button">Усі</button>
+          <button class="authors-filter" data-filter="dev" type="button">Розробники</button>
+          <button class="authors-filter" data-filter="design" type="button">Дизайнери</button>
+          <button class="authors-filter" data-filter="content" type="button">Контент-менеджери</button>
+          <button class="authors-filter" data-filter="qa" type="button">QA-інженери</button>
+        </div>
+
+        <div class="authors-grid" id="authorsGrid">
+
+          <article class="author-card reveal" data-role="dev">
+            <div class="author-card__inner">
+              <div class="author-card__face author-card__front">
+                <div class="author-card__photo-wrap">
+                  <img src="assets/img/leonid-ksenchuk.jpg" alt="Ксенчук Леонід" class="author-card__photo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                  <div class="author-card__avatar">ЛК</div>
+                </div>
+                <h3>Ксенчук Леонід</h3>
+                <span class="author-card__role">💻 Розробник</span>
+                <span class="author-card__id">ID · 001</span>
+                <span class="author-card__hint">торкніться, щоб перевернути</span>
+              </div>
+              <div class="author-card__face author-card__back">
+                <h3>Ксенчук Леонід</h3>
+                <p class="author-card__contrib">Автор ідеї проєкту та розробник платформи.</p>
+                <a class="author-card__link" href="https://www.linkedin.com/in/leonid-xenchuk-5022a6163/"
+                  target="_blank" rel="noopener">LinkedIn ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="author-card reveal" data-role="dev">
+            <div class="author-card__inner">
+              <div class="author-card__face author-card__front">
+                <div class="author-card__photo-wrap">
+                  <img src="assets/img/max-pechersky.jpg" alt="Максим Печерський" class="author-card__photo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                  <div class="author-card__avatar">МП</div>
+                </div>
+                <h3>Максим Печерський</h3>
+                <span class="author-card__role">💻 Розробник</span>
+                <span class="author-card__id">ID · 002</span>
+                <span class="author-card__hint">торкніться, щоб перевернути</span>
+              </div>
+              <div class="author-card__face author-card__back">
+                <h3>Максим Печерський</h3>
+                <p class="author-card__contrib">Один з авторів проєкту, студент і розробник платформи.</p>
+                <a class="author-card__link" href="https://www.linkedin.com/in/максим-печерский-043380403"
+                  target="_blank" rel="noopener">LinkedIn ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="author-card reveal" data-role="dev">
+            <div class="author-card__inner">
+              <div class="author-card__face author-card__front">
+                <div class="author-card__photo-wrap">
+                  <img src="assets/img/oleksiy-kolba.jpg" alt="Олексій Колба" class="author-card__photo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                  <div class="author-card__avatar">ОК</div>
+                </div>
+                <h3>Олексій Колба</h3>
+                <span class="author-card__role">💻 Розробник</span>
+                <span class="author-card__id">ID · 003</span>
+                <span class="author-card__hint">торкніться, щоб перевернути</span>
+              </div>
+              <div class="author-card__face author-card__back">
+                <h3>Олексій Колба</h3>
+                <p class="author-card__contrib">Розробник платформи.</p>
+                <!--<a class="author-card__link" href="#" target="_blank" rel="noopener">LinkedIn ↗</a>-->
+              </div>
+            </div>
+          </article>
+
+          <article class="author-card reveal" data-role="design">
+            <div class="author-card__inner">
+              <div class="author-card__face author-card__front">
+                <div class="author-card__photo-wrap">
+                  <img src="assets/img/oleksandr-chumak.jpg" alt="Олександр Чумак" class="author-card__photo"
+                    onerror="this.style.display='block'; this.nextElementSibling.style.display='flex';">
+                  <div class="author-card__avatar">ОЧ</div>
+                </div>
+                <h3>Олександр Чумак</h3>
+                <span class="author-card__role">🎨 Дизайнер</span>
+                <span class="author-card__id">ID · 004</span>
+                <span class="author-card__hint">торкніться, щоб перевернути</span>
+              </div>
+              <div class="author-card__face author-card__back">
+                <h3>Олександр Чумак</h3>
+                <p class="author-card__contrib">Дизайнер платформи.</p>
+                <a class="author-card__link" href="https://www.linkedin.com/in/oleksandr-chumak-b3b28836a/"
+                  target="_blank" rel="noopener">LinkedIn ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="author-card reveal" data-role="content">
+            <div class="author-card__inner">
+              <div class="author-card__face author-card__front">
+                <div class="author-card__photo-wrap">
+                  <img src="assets/img/stefaniia-rudenko.jpg" alt="Стефанія Руденко" class="author-card__photo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                  <div class="author-card__avatar">СР</div>
+                </div>
+                <h3>Стефанія Руденко</h3>
+                <span class="author-card__role">✍️ Контент-менеджер</span>
+                <span class="author-card__id">ID · 005</span>
+                <span class="author-card__hint">торкніться, щоб перевернути</span>
+              </div>
+              <div class="author-card__face author-card__back">
+                <h3>Стефанія Руденко</h3>
+                <p class="author-card__contrib">Контент-менеджер платформи.</p>
+                <a class="author-card__link"
+                  href="https://www.linkedin.com/in/stefaniia-rudenko-232b132b7?trk=contact-info" target="_blank"
+                  rel="noopener">LinkedIn ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="author-card reveal" data-role="qa">
+            <div class="author-card__inner">
+              <div class="author-card__face author-card__front">
+                <div class="author-card__photo-wrap">
+                  <img src="assets/img/margaryta-qa.jpg" alt="Маргарита" class="author-card__photo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                  <div class="author-card__avatar">М</div>
+                </div>
+                <h3>Маргарита</h3>
+                <span class="author-card__role">🐞 QA-інженер</span>
+                <span class="author-card__id">ID · 006</span>
+                <span class="author-card__hint">торкніться, щоб перевернути</span>
+              </div>
+              <div class="author-card__face author-card__back">
+                <h3>Маргарита</h3>
+                <p class="author-card__contrib">Тестує платформу, шукає баги та стежить за якістю перед кожним релізом.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <article class="author-card reveal" data-role="design">
+            <div class="author-card__inner">
+              <div class="author-card__face author-card__front">
+                <div class="author-card__photo-wrap">
+                  <img src="assets/img/oleksandra-pavlenko.jpg" alt="Олександра Павленко" class="author-card__photo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                  <div class="author-card__avatar">ОП</div>
+                </div>
+                <h3>Олександра Павленко</h3>
+                <span class="author-card__role">🎨 Дизайнерка</span>
+                <span class="author-card__id">ID · 007</span>
+                <span class="author-card__hint">торкніться, щоб перевернути</span>
+              </div>
+              <div class="author-card__face author-card__back">
+                <h3>Олександра Павленко</h3>
+                <p class="author-card__contrib">Дизайнерка платформи, працює над візуальним стилем та інтерфейсом.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="author-card reveal" data-role="design">
+            <div class="author-card__inner">
+              <div class="author-card__face author-card__front">
+                <div class="author-card__photo-wrap">
+                  <img src="assets/img/boris-filatov.jpg" alt="Борис Філатов" class="author-card__photo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                  <div class="author-card__avatar">БФ</div>
+                </div>
+                <h3>Борис Філатов</h3>
+                <span class="author-card__role">🎨 Дизайнер</span>
+                <span class="author-card__id">ID · 008</span>
+                <span class="author-card__hint">торкніться, щоб перевернути</span>
+              </div>
+              <div class="author-card__face author-card__back">
+                <h3>Борис Філатов</h3>
+                <p class="author-card__contrib">Дизайнер платформи.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <h4>Студентська платформа Політехніки</h4>
+        <p>Dnipro Polytechnic Students — неофіційна студентська платформа НТУ «Дніпровська політехніка», створена
+          студентами для студентів. Зручна, корисна та безкоштовна.
+          Доступна будь-кому та в різних точках світу.</p>
+      </div>
+      <div>
+        <h4>Університет</h4><a href="about.html">Про університет</a><a href="history.html">Історія</a><a
+          href="stories.html">Історії політехніки</a><a href="structure.html">Структура</a><a
+          href="campus.html">Кампус</a>
+      </div>
+      <div>
+        <h4>Напрями</h4><a href="education.html">Навчання</a><a href="assignments.html">Домашні завдання</a><a
+          href="exam-prep.html">Підготовка до екзаменів</a><a href="materials.html">Навчальні матеріали</a><a
+          href="science.html">Наука</a><a href="international.html">Міжнародна діяльність</a><a
+          href="library.html">Бібліотека</a>
+      </div>
+      <div>
+        <h4>Платформа</h4><a href="platform.html">Про платформу</a><a href="student-life.html">Студентське
+          життя</a><a href="media.html">Фото і відео</a><a href="sources.html">Джерела</a><a
+          href="authors.html">Автори</a><a href="campus-dream.html">Наш універ мрії</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© <span id="year"></span> · Студентська платформа Політехніки · World Students
+    </div>
+  </footer>
+  <script src="assets/js/main.js"></script>
+</body>
+
+</html>

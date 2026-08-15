@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Навчання — НТУ «ДП»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+ href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap"
+ rel="stylesheet">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/img/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body data-page="education">
+<div class="preloader">
+<div class="loader">
+<div class="loader-logo"><img src="assets/img/logo.svg" alt=""></div>
+<div class="loader-title">Студентська платформа Політехніки</div>
+<div class="loader-bar"></div><small>частина World Students</small>
+</div>
+</div>
+<div class="topbar">
+<div class="container"><span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>пр. Дмитра Яворницького, 19, Дніпро, Україна, 49005</span><span><b>World
+ Students:</b>локальна студентська платформа НТУ «ДП»</span></div>
+</div>
+<header class="header">
+<div class="scroll-progress-bar" id="scrollProgress"></div>
+<div class="container header-inner">
+<a class="brand" href="index.html"><img src="assets/img/logo.svg" alt="НТУ ДП"><span
+ class="brand-copy"><strong>Students Platform</strong><span>від студентів для студентів</span></span></a>
+<nav class="nav">
+<a href="about.html" class="nav__link" data-nav="about">Про університет</a>
+<a href="education.html" class="nav__link" data-nav="education">Навчання</a>
+<a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
+<a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
+<a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
+<a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
+<a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
+</nav>
+<button class="burger" onclick="toggleMenu()" aria-label="Меню"><span></span><span></span><span></span></button>
+</div>
+</header>
+<div class="mobile-nav" id="mobileNav"><a href="index.html" data-nav="home">Головна</a>
+<a href="about.html" class="nav__link" data-nav="about">Про університет</a>
+<a href="education.html" class="nav__link" data-nav="education">Навчання</a>
+<a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
+<a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
+<a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
+<a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
+<a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
+</div>
+
+<main>
+<section class="page-hero">
+<div class="container reveal">
+<div class="breadcrumb"><a href="index.html">Головна</a>› Навчання</div>
+<h1>Навчання</h1>
+<p class="lead">Освітній блок платформи: вступ, спеціальності, кафедри, ресурси, стипендії та форми навчання.
+</p>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="grid-3">
+<div class="card reveal">
+<h3>Вступ до університету</h3>
+<p>Приймальна комісія, правила прийому, консультації, профорієнтаційні заходи та спеціальності.</p><a
+ href="abiturient.html">Абітурієнтам →</a>
+</div>
+<div class="card reveal">
+<h3>Денна форма навчання</h3>
+<p>Новини, інститути, факультети, кафедри, дисципліни за вільним вибором і освітні ресурси.</p><a
+ href="institutes.html">Структура →</a>
+</div>
+<div class="card reveal">
+<h3>Дистанційна та післядипломна освіта</h3>
+<p>Дистанційна освіта, вечірня форма, післядипломна освіта та безперервне навчання.</p><a
+ href="services.html">Сервіси →</a>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section section-soft">
+<div class="container">
+<div class="section-head reveal">
+<div class="label">Структура</div>
+<h2>Кафедри та інститути</h2>
+<p>Навчальний процес забезпечують кафедри, об'єднані в інститути та факультети. Обери кафедру зі списку або
+ розгорни інститут нижче.</p>
+</div>
+
+<div class="kafedra-select reveal" id="kafedraSelect">
+<button type="button" class="kafedra-select__toggle" id="kafedraSelectToggle" aria-haspopup="listbox"
+ aria-expanded="false">
+<svg class="kafedra-select__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+ stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<circle cx="11" cy="11" r="7"/>
+<path d="m21 21-4.3-4.3"/>
+</svg>
+<span class="kafedra-select__value is-placeholder" id="kafedraSelectValue">Знайти кафедру</span>
+<svg class="kafedra-select__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+ stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="m6 9 6 6 6-6"/>
+</svg>
+</button>
+<div class="kafedra-select__panel" id="kafedraSelectPanel" role="listbox" aria-label="Список кафедр">
+<div class="kafedra-select__search">
+<input type="text" id="kafedraSelectInput" placeholder="Почни вводити назву кафедри…" autocomplete="off">
+</div>
+<div class="kafedra-select__list" id="kafedraSelectList">
+<div class="kafedra-select__group">
+<div class="kafedra-select__group-title">Інститут гуманітарних і соціальних наук</div>
+<div class="kafedra-select__option" role="option">Кафедра історії та політичної теорії</div>
+<div class="kafedra-select__option" role="option">Кафедра публічного права</div>
+<div class="kafedra-select__option" role="option">Кафедра філології та мовної комунікації</div>
+<div class="kafedra-select__option" role="option">Кафедра філософії і педагогіки</div>
+<div class="kafedra-select__option" role="option">Кафедра цивільного, господарського та екологічного права</div>
+</div>
+<div class="kafedra-select__group">
+<div class="kafedra-select__group-title">Навчально-науковий інститут економіки — факультет менеджменту</div>
+<div class="kafedra-select__option" role="option">Кафедра економічної теорії та міжнародних економічних
+ відносин</div>
+<div class="kafedra-select__option" role="option">Кафедра іноземних мов</div>
+<div class="kafedra-select__option" role="option">Кафедра менеджменту</div>
+</div>
+<div class="kafedra-select__group">
+<div class="kafedra-select__group-title">Навчально-науковий інститут природокористування</div>
+<div class="kafedra-select__option" role="option">Кафедра відкритих гірничих робіт та раціонального
+ надрокористування</div>
+<div class="kafedra-select__option" role="option">Кафедра гірничої інженерії та освіти</div>
+<div class="kafedra-select__option" role="option">Кафедра військової підготовки</div>
+</div>
+<div class="kafedra-select__group">
+<div class="kafedra-select__group-title">Навчально-науковий інститут природничих наук та технологій</div>
+<div class="kafedra-select__option" role="option">Кафедра геології та розвідки родовищ корисних копалин</div>
+<div class="kafedra-select__option" role="option">Кафедра гідрогеології та інженерної геології</div>
+<div class="kafedra-select__option" role="option">Кафедра геофізичних методів розвідки</div>
+</div>
+<div class="kafedra-select__group">
+<div class="kafedra-select__group-title">Факультет архітектури, будівництва та землеустрою</div>
+<div class="kafedra-select__option" role="option">Кафедра будівництва, геотехніки і геомеханіки</div>
+<div class="kafedra-select__option" role="option">Кафедра геодезії</div>
+</div>
+<div class="kafedra-select__group">
+<div class="kafedra-select__group-title">Механіко-машинобудівний факультет та Інститут електроенергетики
+</div>
+<div class="kafedra-select__option" role="option">Кафедра автомобільного транспорту</div>
+<div class="kafedra-select__option" role="option">Кафедра безпеки інформації та телекомунікацій</div>
+</div>
+<div class="kafedra-select__group">
+<div class="kafedra-select__group-title">Навчально-науковий інститут державного управління</div>
+<div class="kafedra-select__option" role="option">Кафедра державного управління і місцевого самоврядування
+</div>
+</div>
+<div class="kafedra-select__empty" id="kafedraSelectEmpty" hidden>Нічого не знайдено. Спробуй інший запит.</div>
+</div>
+</div>
+</div>
+
+<div class="institute-block reveal">
+<div class="institute-block__head"><h3>Інститут гуманітарних і соціальних наук</h3><span class="institute-block__toggle">Розгорнути<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+</div>
+<ul class="kafedra-list">
+<li>Кафедра історії та політичної теорії</li>
+<li>Кафедра публічного права</li>
+<li>Кафедра філології та мовної комунікації</li>
+<li>Кафедра філософії і педагогіки</li>
+<li>Кафедра цивільного, господарського та екологічного права</li>
+</ul>
+</div>
+
+<div class="institute-block reveal">
+<div class="institute-block__head"><h3>Навчально-науковий інститут економіки — факультет менеджменту</h3>
+<span class="institute-block__toggle">Розгорнути<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+<ul class="kafedra-list">
+<li>Кафедра економічної теорії та міжнародних економічних відносин</li>
+<li>Кафедра іноземних мов</li>
+<li>Кафедра менеджменту</li>
+</ul>
+</div>
+
+<div class="institute-block reveal">
+<div class="institute-block__head"><h3>Навчально-науковий інститут природокористування</h3>
+<span class="institute-block__toggle">Розгорнути<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+<ul class="kafedra-list">
+<li>Кафедра відкритих гірничих робіт та раціонального надрокористування</li>
+<li>Кафедра гірничої інженерії та освіти</li>
+<li>Кафедра військової підготовки</li>
+</ul>
+</div>
+
+<div class="institute-block reveal">
+<div class="institute-block__head"><h3>Навчально-науковий інститут природничих наук та технологій</h3>
+<span class="institute-block__toggle">Розгорнути<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+<ul class="kafedra-list">
+<li>Кафедра геології та розвідки родовищ корисних копалин</li>
+<li>Кафедра гідрогеології та інженерної геології</li>
+<li>Кафедра геофізичних методів розвідки</li>
+</ul>
+</div>
+
+<div class="institute-block reveal">
+<div class="institute-block__head"><h3>Факультет архітектури, будівництва та землеустрою</h3>
+<span class="institute-block__toggle">Розгорнути<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+<ul class="kafedra-list">
+<li>Кафедра будівництва, геотехніки і геомеханіки</li>
+<li>Кафедра геодезії</li>
+</ul>
+</div>
+
+<div class="institute-block reveal">
+<div class="institute-block__head"><h3>Механіко-машинобудівний факультет та Інститут електроенергетики</h3>
+<span class="institute-block__toggle">Розгорнути<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+<ul class="kafedra-list">
+<li>Кафедра автомобільного транспорту</li>
+<li>Кафедра безпеки інформації та телекомунікацій</li>
+</ul>
+</div>
+
+<div class="institute-block reveal">
+<div class="institute-block__head"><h3>Навчально-науковий інститут державного управління</h3>
+<span class="institute-block__toggle">Розгорнути<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+<ul class="kafedra-list">
+<li>Кафедра державного управління і місцевого самоврядування</li>
+</ul>
+</div>
+
+<p class="small reveal" style="margin-top:10px">Перелік орієнтовний і не вичерпний. Повний та актуальний
+ список кафедр, інститутів і контактів завідувачів дивись на офіційному сайті <a href="https://nmu.org.ua/" target="_blank" rel="noopener">nmu.org.ua</a>.</p>
+</div>
+</section>
+
+<section class="section">
+<div class="container two-col">
+<div class="panel panel-info reveal">
+<div class="label">Факти</div>
+<h2>Дніпровська політехніка сьогодні</h2>
+<p>Найстаріший заклад вищої освіти в місті Дніпро, заснований 16 червня 1899 року як Катеринославське вище
+ гірниче училище. Пройшов шлях від гірничого інституту до багатогалузевого технічного університету.</p>
+</div>
+<div class="grid-4 reveal">
+<div class="card">
+<h3>1899</h3>
+<p>Рік заснування університету.</p>
+</div>
+<div class="card">
+<h3>~16 000</h3>
+<p>Студентів навчається щороку.</p>
+</div>
+<div class="card">
+<h3>27</h3>
+<p>Ліцензованих спеціальностей.</p>
+</div>
+<div class="card">
+<h3>9</h3>
+<p>Інститутів і факультетів денної форми.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="container footer-grid">
+<div>
+<h4>Студентська платформа Політехніки</h4>
+<p>Dnipro Polytechnic Students — неофіційна студентська платформа НТУ «Дніпровська політехніка», створена студентами для студентів. Зручна, корисна та безкоштовна.
+ Доступна будь-кому та в різних точках світу.</p>
+</div>
+<div>
+<h4>Університет</h4><a href="about.html">Про університет</a><a href="history.html">Історія</a><a
+ href="stories.html">Історії політехніки</a><a
+ href="structure.html">Структура</a><a href="campus.html">Кампус</a>
+</div>
+<div>
+<h4>Напрями</h4><a href="education.html">Навчання</a><a href="assignments.html">Домашні завдання</a><a href="exam-prep.html">Підготовка до екзаменів</a><a href="materials.html">Навчальні матеріали</a><a href="science.html">Наука</a><a
+ href="international.html">Міжнародна діяльність</a><a href="library.html">Бібліотека</a>
+</div>
+<div>
+<h4>Платформа</h4><a href="platform.html">Про платформу</a><a href="student-life.html">Студентське
+ життя</a><a href="homework-help.html">Допомога з ДЗ</a><a
+ href="events.html">Знайомства та події</a><a href="media.html">Фото і відео</a><a href="sources.html">Джерела</a><a
+ href="authors.html">Автори</a><a
+ href="admission.html">Питання про вступ</a><a
+ href="campus-dream.html">Наш універ мрії</a>
+</div>
+</div>
+<div class="container footer-bottom">© <span id="year"></span> · Студентська платформа Політехніки · World Students</div>
+</footer>
+<script src="assets/js/main.js"></script>
+</body>
+
+</html>

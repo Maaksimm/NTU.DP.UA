@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Контакти — НТУ «ДП»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+ href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap"
+ rel="stylesheet">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/img/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body data-page="contact">
+<div class="preloader">
+<div class="loader">
+<div class="loader-logo"><img src="assets/img/logo.svg" alt=""></div>
+<div class="loader-title">Студентська платформа Політехніки</div>
+<div class="loader-bar"></div><small>частина World Students</small>
+</div>
+</div>
+<div class="topbar">
+<div class="container"><span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>пр. Дмитра Яворницького, 19, Дніпро, Україна, 49005</span><span><b>World
+ Students:</b>локальна студентська платформа НТУ «ДП»</span></div>
+</div>
+
+<header class="header">
+<div class="scroll-progress-bar" id="scrollProgress"></div>
+<div class="container header-inner">
+<a class="brand" href="index.html"><img src="assets/img/logo.svg" alt="НТУ ДП"><span
+ class="brand-copy"><strong>Students Platform</strong><span>від студентів для студентів</span></span></a>
+<nav class="nav">
+<a href="about.html" class="nav__link" data-nav="about">Про університет</a>
+<a href="education.html" class="nav__link" data-nav="education">Навчання</a>
+<a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
+<a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
+<a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
+<a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
+<a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
+</nav>
+<button class="burger" onclick="toggleMenu()" aria-label="Меню"><span></span><span></span><span></span></button>
+</div>
+</header>
+<div class="mobile-nav" id="mobileNav"><a href="index.html" data-nav="home">Головна</a>
+<a href="about.html" class="nav__link" data-nav="about">Про університет</a>
+<a href="education.html" class="nav__link" data-nav="education">Навчання</a>
+<a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
+<a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
+<a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
+<a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
+<a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
+</div>
+
+<main>
+<section class="page-hero">
+<div class="container reveal">
+<div class="breadcrumb"><a href="index.html">Головна</a>› Контакти</div>
+<h1>Контакти</h1>
+<p class="lead">Усі контакти університету в одному місці та форма зв'язку з командою студентської платформи.
+</p>
+</div>
+</section>
+
+<section class="section">
+<div class="container two-col">
+<div class="reveal">
+<div class="label">Офіційні контакти</div>
+<h2>НТУ «Дніпровська політехніка»</h2>
+
+<div class="contact-info-grid">
+<div class="contact-card">
+<div>
+<h3>Адреса</h3>
+<p>49005, м. Дніпро, пр. Дмитра Яворницького, 19</p>
+</div>
+</div>
+
+<div class="contact-card">
+<div>
+<h3>Приймальна комісія</h3>
+<p>+380 56 373-07-81<br><a href="mailto:vstup@nmu.org.ua">vstup@nmu.org.ua</a><br>Пн–Пт, 9:00–17:00
+</p>
+</div>
+</div>
+
+<div class="contact-card">
+<div>
+<h3>Ректорат / загальні питання</h3>
+<p>+380 56 796-55-66<br><a href="mailto:rector@nmu.org.ua">rector@nmu.org.ua</a></p>
+</div>
+</div>
+
+<div class="contact-card">
+<div>
+<h3>Відділ у справах гуртожитків</h3>
+<p>+380 56 373-07-90<br><a href="mailto:dormitory@nmu.org.ua">dormitory@nmu.org.ua</a></p>
+</div>
+</div>
+</div>
+
+<p class="lead" style="margin-top:24px;font-size:15px">Для офіційних питань щодо вступу, навчання чи
+ документів користуйтеся офіційними каналами приймальної комісії та ректорату вище.</p>
+</div>
+
+<form class="form-card reveal" id="contactForm" action="https://formspree.io/f/mwvgvlay" method="POST"
+ novalidate>
+<div class="form-head">
+<h3>Напишіть нам</h3>
+<p>Заповніть форму — відповімо на вказану пошту або телефон.</p>
+</div>
+
+<input type="text" name="_gotcha" class="honeypot-field" tabindex="-1" autocomplete="off">
+<input type="hidden" name="_subject" value="Нове звернення зі студентської платформи НТУ «ДП»">
+
+<div class="field">
+<label for="cf-name">ПІБ<span class="required">*</span></label>
+<input id="cf-name" name="name" type="text" required minlength="3" placeholder="Прізвище Ім'я По батькові">
+<span class="field-error"></span>
+</div>
+
+<div class="two-field-row">
+<div class="field">
+<label for="cf-email">Email<span class="required">*</span></label>
+<input id="cf-email" name="email" type="email" required placeholder="student@example.com">
+<span class="field-error"></span>
+</div>
+<div class="field">
+<label for="cf-phone">Телефон<span class="required">*</span></label>
+<input id="cf-phone" name="phone" type="tel" required pattern="^\+380\d{9}$" placeholder="+380XXXXXXXXX">
+<span class="field-error"></span>
+<span class="field-hint">Формат: +380 та 9 цифр номера</span>
+</div>
+</div>
+
+<div class="field">
+<label for="cf-faculty">Напрям, що цікавить</label>
+<select id="cf-faculty" name="faculty">
+<option value="">Не визначився(-лась)</option>
+<option>ІТ та комп'ютерні науки</option>
+<option>Інженерні та технічні напрями</option>
+<option>Гірництво та геологія</option>
+<option>Економіка та менеджмент</option>
+<option>Право</option>
+<option>Інше</option>
+</select>
+<span class="field-error"></span>
+</div>
+
+<div class="field">
+<label for="cf-topic">Тема звернення<span class="required">*</span></label>
+<select id="cf-topic" name="topic" required>
+<option value="" disabled selected>Оберіть тему</option>
+<option>Питання про вступ</option>
+<option>Питання про платформу</option>
+<option>Гуртожиток</option>
+<option>Партнерство</option>
+<option>Технічна підтримка сайту</option>
+<option>Інше</option>
+</select>
+<span class="field-error"></span>
+</div>
+
+<div class="field">
+<label for="cf-message">Коротко про питання<span class="required">*</span></label>
+<input id="cf-message" name="message" type="text" required minlength="10"
+ placeholder="Наприклад: не можу увійти в особистий кабінет">
+<span class="field-error"></span>
+</div>
+
+<div class="consent-field">
+<input type="checkbox" id="cf-consent" name="consent" required>
+<label for="cf-consent">Погоджуюсь на обробку персональних даних для розгляду цього звернення<span
+ class="required">*</span></label>
+</div>
+
+<button class="btn btn-primary btn-primary--full" type="submit" data-submit>Надіслати</button>
+<p data-form-status class="form-note-status"></p>
+</form>
+</div>
+
+<div class="container">
+<div class="map-frame-wrap reveal">
+<iframe
+ src="https://www.google.com/maps?q=%D0%9D%D0%A2%D0%A3%20%D0%94%D0%BD%D1%96%D0%BF%D1%80%D0%BE%D0%B2%D1%81%D1%8C%D0%BA%D0%B0%20%D0%BF%D0%BE%D0%BB%D1%96%D1%82%D0%B5%D1%85%D0%BD%D1%96%D0%BA%D0%B0%2C%20%D0%BF%D1%80.%20%D0%94%D0%BC%D0%B8%D1%82%D1%80%D0%B0%20%D0%AF%D0%B2%D0%BE%D1%80%D0%BD%D0%B8%D1%86%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE%2019%2C%20%D0%94%D0%BD%D1%96%D0%BF%D1%80%D0%BE&z=17&output=embed"
+ loading="lazy" allowfullscreen title="Карта — НТУ «Дніпровська політехніка»"></iframe>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="container footer-grid">
+<div>
+<h4>Студентська платформа Політехніки</h4>
+<p>Dnipro Polytechnic Students — неофіційна студентська платформа НТУ «Дніпровська політехніка», створена студентами для студентів. Зручна, корисна та безкоштовна.
+ Доступна будь-кому та в різних точках світу.</p>
+</div>
+<div>
+<h4>Університет</h4><a href="about.html">Про університет</a><a href="history.html">Історія</a><a
+ href="stories.html">Історії політехніки</a><a
+ href="structure.html">Структура</a><a href="campus.html">Кампус</a>
+</div>
+<div>
+<h4>Напрями</h4><a href="education.html">Навчання</a><a href="assignments.html">Домашні завдання</a><a href="exam-prep.html">Підготовка до екзаменів</a><a href="materials.html">Навчальні матеріали</a><a href="science.html">Наука</a><a
+ href="international.html">Міжнародна діяльність</a><a href="library.html">Бібліотека</a>
+</div>
+<div>
+<h4>Платформа</h4><a href="platform.html">Про платформу</a><a href="student-life.html">Студентське
+ життя</a><a href="homework-help.html">Допомога з ДЗ</a><a
+ href="events.html">Знайомства та події</a><a href="media.html">Фото і відео</a><a href="sources.html">Джерела</a><a
+ href="authors.html">Автори</a><a
+ href="admission.html">Питання про вступ</a><a
+ href="campus-dream.html">Наш універ мрії</a>
+</div>
+</div>
+<div class="container footer-bottom">© <span id="year"></span> · Студентська платформа Політехніки · World Students</div>
+</footer>
+<script src="assets/js/main.js"></script>
+</body>
+
+</html>

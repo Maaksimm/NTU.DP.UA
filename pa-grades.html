@@ -1,0 +1,186 @@
+<!-- <!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Успішність — НТУ «ДП»</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body data-page="pa-grades">
+  <div class="preloader">
+    <div class="loader">
+      <div class="loader-logo"><img src="assets/img/logo.svg" alt=""></div>
+      <div class="loader-title">Дніпровська Політехніка Students</div>
+      <div class="loader-bar"></div><small>частина World Students</small>
+    </div>
+  </div>
+
+  <div class="personal-layout">
+    <aside class="sidebar">
+      <a class="brand sidevar__brand" href="index.html">
+        <img src="assets/img/logo.svg"  alt="">
+        <span class="brand-copy"><strong>Personal Area</strong><span>World Students</span></span>
+      </a>
+      <nav>
+        <a href="personal-area.html">Огляд</a>
+        <a href="pa-schedule.html">Розклад</a>
+        <a href="pa-tasks.html">Завдання</a>
+        <a class="active" href="pa-grades.html">Успішність</a>
+        <a href="pa-profile.html">Профіль</a>
+        <a href="index.html">На головну</a>
+      </nav>
+    </aside>
+
+
+    <main class="personal-main">
+      <div class="label">Персональна зона</div>
+      <h1>Успішність</h1>
+      <p class="lead" >Оцінки, рейтинг та прогрес навчання за семестрами.</p>
+
+      <div class="rating-card">
+        <div>
+          <h3>Академічний рейтинг</h3>
+          <p>Позиція у групі 122-22-1 за підсумками поточного семестру</p>
+        </div>
+        <div class="rating-card__grate">
+          <div class="rating-num">3<small>/ 26</small></div>
+          <div class="rating-card__result">топ 12% у групі</div>
+        </div>
+      </div>
+
+      <div class="grades-summary">
+        <div class="grade-stat">
+          <strong style="color:var(--blue)">4.3</strong>
+          <span>Середній бал (100-б.)</span>
+        </div>
+        <div class="grade-stat">
+          <strong style="color:#1a7a3c">6</strong>
+          <span>Відмінних оцінок</span>
+        </div>
+        <div class="grade-stat">
+          <strong style="color:var(--blue)">3</strong>
+          <span>Добрих оцінок</span>
+        </div>
+        <div class="grade-stat">
+          <strong style="color:var(--muted)">2</strong>
+          <span>Ще не здано</span>
+        </div>
+      </div>
+
+      <div class="semester-tabs">
+        <button class="sem-tab active">Семестр 2 (поточний)</button>
+        <button class="sem-tab">Семестр 1</button>
+      </div>
+
+      <div class="grades-table">
+        <div class="subject-row subject-header">
+          <div>Предмет</div>
+          <div class="subject-header__modul">Модуль 1</div>
+          <div class="subject-header__modul">Модуль 2</div>
+          <div class="subject-header__modul">Поточний</div>
+          <div class="subject-header__modul">Підсумок</div>
+        </div>
+        <div class="subject-row">
+          <div>
+            <div class="subj-name">Програмування</div>
+            <div class="subj-teacher">Бойко Д.С.</div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:91%"></div></div>
+          </div>
+          <div class="grade-cell grade-a">91</div>
+          <div class="grade-cell grade-a">88</div>
+          <div class="grade-cell grade-a">95</div>
+          <span class="final-badge fb-a">Відмінно</span>
+        </div>
+        <div class="subject-row">
+          <div>
+            <div class="subj-name">Вища математика</div>
+            <div class="subj-teacher">Іваненко В.А.</div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:78%"></div></div>
+          </div>
+          <div class="grade-cell grade-b">78</div>
+          <div class="grade-cell grade-b">82</div>
+          <div class="grade-cell grade-b">75</div>
+          <span class="final-badge fb-b">Добре</span>
+        </div>
+        <div class="subject-row">
+          <div>
+            <div class="subj-name">Англійська мова</div>
+            <div class="subj-teacher">Коваль Н.В.</div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:88%"></div></div>
+          </div>
+          <div class="grade-cell grade-a">85</div>
+          <div class="grade-cell grade-a">90</div>
+          <div class="grade-cell grade-a">88</div>
+          <span class="final-badge fb-a">Відмінно</span>
+        </div>
+        <div class="subject-row">
+          <div>
+            <div class="subj-name">Бази даних</div>
+            <div class="subj-teacher">Сидоренко К.М.</div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:92%"></div></div>
+          </div>
+          <div class="grade-cell grade-a">90</div>
+          <div class="grade-cell grade-a">94</div>
+          <div class="grade-cell grade-a">92</div>
+          <span class="final-badge fb-a">Відмінно</span>
+        </div>
+        <div class="subject-row">
+          <div>
+            <div class="subj-name">Алгоритми та структури даних</div>
+            <div class="subj-teacher">Федоренко А.Г.</div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:73%"></div></div>
+          </div>
+          <div class="grade-cell grade-b">70</div>
+          <div class="grade-cell grade-b">76</div>
+          <div class="grade-cell grade-b">73</div>
+          <span class="final-badge fb-b">Добре</span>
+        </div>
+        <div class="subject-row">
+          <div>
+            <div class="subj-name">Дискретна математика</div>
+            <div class="subj-teacher">Гриценко П.Л.</div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:86%"></div></div>
+          </div>
+          <div class="grade-cell grade-a">84</div>
+          <div class="grade-cell grade-a">88</div>
+          <div class="grade-cell grade-a">86</div>
+          <span class="final-badge fb-a">Відмінно</span>
+        </div>
+        <div class="subject-row">
+          <div>
+            <div class="subj-name">Фізика</div>
+            <div class="subj-teacher">Петренко О.І.</div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:40%"></div></div>
+          </div>
+          <div class="grade-cell grade-b">72</div>
+          <div class="grade-cell grade-x">—</div>
+          <div class="grade-cell grade-x">—</div>
+          <span class="final-badge fb-pending">Не здано</span>
+        </div>
+        <div class="subject-row">
+          <div>
+            <div class="subj-name">Проєктна робота</div>
+            <div class="subj-teacher">Мельник С.Р.</div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width:30%"></div>
+            </div>
+          </div>
+          <div class="grade-cell grade-x">—</div>
+          <div class="grade-cell grade-x">—</div>
+          <div class="grade-cell grade-x">—</div>
+          <span class="final-badge fb-pending">Не здано</span>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/js/main.js"></script>
+</body>
+
+</html> -->
