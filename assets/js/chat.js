@@ -57,6 +57,24 @@
 	var uid = ls(KEY_UID)
 	if (!uid) { uid = 'v' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36); ls(KEY_UID, uid) }
 
+	function me() { return window.NTU_AUTH ? window.NTU_AUTH.user : null }
+	function myUid() { var u = me(); return u ? u.uid : uid }
+	var profiles = {} // uid -> {n, a} | null (loading)
+	var renderTimer = null
+	function profileFor(u) {
+		if (!u || !window.NTU_AUTH) return null
+		var mu = me()
+		if (mu && mu.uid === u) return { n: mu.name, a: mu.avatar || '' }
+		if (profiles[u] === undefined) {
+			profiles[u] = null
+			window.NTU_AUTH.profile(u).then(function (p) {
+				profiles[u] = p || {}
+				clearTimeout(renderTimer)
+				renderTimer = setTimeout(render, 80)
+			}, function () { profiles[u] = {} })
+		}
+		return profiles[u]
+	}
 	var messages = []
 	var seen = {}
 	var lastSent = 0
@@ -102,12 +120,6 @@
 
 	var form = el('form', 'chat-form')
 	form.autocomplete = 'off'
-	var nameIn = el('input', 'chat-name')
-	nameIn.type = 'text'
-	nameIn.maxLength = 40
-	nameIn.placeholder = t("Ваше ім'я")
-	nameIn.setAttribute('aria-label', t("Ваше ім'я"))
-	nameIn.value = ls(KEY_NAME) || ''
 	var row = el('div', 'chat-form__row')
 	var msgIn = el('input', 'chat-text')
 	msgIn.type = 'text'
@@ -121,13 +133,26 @@
 	row.appendChild(msgIn)
 	row.appendChild(send)
 	var note = el('p', 'chat-note')
-	form.appendChild(nameIn)
+	var asLine = el('p', 'chat-as')
+	form.appendChild(asLine)
 	form.appendChild(row)
 	form.appendChild(note)
+
+	var gate = el('div', 'chat-gate')
+	gate.appendChild(el('p', 'chat-gate__text', t('Щоб писати в чаті, потрібно увійти або зареєструватися. Читати повідомлення можна без акаунта.')))
+	var gateBtns = el('div', 'chat-gate__btns')
+	var gLogin = el('a', 'btn btn-primary', t('Увійти'))
+	gLogin.href = 'login.html'
+	var gReg = el('a', 'btn btn-secondary', t('Зареєструватися'))
+	gReg.href = 'register.html'
+	gateBtns.appendChild(gLogin)
+	gateBtns.appendChild(gReg)
+	gate.appendChild(gateBtns)
 
 	panel.appendChild(head)
 	panel.appendChild(list)
 	panel.appendChild(form)
+	panel.appendChild(gate)
 	root.appendChild(panel)
 	root.appendChild(fab)
 
@@ -149,19 +174,29 @@
 		list.textContent = ''
 		if (!messages.length) list.appendChild(empty)
 		messages.forEach(function (m) {
-			var mine = m.u === uid
-			var b = el('div', 'chat-msg' + (mine ? ' is-mine' : ''))
+			var mine = m.u === myUid()
 			var bad = isProfane(m.t) || isProfane(m.n || '')
-			var who = el('span', 'chat-msg__who', bad ? t('Гість') : (m.n || t('Гість')))
-			who.style.color = mine ? '' : colorFor(m.n || '')
+			var prof = profileFor(m.u)
+			var shownName = bad ? t('Гість') : (m.n || (prof && prof.n) || t('Гість'))
+			var rowEl = el('div', 'chat-row' + (mine ? ' is-mine' : ''))
+			var av
+			if (prof && prof.a && !bad) { av = el('img', 'chat-avatar'); av.src = prof.a; av.alt = '' } else {
+				av = el('span', 'chat-avatar chat-avatar--ph', (window.NTU_AUTH ? window.NTU_AUTH.initials(shownName) : shownName.charAt(0)))
+				av.style.background = colorFor(shownName)
+			}
+			var b = el('div', 'chat-msg' + (mine ? ' is-mine' : ''))
+			var who = el('span', 'chat-msg__who', shownName)
+			who.style.color = mine ? '' : colorFor(shownName)
 			b.appendChild(who)
 			var txt = el('p', 'chat-msg__text', bad ? t('Повідомлення приховано: нецензурна лексика') : m.t)
 			if (bad) txt.classList.add('is-hidden')
 			b.appendChild(txt)
 			b.appendChild(el('time', 'chat-msg__time', fmt(m.ts)))
-			list.appendChild(b)
+			rowEl.appendChild(av)
+			rowEl.appendChild(b)
+			list.appendChild(rowEl)
 		})
-		if (atBottom || isOpen && messages.length && messages[messages.length - 1].u === uid) list.scrollTop = list.scrollHeight
+		if (atBottom || isOpen && messages.length && messages[messages.length - 1].u === myUid()) list.scrollTop = list.scrollHeight
 	}
 	function add(incoming) {
 		var added = 0
@@ -170,7 +205,7 @@
 			seen[m.id] = 1
 			messages.push(m)
 			added++
-			if (!isOpen && m.u !== uid) unread++
+			if (!isOpen && m.u !== myUid()) unread++
 		})
 		if (!added) return
 		messages.sort(function (a, b) { return a.ts - b.ts })
@@ -197,10 +232,13 @@
 				})
 			},
 			save: function (m) {
-				return fetch(DB + '/chat/messages.json', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ n: m.n, t: m.t, ts: m.ts, u: m.u })
+				var tk = window.NTU_AUTH && window.NTU_AUTH.remote ? window.NTU_AUTH.token() : Promise.resolve(null)
+				return tk.then(function (token) {
+					return fetch(DB + '/chat/messages.json' + (token ? '?auth=' + encodeURIComponent(token) : ''), {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ n: m.n, t: m.t, ts: m.ts, u: m.u })
+					})
 				}).then(function (r) {
 					if (!r.ok) throw new Error(r.status)
 					return r.json()
@@ -234,6 +272,16 @@
 		return backend.load().then(function (list) { setStatus(true); add(list) }, function () { setStatus(false) })
 	}
 
+	function syncGate() {
+		var u = me()
+		form.hidden = !u
+		gate.hidden = !!u
+		asLine.textContent = u ? t('Ви пишете як') + ' ' + u.name : ''
+		render()
+	}
+	if (window.NTU_AUTH) window.NTU_AUTH.onChange(syncGate)
+	else { form.hidden = true }
+
 	/* ---------- events ---------- */
 	function open(kind) {
 		isOpen = true
@@ -242,11 +290,11 @@
 		unread = 0
 		badge.hidden = true
 		list.scrollTop = list.scrollHeight
-		if (kind === 'help' && !msgIn.value) msgIn.value = t('Потрібна допомога з предметом: ')
+		if (me() && kind === 'help' && !msgIn.value) msgIn.value = t('Потрібна допомога з предметом: ')
 		setTimeout(function () {
-			var f = nameIn.value ? msgIn : nameIn
-			f.focus()
-			if (f === msgIn) f.setSelectionRange(f.value.length, f.value.length)
+			if (!me()) { gLogin.focus(); return }
+			msgIn.focus()
+			msgIn.setSelectionRange(msgIn.value.length, msgIn.value.length)
 		}, 50)
 	}
 	function shut() {
@@ -266,21 +314,21 @@
 	form.addEventListener('submit', function (e) {
 		e.preventDefault()
 		var text = msgIn.value.trim().replace(/\s+/g, ' ')
-		var name = nameIn.value.trim().replace(/\s+/g, ' ')
+		var u = me()
 		note.textContent = ''
-		if (!name) { note.textContent = t("Вкажіть ім'я"); nameIn.focus(); return }
+		if (!u) { note.textContent = t('Щоб писати в чаті, потрібно увійти.'); return }
+		var name = u.name
 		if (!text) return
 		if (isProfane(text) || isProfane(name)) { note.textContent = t('Нецензурна лексика заборонена. Будь ласка, спілкуйтеся ввічливо.'); return }
 		if (Date.now() - lastSent < 2000) { note.textContent = t('Не так швидко - зачекайте секунду'); return }
 		lastSent = Date.now()
-		ls(KEY_NAME, name)
-		var m = { n: name.slice(0, 40), t: text.slice(0, MAX_LEN), ts: Date.now(), u: uid, id: 'l' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6) }
+		var m = { n: name.slice(0, 40), t: text.slice(0, MAX_LEN), ts: Date.now(), u: u.uid, id: 'l' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6) }
 		send.disabled = true
 		backend.save(m).then(function (id) {
 			m.id = id || m.id
 			msgIn.value = ''
 			add([m])
-		}, function () {
+		}, function (err) {
 			note.textContent = t('Не вдалося надіслати. Перевірте з’єднання й спробуйте ще раз.')
 		}).then(function () { send.disabled = false; msgIn.focus() })
 	})
