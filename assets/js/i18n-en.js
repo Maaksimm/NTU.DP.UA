@@ -1925,5 +1925,6 @@ window.I18N_EN = {
  "Не підтверджено": "Not verified",
  "Збережено.": "Saved.",
  "Видалити ваш відгук?": "Delete your review?",
- "Сервер не прийняв зміни. Вийдіть і увійдіть знову або спробуйте пізніше.": "The server did not accept the changes. Sign out and sign in again, or try later."
+ "Сервер не прийняв зміни. Вийдіть і увійдіть знову або спробуйте пізніше.": "The server did not accept the changes. Sign out and sign in again, or try later.",
+ "Фото профілю": "Profile photo"
 };

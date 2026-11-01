@@ -74,13 +74,6 @@
 <div class="account__info">
 <h1 class="account__name" data-account-name></h1>
 <p class="account__presence" data-account-presence></p>
-<div class="account__upload">
-<input type="file" id="avatarFile" accept="image/*" hidden>
-<button type="button" class="btn btn-primary" data-avatar-pick>Завантажити фото профілю</button>
-<button type="button" class="btn btn-secondary" data-avatar-remove hidden>Видалити фото</button>
-<button type="button" class="btn btn-secondary" data-signout>Вийти</button>
-</div>
-<p class="form-note-status" data-account-status role="status"></p>
 <div class="bgpick" data-bgpick>
 <span class="bgpick__title">Фон профілю</span>
 <div class="bgpick__swatches" data-bg-swatches></div>
@@ -131,11 +124,21 @@
 <div class="modal__box modal__box--sm">
 <button type="button" class="modal__close" data-close-modal aria-label="Закрити">✕</button>
 <h3 id="settingsTitle" class="dslider__title">Налаштування</h3>
+<div class="setsec">
+<span class="setsec__title">Фото профілю</span>
+<div class="account__upload">
+<input type="file" id="avatarFile" accept="image/*" hidden>
+<button type="button" class="btn btn-primary" data-avatar-pick>Завантажити фото профілю</button>
+<button type="button" class="btn btn-secondary" data-avatar-remove hidden>Видалити фото</button>
+</div>
+<p class="form-note-status" data-account-status role="status"></p>
+</div>
 <div class="setrow"><span class="setrow__k">Пошта</span><span class="setrow__v" data-set-email></span></div>
 <div class="setrow"><span class="setrow__k">Статус пошти</span><span class="setrow__v" data-set-verified></span></div>
 <label class="setrow setrow--check"><input type="checkbox" id="setOnline"><span>Показувати іншим, що я в мережі</span></label>
 <p class="account__hint" style="margin-top:10px">Якщо вимкнути, інші користувачі бачитимуть вас як «не в мережі».</p>
 <p class="form-note-status" data-set-status role="status"></p>
+<div class="setsec setsec--end"><button type="button" class="btn btn-secondary" data-signout>Вийти</button></div>
 </div>
 </div>
 <div class="modal" id="usersModal" role="dialog" aria-modal="true" aria-labelledby="usersModalTitle" hidden>
