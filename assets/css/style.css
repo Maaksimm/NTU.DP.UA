@@ -4032,14 +4032,14 @@ a.spec-badge:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 @media(prefers-reduced-motion:reduce){.dslider__slide,.dslider__slide.is-active{transition:opacity .2s}.dslider__slide.is-active img{animation:none}.dslider.is-playing .dslider__progress{animation:none}}
 
 /* ===== Account button (header) ===== */
-.acct-btn{display:inline-flex;align-items:center;gap:8px;flex:none;margin-left:10px;padding:6px 14px 6px 10px;min-height:42px;border:1px solid var(--line);border-radius:99px;background:var(--surface);color:var(--blue-dark);font:800 14px Manrope,sans-serif;text-decoration:none;white-space:nowrap;transition:background .2s,color .2s,border-color .2s,transform .2s}
+.acct-btn{display:inline-flex;align-items:center;gap:8px;flex:none;margin-left:auto;margin-right:12px;padding:6px 14px 6px 10px;min-height:42px;border:1px solid var(--line);border-radius:99px;background:var(--surface);color:var(--blue-dark);font:800 14px Manrope,sans-serif;text-decoration:none;white-space:nowrap;transition:background .2s,color .2s,border-color .2s,transform .2s}
 .acct-btn svg{width:20px;height:20px}
 .acct-btn:hover{background:var(--blue);border-color:var(--blue);color:#fff;transform:translateY(-1px)}
 .acct-btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .acct-btn.is-in{padding:4px 14px 4px 4px}
 .acct-btn__avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;flex:none;background:var(--blue);color:#fff;display:grid;place-items:center;font:800 13px Manrope,sans-serif}
 .acct-btn__label{max-width:110px;overflow:hidden;text-overflow:ellipsis}
-@media(max-width:720px){.acct-btn{margin-left:6px;padding:0;width:42px;justify-content:center}.acct-btn.is-in{width:auto;padding:3px}.acct-btn__label{display:none}.acct-btn.is-in .acct-btn__label{display:none}}
+@media(max-width:720px){.acct-btn{margin-right:6px;padding:0;width:42px;justify-content:center}.acct-btn.is-in{width:auto;padding:3px}.acct-btn__label{display:none}.acct-btn.is-in .acct-btn__label{display:none}}
 
 /* ===== Account page ===== */
 .account__card{display:flex;gap:30px;align-items:center;margin:14px 0 26px;padding:28px;background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
@@ -4171,3 +4171,5 @@ button:disabled{cursor:not-allowed}
 .setsec{padding:12px 0;border-bottom:1px solid var(--line)}
 .setsec__title{display:block;margin-bottom:10px;color:var(--muted);font-size:14px}
 .setsec--end{border-bottom:0;padding-bottom:0;margin-top:6px}
+
+.acct-btn + .ctl{margin-left:0}
