@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	initGalleryLightbox()
 	initResourceFilter()
 	initAdmissionTable()
+	initDormSlider()
 	initMediaFilter()
 	document.querySelectorAll('.mobile-nav a').forEach(a => {
 		a.addEventListener('click', () => {
@@ -1114,4 +1115,80 @@ function initAdmissionTable() {
 			empty.hidden = false
 			empty.textContent = T('Не вдалося завантажити дані. Відкрийте сторінку vstup.osvita.ua.')
 		})
+}
+
+
+/* ===== Dormitory photo slider (inside #dormModal) ===== */
+function initDormSlider() {
+	const root = document.getElementById('dormSlider')
+	const modal = document.getElementById('dormModal')
+	if (!root || !modal) return
+	const slides = Array.from(root.querySelectorAll('.dslider__slide'))
+	const thumbs = Array.from(root.querySelectorAll('.dslider__thumb'))
+	const count = root.querySelector('.dslider__count')
+	const playBtn = root.querySelector('.dslider__play')
+	const stage = root.querySelector('.dslider__stage')
+	const DELAY = 4500
+	const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+	let cur = 0
+	let timer = null
+	let playing = !reduce
+	function show(n) {
+		const next = (n + slides.length) % slides.length
+		slides.forEach((s, i) => {
+			s.classList.toggle('is-active', i === next)
+			s.classList.toggle('is-before', i < next)
+		})
+		thumbs.forEach((t, i) => t.classList.toggle('is-active', i === next))
+		const th = thumbs[next]
+		if (th && th.scrollIntoView) th.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' })
+		count.textContent = next + 1 + ' / ' + slides.length
+		cur = next
+		restart()
+	}
+	function stop() {
+		clearTimeout(timer)
+		timer = null
+		root.classList.remove('is-playing')
+	}
+	function restart() {
+		stop()
+		if (!playing || modal.hidden) return
+		root.style.setProperty('--ds-delay', DELAY + 'ms')
+		void root.offsetWidth
+		root.classList.add('is-playing')
+		timer = setTimeout(() => show(cur + 1), DELAY)
+	}
+	function setPlaying(v) {
+		playing = v
+		playBtn.textContent = v ? T('Пауза') : T('Грати')
+		playBtn.setAttribute('aria-pressed', v ? 'true' : 'false')
+		restart()
+	}
+	root.querySelector('.dslider__nav--prev').addEventListener('click', () => show(cur - 1))
+	root.querySelector('.dslider__nav--next').addEventListener('click', () => show(cur + 1))
+	thumbs.forEach(t => t.addEventListener('click', () => show(Number(t.dataset.i))))
+	playBtn.addEventListener('click', () => setPlaying(!playing))
+	stage.addEventListener('mouseenter', stop)
+	stage.addEventListener('mouseleave', restart)
+	document.addEventListener('keydown', e => {
+		if (modal.hidden) return
+		if (e.key === 'ArrowRight') show(cur + 1)
+		if (e.key === 'ArrowLeft') show(cur - 1)
+	})
+	let x0 = null
+	stage.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; stop() }, { passive: true })
+	stage.addEventListener('touchend', e => {
+		if (x0 == null) return
+		const dx = e.changedTouches[0].clientX - x0
+		x0 = null
+		if (Math.abs(dx) > 40) show(cur + (dx < 0 ? 1 : -1))
+		else restart()
+	})
+	// start from the first photo whenever the modal opens, stop when it closes
+	new MutationObserver(() => {
+		if (modal.hidden) stop()
+		else { playing = !reduce; playBtn.textContent = playing ? T('Пауза') : T('Грати'); show(0) }
+	}).observe(modal, { attributes: true, attributeFilter: ['hidden'] })
+	if (reduce) playBtn.textContent = T('Грати')
 }
