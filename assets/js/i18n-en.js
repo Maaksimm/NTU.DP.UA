@@ -1910,7 +1910,6 @@ window.I18N_EN = {
  "Фон": "Background",
  "Фон оновлено.": "Background updated.",
  "Фон прибрано.": "Background removed.",
- "Сервер не прийняв зміни. Вийдіть і увійдіть знову або спробуйте пізніше.",
  "Налаштування": "Settings",
  "Пошта": "Email",
  "Статус пошти": "Email status",
@@ -1925,5 +1924,6 @@ window.I18N_EN = {
  "Підтверджено": "Verified",
  "Не підтверджено": "Not verified",
  "Збережено.": "Saved.",
- "Видалити ваш відгук?": "Delete your review?": "The server did not accept the changes. Sign out and sign in again, or try later."
+ "Видалити ваш відгук?": "Delete your review?",
+ "Сервер не прийняв зміни. Вийдіть і увійдіть знову або спробуйте пізніше.": "The server did not accept the changes. Sign out and sign in again, or try later."
 };
