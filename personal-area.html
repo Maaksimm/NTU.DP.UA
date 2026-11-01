@@ -32,7 +32,6 @@
 <a href="education.html" class="nav__link" data-nav="education">Навчання</a>
 <a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
 <a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
-<a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
 <a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
 <a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
 </nav>
@@ -45,7 +44,6 @@
 <a href="education.html" class="nav__link" data-nav="education">Навчання</a>
 <a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
 <a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
-<a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
 <a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
 <a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
 </div>
@@ -59,6 +57,14 @@
 </div>
 <div class="account__user" data-account-user hidden>
 <div class="label">Персональна зона</div>
+<div class="info-note account__verify" data-verify-banner hidden>
+<strong>Підтвердіть пошту.</strong> Ми надіслали лист на <span data-verify-email></span>. Перейдіть за посиланням у листі, щоб писати в чаті й залишати відгуки.
+<div class="account__upload" style="margin-top:12px">
+<button type="button" class="btn btn-primary" data-verify-check>Я підтвердив(ла) пошту</button>
+<button type="button" class="btn btn-secondary" data-verify-resend>Надіслати лист ще раз</button>
+</div>
+<p class="form-note-status" data-verify-status role="status"></p>
+</div>
 <div class="account__card">
 <div class="account__avatar-wrap">
 <img class="account__avatar" data-account-avatar alt="Ваше фото профілю" hidden>
@@ -67,6 +73,7 @@
 <div class="account__info">
 <h1 style="font-size:38px;margin-bottom:6px">Вітаємо, <span data-account-name></span>!</h1>
 <p class="account__email" data-account-email></p>
+<p class="account__presence" data-account-presence></p>
 <div class="account__upload">
 <input type="file" id="avatarFile" accept="image/*" hidden>
 <button type="button" class="btn btn-primary" data-avatar-pick>Завантажити фото профілю</button>
@@ -77,13 +84,66 @@
 <p class="account__hint">Фото відображається біля ваших повідомлень у студентському чаті. Воно стискається до невеликого квадрата й зберігається разом з профілем.</p>
 </div>
 </div>
+<div class="account__grid">
+<div class="card account__panel">
+<h2 style="font-size:20px">Про мене</h2>
+<p class="account__hint" style="margin-top:6px">Ці дані бачать зареєстровані користувачі платформи. Заповнювати їх необов'язково.</p>
+<form data-extra-form novalidate style="margin-top:14px">
+<div class="two-field-row">
+<div class="field"><label for="ex-gender">Стать</label><select id="ex-gender" name="gender"><option value="">Не вказувати</option><option value="m">Чоловік</option><option value="f">Жінка</option></select></div>
+<div class="field"><label for="ex-age">Вік</label><input id="ex-age" name="age" type="number" min="10" max="99" inputmode="numeric" placeholder="Наприклад, 19"></div>
+</div>
+<div class="two-field-row">
+<div class="field"><label for="ex-course">Курс</label><select id="ex-course" name="course"><option value="">Не вказувати</option></select></div>
+<div class="field"><label for="ex-faculty">Факультет</label><select id="ex-faculty" name="faculty"><option value="">Не вказувати</option></select></div>
+</div>
+<button type="submit" class="btn btn-primary">Зберегти</button>
+<p class="form-note-status" data-extra-status role="status"></p>
+</form>
+</div>
+<div class="card account__panel">
+<h2 style="font-size:20px">Мій рейтинг і відгуки</h2>
+<div data-my-rating style="margin:10px 0"></div>
+<div class="reviews" data-my-reviews></div>
+<div class="account__upload" style="margin-top:18px">
+<button type="button" class="btn btn-primary" data-open-modal="usersModal" data-users-open>Список користувачів</button>
+</div>
+<p class="account__hint" data-community-demo hidden>Профіль, відгуки та список користувачів працюють лише після підключення сервера.</p>
+</div>
+</div>
 <div class="panel panel-info account__dev">
 <div class="label">У розробці</div>
 <h2 style="font-size:22px">Особистий кабінет ще створюється</h2>
-<p>Поки що тут можна змінити фото профілю й вийти з акаунта. Згодом з'являться розклад, завдання та інші персональні можливості студентської платформи.</p>
+<p>Поки що тут можна заповнити профіль, змінити фото, переглядати відгуки й список користувачів. Згодом з'являться розклад, завдання та інші персональні можливості студентської платформи.</p>
 </div>
 </div>
 </main>
+<div class="modal" id="usersModal" role="dialog" aria-modal="true" aria-labelledby="usersModalTitle" hidden>
+<div class="modal__box modal__box--wide users">
+<button type="button" class="modal__close" data-close-modal aria-label="Закрити">✕</button>
+<div data-users-list-view>
+<h3 id="usersModalTitle" class="dslider__title">Список користувачів</h3>
+<div class="users__filters">
+<input type="search" data-f="q" placeholder="Пошук за ім'ям" aria-label="Пошук за ім'ям">
+<select data-f="status" aria-label="Статус"><option value="">Будь-який статус</option><option value="on">В мережі</option><option value="off">Не в мережі</option></select>
+<select data-f="gender" aria-label="Стать"><option value="">Будь-яка стать</option><option value="m">Чоловік</option><option value="f">Жінка</option></select>
+<span class="users__age"><input type="number" data-f="ageMin" min="10" max="99" placeholder="Вік від" aria-label="Вік від"><input type="number" data-f="ageMax" min="10" max="99" placeholder="до" aria-label="Вік до"></span>
+<select data-f="course" aria-label="Курс"><option value="">Будь-який курс</option></select>
+<select data-f="faculty" aria-label="Факультет"><option value="">Будь-який факультет</option></select>
+<select data-f="rating" aria-label="Мінімальний рейтинг"><option value="">Будь-який рейтинг</option><option value="3">Від 3 зірок</option><option value="4">Від 4 зірок</option><option value="4.5">Від 4,5 зірки</option></select>
+<select data-f="sort" aria-label="Сортування"><option value="name">За ім'ям</option><option value="rating">За рейтингом</option><option value="reviews">За кількістю відгуків</option><option value="online">Спершу в мережі</option></select>
+<button type="button" class="btn btn-secondary" data-f-reset>Скинути</button>
+</div>
+<p class="users__count" data-users-count aria-live="polite"></p>
+<div class="users__results" data-users-results></div>
+</div>
+<div data-users-profile-view hidden>
+<button type="button" class="btn btn-secondary" data-profile-back>← До списку</button>
+<div data-profile-box></div>
+</div>
+</div>
+</div>
+
 <footer class="footer">
 <div class="container footer-grid">
 <div>
@@ -98,7 +158,7 @@
 <div>
 <h4>Навчання</h4><a href="assignments.html">Домашні завдання</a><a href="exam-prep.html">Підготовка до екзаменів</a><a href="materials.html">Навчальні матеріали</a><a href="homework-help.html">Допомога з ДЗ</a></div>
 <div>
-<h4>Платформа</h4><a href="student-life.html">Студентське
+<h4>Платформа</h4><a href="sections.html">Усі розділи сайту</a><a href="student-life.html">Студентське
  життя</a><a href="platform.html">Про платформу</a><a
  href="events.html">Знайомства та події</a><a href="media.html">Фото і відео</a><a href="authors.html">Автори</a></div>
 </div>
@@ -108,6 +168,8 @@
 <script src="assets/js/chat-config.js"></script>
 <script src="assets/js/auth.js"></script>
 <script src="assets/js/main.js"></script>
+<script src="assets/js/community.js"></script>
+<script src="assets/js/profanity.js"></script>
 <script src="assets/js/chat.js"></script>
 </body>
 

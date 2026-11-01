@@ -38,7 +38,9 @@
 		USER_DISABLED: 'Цей акаунт вимкнено.',
 		TOO_MANY_ATTEMPTS_TRY_LATER: 'Забагато спроб. Спробуйте трохи пізніше.',
 		OPERATION_NOT_ALLOWED: 'Вхід за поштою ще не ввімкнено в налаштуваннях проєкту.',
-		NETWORK: 'Немає зв’язку з сервером. Перевірте інтернет і спробуйте ще раз.'
+		NETWORK: 'Немає зв’язку з сервером. Перевірте інтернет і спробуйте ще раз.',
+		TOO_MANY_ATTEMPTS: 'Забагато спроб. Спробуйте трохи пізніше.',
+		PERMISSION: 'Немає доступу. Увійдіть і підтвердіть пошту.'
 	}
 	function fail(code) {
 		var key = String(code || '').split(' ')[0].split(':')[0]
@@ -72,28 +74,41 @@
 		}
 		saveSession()
 	}
-	function token() {
+	function jwtPayload(tk) {
+		try {
+			var b = tk.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
+			b += '==='.slice((b.length + 3) % 4)
+			return JSON.parse(decodeURIComponent(escape(atob(b))))
+		} catch (e) { return {} }
+	}
+	function token(force) {
 		if (!REMOTE) return Promise.resolve(null)
 		if (!session) return Promise.resolve(null)
-		if (Date.now() < session.exp) return Promise.resolve(session.idToken)
+		if (!force && Date.now() < session.exp) return Promise.resolve(session.idToken)
 		return post('https://securetoken.googleapis.com/v1/token?key=' + encodeURIComponent(KEY), { grant_type: 'refresh_token', refresh_token: session.refreshToken })
 			.then(function (d) { setSessionFrom(d); return session.idToken })
 			.catch(function (e) { if (e.code !== 'NETWORK') { session = null; saveSession(); state.user = null; emit() } throw e })
+	}
+	function dbCall(method, path, body, needAuth) {
+		var tk = needAuth ? token() : Promise.resolve(null)
+		return tk.then(function (tok) {
+			var url = DB + '/' + path + '.json' + (tok ? '?auth=' + encodeURIComponent(tok) : '')
+			return fetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) })
+		}).then(function (r) {
+			if (!r.ok) throw fail(r.status === 401 || r.status === 403 ? 'PERMISSION' : 'ERR')
+			return r.json()
+		})
 	}
 	function profileGet(uid) {
 		return fetch(DB + '/users/' + encodeURIComponent(uid) + '.json').then(function (r) { return r.ok ? r.json() : null }).catch(function () { return null })
 	}
 	function profilePut(uid, data) {
-		return token().then(function (tk) {
-			return fetch(DB + '/users/' + encodeURIComponent(uid) + '.json?auth=' + encodeURIComponent(tk), {
-				method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
-			})
-		}).then(function (r) { if (!r.ok) throw fail('ERR'); return r.json() })
+		return dbCall('PATCH', 'users/' + encodeURIComponent(uid), data, true)
 	}
 	function loadRemoteUser() {
 		return profileGet(session.uid).then(function (p) {
 			p = p || {}
-			state.user = { uid: session.uid, email: session.email, name: p.n || (session.email || '').split('@')[0], avatar: p.a || '' }
+			state.user = { uid: session.uid, email: session.email, name: p.n || (session.email || '').split('@')[0], avatar: p.a || '', verified: !!jwtPayload(session.idToken).email_verified }
 		})
 	}
 
@@ -134,7 +149,9 @@
 				return idp('signUp', { email: email, password: pass, returnSecureToken: true }).then(function (d) {
 					setSessionFrom(d)
 					return profilePut(session.uid, { n: name, ts: Date.now() })
-				}).then(function () { return loadRemoteUser() }).then(emit)
+				}).then(function () {
+					return idp('sendOobCode', { requestType: 'VERIFY_EMAIL', idToken: session.idToken }).catch(function () {})
+				}).then(function () { return loadRemoteUser() }).then(function () { startPresence(); emit() })
 			}
 			var u = users()
 			if (u[email]) return Promise.reject(fail('EMAIL_EXISTS'))
@@ -143,7 +160,7 @@
 				u[email] = { uid: uid, name: name, pass: h, avatar: '' }
 				saveUsers(u)
 				lsSet(LS_SESSION, JSON.stringify({ local: true, email: email }))
-				state.user = { uid: uid, email: email, name: name, avatar: '' }
+				state.user = { uid: uid, email: email, name: name, avatar: '', verified: true }
 				emit()
 			})
 		},
@@ -152,14 +169,14 @@
 			if (!validEmail(email)) return Promise.reject(fail('INVALID_EMAIL'))
 			if (REMOTE) {
 				return idp('signInWithPassword', { email: email, password: pass, returnSecureToken: true })
-					.then(function (d) { setSessionFrom(d); return loadRemoteUser() }).then(emit)
+					.then(function (d) { setSessionFrom(d); return loadRemoteUser() }).then(function () { startPresence(); emit() })
 			}
 			var u = users()
 			var rec = u[email]
 			return hash(pass).then(function (h) {
 				if (!rec || rec.pass !== h) throw fail('INVALID_LOGIN_CREDENTIALS')
 				lsSet(LS_SESSION, JSON.stringify({ local: true, email: email }))
-				state.user = { uid: rec.uid, email: email, name: rec.name, avatar: rec.avatar || '' }
+				state.user = { uid: rec.uid, email: email, name: rec.name, avatar: rec.avatar || '', verified: true }
 				emit()
 			})
 		},
@@ -174,6 +191,25 @@
 			if (!validEmail(email)) return Promise.reject(fail('INVALID_EMAIL'))
 			if (!REMOTE) return Promise.reject(new Error(t('У демо-режимі відновлення пароля недоступне.')))
 			return idp('sendOobCode', { requestType: 'PASSWORD_RESET', email: email })
+		},
+		resendVerification: function () {
+			if (!REMOTE || !session) return Promise.reject(new Error('no user'))
+			return token().then(function (tk) { return idp('sendOobCode', { requestType: 'VERIFY_EMAIL', idToken: tk }) })
+		},
+		refreshVerified: function () {
+			if (!REMOTE || !session) return Promise.resolve(false)
+			return token(true).then(function (tk) {
+				var v = !!jwtPayload(tk).email_verified
+				if (state.user) state.user.verified = v
+				emit()
+				return v
+			})
+		},
+		db: function (method, path, body, needAuth) { return REMOTE ? dbCall(method, path, body, needAuth !== false) : Promise.reject(fail('ERR')) },
+		getExtra: function (uid) { return REMOTE ? dbCall('GET', 'profiles/' + encodeURIComponent(uid), undefined, true) : Promise.resolve(null) },
+		saveExtra: function (data) {
+			if (!REMOTE || !state.user) return Promise.reject(fail('ERR'))
+			return dbCall('PUT', 'profiles/' + encodeURIComponent(state.user.uid), data, true)
 		},
 		setAvatar: function (dataUrl) {
 			if (!state.user) return Promise.reject(new Error('no user'))
@@ -212,6 +248,20 @@
 		})
 	}
 
+	/* ---------- presence (online status) ---------- */
+	var presenceTimer = null
+	function beat() {
+		if (!REMOTE || !state.user || document.hidden) return
+		dbCall('PATCH', 'users/' + encodeURIComponent(state.user.uid), { s: { '.sv': 'timestamp' } }, true).catch(function () {})
+	}
+	function startPresence() {
+		if (presenceTimer || !REMOTE) return
+		beat()
+		presenceTimer = setInterval(beat, 60000)
+		document.addEventListener('visibilitychange', function () { if (!document.hidden) beat() })
+	}
+	api.isOnline = function (seen) { return !!seen && Date.now() - seen < 150000 }
+
 	/* ---------- header button ---------- */
 	function initials(n) { return (n || '?').trim().split(/\s+/).slice(0, 2).map(function (w) { return w[0] }).join('').toUpperCase() }
 	api.initials = initials
@@ -248,11 +298,11 @@
 		try { s = JSON.parse(raw) } catch (e) { return emit() }
 		if (REMOTE && s.refreshToken) {
 			session = s
-			return token().then(loadRemoteUser).then(emit, function () { emit() })
+			return token().then(loadRemoteUser).then(function () { startPresence(); emit() }, function () { emit() })
 		}
 		if (!REMOTE && s.local) {
 			var rec = users()[s.email]
-			if (rec) state.user = { uid: rec.uid, email: s.email, name: rec.name, avatar: rec.avatar || '' }
+			if (rec) state.user = { uid: rec.uid, email: s.email, name: rec.name, avatar: rec.avatar || '', verified: true }
 		}
 		emit()
 	}

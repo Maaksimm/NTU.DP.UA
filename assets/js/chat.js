@@ -15,44 +15,7 @@
 	}
 
 
-	/* ---------- фільтр нецензурної лексики (укр / рос / англ) ---------- */
-	var LAT2CYR = { a: 'а', e: 'е', o: 'о', p: 'р', c: 'с', x: 'х', y: 'у', i: 'і', k: 'к', m: 'м', t: 'т', b: 'в', h: 'н', '0': 'о', '3': 'з', '@': 'а', '$': 'с' }
-	var PFX = '(?:на|по|за|ви|до|роз|з|с|пере|при|під|об|від|не|о|у|від)?'
-	var RU_UA = [
-		new RegExp('^' + PFX + 'ху[йяеєюїиі]'),
-		/пізд|пизд|пезд/,
-		new RegExp('^' + PFX + '[еєїи]б(?:а[нтлвшк]|у|ну|ля|ло|ли|ь)'),
-		/^[еєїи]бл[оа]н?/,
-		/^(?:за|на|по|ви|до|роз)?йоб/,
-		/^у[еёє]б(?:ок|ан|ки)/,
-		/^бл(?:я|ят|яд|ять|ядь|ядс|яди|яха)$|^бл(?:ят|яд)/,
-		/^су(?:ка|ки|ку|кою|ці|ко|ків)$|^су(?:чар|чк)/,
-		/^муд(?:ак|ач|ил|ень|озвон)/,
-		/^(?:на|по|за)?хер(?:ня|ню|ні|ово|овий|ова)?$/,
-		/^г[ао]ндон/,
-		/^залуп/,
-		/^п[іи]д[оа]р(?:а|и|у|ом|ас|ами|ів)?$/,
-		/^п[іи]дар(?:ас|аз)/,
-		/^шлюх/,
-		/^курв/,
-		/^дроч/,
-		/^мраз[ьіи]$/,
-		/^долбо[её]б/,
-		/^довбо[еєї]б/
-	]
-	var EN = /fuck|shit|bitch|cunt|asshole|whore|slut|blyat|blyad|dick(?:head)?s?$|nigg/
-	function squash(s) { return s.replace(/(.)\1+/g, '$1') }
-	function isProfane(text) {
-		var raw = String(text).toLowerCase()
-		if (EN.test(squash(raw.replace(/[^a-z]+/g, ' '))) || /f+u+c+k|sh+i+t/.test(raw.replace(/[^a-z]/g, ''))) return true
-		var mapped = raw.replace(/[a-z0-9@$]/g, function (ch) { return LAT2CYR[ch] || ch })
-		var words = mapped.split(/[^а-яіїєґё]+/).filter(Boolean).map(squash)
-		for (var i = 0; i < words.length; i++)
-			for (var j = 0; j < RU_UA.length; j++) if (RU_UA[j].test(words[i])) return true
-		// літери через пробіли/крапки: «х у й», «п.і.з.д.а»
-		var glued = squash(mapped.replace(/[^а-яіїєґё]/g, ''))
-		return /хуй|хуя|пізд|пизд|[еєїи]бат|бляд|блят|блять|залуп/.test(glued)
-	}
+	var isProfane = window.NTU_isProfane || function () { return false }
 
 	var uid = ls(KEY_UID)
 	if (!uid) { uid = 'v' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36); ls(KEY_UID, uid) }
@@ -139,7 +102,8 @@
 	form.appendChild(note)
 
 	var gate = el('div', 'chat-gate')
-	gate.appendChild(el('p', 'chat-gate__text', t('Щоб писати в чаті, потрібно увійти або зареєструватися. Читати повідомлення можна без акаунта.')))
+	var gateText = el('p', 'chat-gate__text', t('Щоб писати в чаті, потрібно увійти або зареєструватися. Читати повідомлення можна без акаунта.'))
+	gate.appendChild(gateText)
 	var gateBtns = el('div', 'chat-gate__btns')
 	var gLogin = el('a', 'btn btn-primary', t('Увійти'))
 	gLogin.href = 'login.html'
@@ -272,10 +236,16 @@
 		return backend.load().then(function (list) { setStatus(true); add(list) }, function () { setStatus(false) })
 	}
 
+	function canWrite() { var u = me(); return !!(u && u.verified !== false) }
 	function syncGate() {
 		var u = me()
-		form.hidden = !u
-		gate.hidden = !!u
+		var ok = canWrite()
+		form.hidden = !ok
+		gate.hidden = ok
+		gateText.textContent = u && !ok
+			? t('Підтвердьте пошту, щоб писати в чаті: ми надіслали вам лист із посиланням. Після підтвердження оновіть сторінку.')
+			: t('Щоб писати в чаті, потрібно увійти або зареєструватися. Читати повідомлення можна без акаунта.')
+		gateBtns.hidden = !!u
 		asLine.textContent = u ? t('Ви пишете як') + ' ' + u.name : ''
 		render()
 	}
@@ -292,7 +262,7 @@
 		list.scrollTop = list.scrollHeight
 		if (me() && kind === 'help' && !msgIn.value) msgIn.value = t('Потрібна допомога з предметом: ')
 		setTimeout(function () {
-			if (!me()) { gLogin.focus(); return }
+			if (!canWrite()) { if (!me()) gLogin.focus(); return }
 			msgIn.focus()
 			msgIn.setSelectionRange(msgIn.value.length, msgIn.value.length)
 		}, 50)
@@ -316,7 +286,7 @@
 		var text = msgIn.value.trim().replace(/\s+/g, ' ')
 		var u = me()
 		note.textContent = ''
-		if (!u) { note.textContent = t('Щоб писати в чаті, потрібно увійти.'); return }
+		if (!u || !canWrite()) { note.textContent = t('Щоб писати в чаті, потрібно увійти й підтвердити пошту.'); return }
 		var name = u.name
 		if (!text) return
 		if (isProfane(text) || isProfane(name)) { note.textContent = t('Нецензурна лексика заборонена. Будь ласка, спілкуйтеся ввічливо.'); return }
