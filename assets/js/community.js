@@ -40,15 +40,21 @@
 		}
 		return a
 	}
-	function starsText(avg) {
-		var full = Math.round(avg)
-		return '★★★★★'.slice(0, full) + '☆☆☆☆☆'.slice(0, 5 - full)
+	function starsEl(avg, big) {
+		var w = el('span', 'stars' + (big ? ' stars--lg' : ''))
+		w.setAttribute('role', 'img')
+		w.setAttribute('aria-label', (avg ? avg.toFixed(1) : '0') + ' / 5')
+		w.appendChild(el('span', 'stars__bg', '★★★★★'))
+		var fg = el('span', 'stars__fg', '★★★★★')
+		fg.style.width = Math.max(0, Math.min(100, avg / 5 * 100)) + '%'
+		w.appendChild(fg)
+		return w
 	}
-	function ratingEl(avg, count) {
+	function ratingEl(avg, count, big) {
 		var w = el('span', 'rating')
-		if (!count) { w.appendChild(el('span', 'rating__none', t('Ще немає відгуків'))); return w }
-		w.appendChild(el('span', 'rating__stars', starsText(avg)))
-		w.appendChild(el('span', 'rating__num', avg.toFixed(1) + ' (' + count + ')'))
+		w.appendChild(starsEl(count ? avg : 0, big))
+		if (!count) w.appendChild(el('span', 'rating__none', t('Ще немає відгуків')))
+		else w.appendChild(el('span', 'rating__num', avg.toFixed(1) + ' (' + count + ')'))
 		return w
 	}
 	function stat(rev) {
@@ -116,7 +122,7 @@
 	function renderOwnReviews(rev) {
 		var st = stat(rev)
 		myRatingBox.textContent = ''
-		myRatingBox.appendChild(ratingEl(st.avg, st.count))
+		myRatingBox.appendChild(ratingEl(st.avg, st.count, true))
 		myReviews.textContent = ''
 		reviewItems(rev).forEach(function (r) { myReviews.appendChild(reviewNode(r)) })
 	}
@@ -127,7 +133,7 @@
 		var n = el('div', 'review')
 		var head = el('div', 'review__head')
 		head.appendChild(el('strong', null, r.n || t('Гість')))
-		head.appendChild(el('span', 'rating__stars', starsText(r.r)))
+		head.appendChild(starsEl(r.r))
 		n.appendChild(head)
 		if (r.t) n.appendChild(el('p', 'review__text', isBad(r.t) ? t('Відгук приховано: нецензурна лексика') : r.t))
 		return n
@@ -166,6 +172,7 @@
 		})
 	}
 
+	var loadedExtraFor = null
 	A.onChange(function (u) {
 		if (!extraForm) return
 		syncVerify(u)
@@ -175,9 +182,33 @@
 			return
 		}
 		var pr = $('[data-account-presence]')
-		if (pr) { pr.textContent = ''; pr.appendChild(dot(true)); pr.appendChild(document.createTextNode(t('В мережі'))) }
-		loadOwnExtra(u)
+		if (pr) {
+			pr.textContent = ''
+			pr.appendChild(dot(!u.hideOnline))
+			pr.appendChild(document.createTextNode(u.hideOnline ? t('Статус «в мережі» приховано') : t('В мережі')))
+		}
+		if (!loadedExtraFor || loadedExtraFor !== u.uid) { loadedExtraFor = u.uid; loadOwnExtra(u) }
 	})
+
+
+	/* ================= settings (gear) ================= */
+	var setModal = $('#settingsModal')
+	if (setModal) {
+		var setCheck = $('#setOnline')
+		var setStatus = $('[data-set-status]')
+		A.onChange(function (u) {
+			if (!u) return
+			$('[data-set-email]').textContent = u.email
+			$('[data-set-verified]').textContent = !A.remote || u.verified !== false ? t('Підтверджено') : t('Не підтверджено')
+			setCheck.checked = !u.hideOnline
+		})
+		setCheck.addEventListener('change', function () {
+			A.setHideOnline(!setCheck.checked).then(function () { say(setStatus, t('Збережено.'), true) }, function (e) {
+				setCheck.checked = !setCheck.checked
+				say(setStatus, e.message)
+			})
+		})
+	}
 
 	/* ================= users list ================= */
 	var modal = $('#usersModal')
@@ -353,7 +384,10 @@
 				var del = el('button', 'btn btn-secondary', t('Видалити мій відгук'))
 				del.type = 'button'
 				del.addEventListener('click', function () {
-					A.db('DELETE', 'reviews/' + encodeURIComponent(uid) + '/' + encodeURIComponent(me.uid), undefined, true).then(function () { openProfile(uid) }, function (e) { say(note, e.message) })
+					A.confirm(t('Видалити ваш відгук?'), t('Видалити')).then(function (ok) {
+						if (!ok) return
+						A.db('DELETE', 'reviews/' + encodeURIComponent(uid) + '/' + encodeURIComponent(me.uid), undefined, true).then(function () { openProfile(uid) }, function (e) { say(note, e.message) })
+					})
 				})
 				row.appendChild(del)
 			}

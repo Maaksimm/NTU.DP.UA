@@ -111,6 +111,7 @@
 			state.user = { uid: session.uid, email: session.email, name: p.n || (session.email || '').split('@')[0], avatar: p.a || '', bg: '', verified: !!jwtPayload(session.idToken).email_verified }
 			return dbCall('GET', 'profiles/' + encodeURIComponent(session.uid), undefined, true).then(function (x) {
 				if (x && x.bg) state.user.bg = x.bg
+				state.user.hideOnline = !!(x && x.hide)
 			}).catch(function () {})
 		})
 	}
@@ -214,6 +215,23 @@
 			if (!REMOTE || !state.user) return Promise.reject(fail('ERR'))
 			return dbCall('PATCH', 'profiles/' + encodeURIComponent(state.user.uid), data, true)
 		},
+		setHideOnline: function (hide) {
+			if (!state.user) return Promise.reject(new Error('no user'))
+			if (REMOTE) {
+				var uid = encodeURIComponent(state.user.uid)
+				return dbCall('PATCH', 'profiles/' + uid, { hide: !!hide }, true).then(function () {
+					return dbCall('PATCH', 'users/' + uid, { s: hide ? 0 : { '.sv': 'timestamp' } }, true)
+				}).then(function () {
+					state.user.hideOnline = !!hide
+					emit()
+				})
+			}
+			var u = users()
+			if (u[state.user.email]) { u[state.user.email].hide = !!hide; saveUsers(u) }
+			state.user.hideOnline = !!hide
+			emit()
+			return Promise.resolve()
+		},
 		setBackground: function (value) {
 			if (!state.user) return Promise.reject(new Error('no user'))
 			if (REMOTE) {
@@ -265,6 +283,55 @@
 		})
 	}
 
+
+
+	/* ---------- confirmation dialog ---------- */
+	api.confirm = function (message, okLabel, cancelLabel) {
+		return new Promise(function (resolve) {
+			var prev = document.activeElement
+			var m = document.createElement('div')
+			m.className = 'modal'
+			m.setAttribute('role', 'alertdialog')
+			m.setAttribute('aria-modal', 'true')
+			var box = document.createElement('div')
+			box.className = 'modal__box modal__box--sm'
+			var p = document.createElement('p')
+			p.className = 'confirm__text'
+			p.textContent = message
+			var row = document.createElement('div')
+			row.className = 'confirm__row'
+			var no = document.createElement('button')
+			no.type = 'button'
+			no.className = 'btn btn-secondary'
+			no.textContent = cancelLabel || t('Скасувати')
+			var yes = document.createElement('button')
+			yes.type = 'button'
+			yes.className = 'btn btn-primary confirm__ok'
+			yes.textContent = okLabel || t('Так')
+			row.appendChild(no)
+			row.appendChild(yes)
+			box.appendChild(p)
+			box.appendChild(row)
+			m.appendChild(box)
+			document.body.appendChild(m)
+			document.body.style.overflow = 'hidden'
+			function done(v) {
+				document.removeEventListener('keydown', key, true)
+				m.remove()
+				document.body.style.overflow = ''
+				if (prev && prev.focus) prev.focus()
+				resolve(v)
+			}
+			function key(e) {
+				if (e.key === 'Escape') { e.stopPropagation(); done(false) }
+			}
+			document.addEventListener('keydown', key, true)
+			no.addEventListener('click', function () { done(false) })
+			yes.addEventListener('click', function () { done(true) })
+			m.addEventListener('click', function (e) { if (e.target === m) done(false) })
+			no.focus()
+		})
+	}
 
 	/* ---------- profile background ---------- */
 	api.BG_PRESETS = {
@@ -330,7 +397,7 @@
 	/* ---------- presence (online status) ---------- */
 	var presenceTimer = null
 	function beat() {
-		if (!REMOTE || !state.user || document.hidden) return
+		if (!REMOTE || !state.user || document.hidden || state.user.hideOnline) return
 		dbCall('PATCH', 'users/' + encodeURIComponent(state.user.uid), { s: { '.sv': 'timestamp' } }, true).catch(function () {})
 	}
 	function startPresence() {
@@ -441,7 +508,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			userBox.hidden = !u
 			if (!u) return
 			document.querySelector('[data-account-name]').textContent = u.name
-			document.querySelector('[data-account-email]').textContent = u.email
 			ph.textContent = A.initials(u.name)
 			img.hidden = !u.avatar
 			ph.hidden = !!u.avatar
@@ -459,11 +525,17 @@ document.addEventListener('DOMContentLoaded', function () {
 			file.value = ''
 		})
 		rm.addEventListener('click', function () {
-			A.setAvatar('').then(function () { say(status, t('Фото видалено.'), true) }, function () { say(status, t('Не вдалося зберегти фото.')) })
+			A.confirm(t('Видалити фото профілю?'), t('Видалити')).then(function (ok) {
+				if (!ok) return
+				A.setAvatar('').then(function () { say(status, t('Фото видалено.'), true) }, function () { say(status, t('Не вдалося зберегти фото.')) })
+			})
 		})
 		document.querySelector('[data-signout]').addEventListener('click', function () {
-			A.signOut()
-			location.href = 'index.html'
+			A.confirm(t('Вийти з акаунта?'), t('Вийти')).then(function (ok) {
+				if (!ok) return
+				A.signOut()
+				location.href = 'index.html'
+			})
 		})
 	}
 })

@@ -55,5 +55,7 @@
  */
 window.NTU_CHAT = {
 	databaseURL: 'https://ntubd-93efc-default-rtdb.europe-west1.firebasedatabase.app',
-	apiKey: 'AIzaSyAB3YiH2DL32jHLzMHOct4H3tCulrf2EnY'
+	apiKey: 'AIzaSyAB3YiH2DL32jHLzMHOct4H3tCulrf2EnY',
+	// Ідентифікатори повідомлень, які не показуються в чаті (самі записи видаляються лише в консолі Firebase)
+	hiddenMessages: ['-P5NKxMeG85dAbhSGvRF']
 }

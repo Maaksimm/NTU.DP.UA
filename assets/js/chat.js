@@ -38,6 +38,7 @@
 		}
 		return profiles[u]
 	}
+	var hiddenIds = (cfg.hiddenMessages || [])
 	var messages = []
 	var seen = {}
 	var lastSent = 0
@@ -166,6 +167,7 @@
 		var added = 0
 		incoming.forEach(function (m) {
 			if (!m || !m.id || seen[m.id] || typeof m.t !== 'string') return
+			if (hiddenIds.indexOf(m.id) >= 0) return
 			seen[m.id] = 1
 			messages.push(m)
 			added++

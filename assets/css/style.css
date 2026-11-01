@@ -4135,3 +4135,35 @@ a.spec-badge:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .pf__head.has-bg{padding:18px;border-radius:18px}
 .is-dark-bg .rating__none,.is-dark-bg .rating__num{color:rgba(255,255,255,.92)}
 .is-dark-bg .rating__stars{color:#ffe08a}
+
+/* ===== pointer cursors ===== */
+button:not(:disabled),[role=button],select,.btn,input[type=file],input[type=checkbox],label[for],.ucard,.bgpick__sw,.rform__star{cursor:pointer}
+button:disabled{cursor:not-allowed}
+
+/* ===== stars: white when empty, yellow fill by average ===== */
+.stars{position:relative;display:inline-block;line-height:1;font-size:18px;letter-spacing:2px;white-space:nowrap;vertical-align:middle}
+.stars--lg{font-size:30px;letter-spacing:4px}
+.stars__bg{color:#fff;-webkit-text-stroke:1px #b8c4d4;paint-order:stroke fill}
+.stars__fg{position:absolute;left:0;top:0;overflow:hidden;white-space:nowrap;color:#f0a500;-webkit-text-stroke:1px #d98f00}
+[data-theme=dark] .stars__bg{-webkit-text-stroke:1px #6b7f99}
+.is-dark-bg .stars__bg{-webkit-text-stroke:1px rgba(255,255,255,.55)}
+.is-dark-bg .stars__fg{color:#ffd45e;-webkit-text-stroke:1px #f0a500}
+
+/* ===== account card: name + gear ===== */
+.account__card{position:relative}
+.account__name{font-size:38px;margin:0 0 8px;overflow-wrap:anywhere}
+.account__gear{position:absolute;top:16px;right:16px;display:grid;place-items:center;width:42px;height:42px;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--blue-dark);transition:transform .35s,background .2s,color .2s}
+.account__gear svg{width:22px;height:22px}
+.account__gear:hover{background:var(--blue);border-color:var(--blue);color:#fff;transform:rotate(60deg)}
+.account__gear:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.is-dark-bg .account__name{color:#fff}
+
+/* ===== settings + confirm dialogs ===== */
+.modal__box--sm{width:min(440px,100%)}
+.setrow{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.setrow__k{color:var(--muted);font-size:14px}
+.setrow__v{font-weight:700;overflow-wrap:anywhere;text-align:right}
+.setrow--check{justify-content:flex-start;gap:12px;border-bottom:0;font-weight:700}
+.setrow--check input{width:20px;height:20px;accent-color:var(--blue)}
+.confirm__text{margin:6px 30px 18px 0;font:700 1.05rem/1.4 Manrope,sans-serif;color:var(--ink)}
+.confirm__row{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}

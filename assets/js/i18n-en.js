@@ -1910,5 +1910,20 @@ window.I18N_EN = {
  "Фон": "Background",
  "Фон оновлено.": "Background updated.",
  "Фон прибрано.": "Background removed.",
- "Сервер не прийняв зміни. Вийдіть і увійдіть знову або спробуйте пізніше.": "The server did not accept the changes. Sign out and sign in again, or try later."
+ "Сервер не прийняв зміни. Вийдіть і увійдіть знову або спробуйте пізніше.",
+ "Налаштування": "Settings",
+ "Пошта": "Email",
+ "Статус пошти": "Email status",
+ "Показувати іншим, що я в мережі": "Show others that I am online",
+ "Якщо вимкнути, інші користувачі бачитимуть вас як «не в мережі».": "If turned off, other users will see you as \"offline\".",
+ "Скасувати": "Cancel",
+ "Так": "Yes",
+ "Видалити фото профілю?": "Delete profile photo?",
+ "Видалити": "Delete",
+ "Вийти з акаунта?": "Sign out of your account?",
+ "Статус «в мережі» приховано": "\"Online\" status hidden",
+ "Підтверджено": "Verified",
+ "Не підтверджено": "Not verified",
+ "Збережено.": "Saved.",
+ "Видалити ваш відгук?": "Delete your review?": "The server did not accept the changes. Sign out and sign in again, or try later."
 };
