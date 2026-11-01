@@ -3987,3 +3987,8 @@ a.spec-badge:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 @media(max-width:640px){.video-thumb-grid,.grid-2-steps{grid-template-columns:1fr}}
 .photo-vertical-gallery .gallery-item{display:block;height:auto}
 .photo-vertical-gallery .gallery-item img{height:auto;object-fit:contain;margin-bottom:0}
+
+.grid-4-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:14px}
+.grid-4-steps .card p{margin:6px 0 0;font-size:14px}
+@media(max-width:992px){.grid-4-steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid-4-steps{grid-template-columns:1fr}}
