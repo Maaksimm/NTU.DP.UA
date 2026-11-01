@@ -1418,5 +1418,10 @@ window.I18N_EN = {
  "8 березня": "March 8",
  "Відкриття нової аудиторії": "Opening of a new classroom",
  "Спеціальність - Комп'ютерна інженерія": "Specialty: Computer Engineering",
- "Події, спеціальності, лекції та студентське життя: останні відео з офіційного YouTube-каналу НТУ «Дніпровська політехніка». Натисніть, щоб відтворити тут же.": "Events, specialties, lectures and student life: the latest videos from the official YouTube channel of Dnipro Polytechnic. Click to play right here."
+ "Події, спеціальності, лекції та студентське життя: останні відео з офіційного YouTube-каналу НТУ «Дніпровська політехніка». Натисніть, щоб відтворити тут же.": "Events, specialties, lectures and student life: the latest videos from the official YouTube channel of Dnipro Polytechnic. Click to play right here.",
+ "Новини Політехніки в Instagram": "Polytechnic news on Instagram",
+ "Оновлення з офіційної сторінки університету @dniprotech: події, анонси, конкурси та студентське життя.": "Updates from the university's official page @dniprotech: events, announcements, contests and student life.",
+ "Instagram НТУ «Дніпровська політехніка»": "Instagram of Dnipro Polytechnic",
+ "Відкрити в Instagram": "Open on Instagram",
+ "Галерея студентського життя Політехніки: фото, відео з YouTube і новини з Instagram університету.": "Student life at Dnipro Polytechnic: photos, YouTube videos and news from the university's Instagram."
 };
