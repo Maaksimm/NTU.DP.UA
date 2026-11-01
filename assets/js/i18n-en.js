@@ -1936,5 +1936,7 @@ window.I18N_EN = {
  "Telegram: від 5 до 32 символів — латинські літери, цифри та підкреслення.": "Telegram: 5 to 32 characters — Latin letters, digits and underscores.",
  "Можна зв’язатися в Telegram": "Can be contacted on Telegram",
  "Зв’язатися в Telegram": "Contact on Telegram",
- "Користувач не вказав Telegram, тому зв’язатися з ним тут не можна.": "The user has not provided a Telegram, so they cannot be contacted here."
+ "Користувач не вказав Telegram, тому зв’язатися з ним тут не можна.": "The user has not provided a Telegram, so they cannot be contacted here.",
+ "Так вашу кнопку бачать інші користувачі. Ваш Telegram": "This is how other users see your button. Your Telegram",
+ "Ви не вказали Telegram. Додайте його в розділі «Про мене» у кабінеті, і тут з’явиться кнопка «Зв’язатися в Telegram» для інших користувачів.": "You have not provided a Telegram. Add it in the “About me” section of your personal area, and a “Contact on Telegram” button will appear here for other users."
 };

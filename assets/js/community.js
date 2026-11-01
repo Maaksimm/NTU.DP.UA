@@ -347,23 +347,32 @@
 		fact('Курс', p.c ? courseText(p.c) : '')
 		fact('Вік', p.age ? String(p.age) : '')
 		fact('Стать', p.g ? t(GENDER[p.g]) : '')
+		fact('Telegram', p.tg && /^[A-Za-z0-9_]{5,32}$/.test(p.tg) ? '@' + p.tg : '')
 		if (!dl.children.length) dl.appendChild(el('dd', 'pf__empty', t('Користувач ще не заповнив профіль.')))
 		profBox.appendChild(dl)
 
 		// contact via Telegram
-		if (!self) {
-			var cbox = el('div', 'pf__contact')
-			if (p.tg && /^[A-Za-z0-9_]{5,32}$/.test(p.tg)) {
-				var a = el('a', 'btn tgbtn', t('Зв’язатися в Telegram'))
-				a.href = 'https://t.me/' + p.tg
-				a.target = '_blank'
-				a.rel = 'noopener noreferrer'
-				cbox.appendChild(a)
+		var cbox = el('div', 'pf__contact')
+		var hasTg = p.tg && /^[A-Za-z0-9_]{5,32}$/.test(p.tg)
+		if (self) {
+			if (hasTg) {
+				var prev = el('span', 'btn tgbtn is-preview', t('Зв’язатися в Telegram'))
+				prev.setAttribute('aria-disabled', 'true')
+				cbox.appendChild(prev)
+				cbox.appendChild(el('p', 'pf__hint', t('Так вашу кнопку бачать інші користувачі. Ваш Telegram') + ': @' + p.tg))
 			} else {
-				cbox.appendChild(el('p', 'pf__hint', t('Користувач не вказав Telegram, тому зв’язатися з ним тут не можна.')))
+				cbox.appendChild(el('p', 'pf__hint', t('Ви не вказали Telegram. Додайте його в розділі «Про мене» у кабінеті, і тут з’явиться кнопка «Зв’язатися в Telegram» для інших користувачів.')))
 			}
-			profBox.appendChild(cbox)
+		} else if (hasTg) {
+			var a = el('a', 'btn tgbtn', t('Зв’язатися в Telegram'))
+			a.href = 'https://t.me/' + p.tg
+			a.target = '_blank'
+			a.rel = 'noopener noreferrer'
+			cbox.appendChild(a)
+		} else {
+			cbox.appendChild(el('p', 'pf__hint', t('Користувач не вказав Telegram, тому зв’язатися з ним тут не можна.')))
 		}
+		profBox.appendChild(cbox)
 
 		// review form
 		var box = el('div', 'pf__review')
