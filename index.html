@@ -2,382 +2,521 @@
 <html lang="uk">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Студентська платформа Політехніки — World Students</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
- href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap"
- rel="stylesheet">
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="assets/img/favicon-16.png" sizes="16x16" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
-<link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Студентська платформа - World Students</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Onest:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="assets/img/favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+  <script>try { var d = document.documentElement, t = localStorage.getItem('ntu-theme') ||'light'; d.setAttribute('data-theme', t); d.lang = localStorage.getItem('ntu-lang') || 'uk' } catch (e) { }</script>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body data-page="home">
 
-<div class="preloader">
-<div class="loader">
-<div class="loader-logo"><img src="assets/img/logo.svg" alt=""></div>
-<div class="loader-title">Студентська платформа Політехніки.</div>
-<div class="loader-bar"></div><small>частина World Students</small>
-</div>
-</div>
+  <div class="preloader" aria-hidden="true">
+    <div class="pl-curtain pl-curtain--l"></div>
+    <div class="pl-curtain pl-curtain--r"></div>
+    <div class="pl-core">
+      <div class="pl-stair"><i style="--x:1;--y:4;--c:#0b3559;--i:0"></i><i style="--x:1;--y:3;--c:#155aa0;--i:1"></i><i
+          style="--x:2;--y:4;--c:#0b3559;--i:2"></i><i style="--x:2;--y:3;--c:#155aa0;--i:3"></i><i
+          style="--x:2;--y:2;--c:#1a6fc4;--i:4"></i><i style="--x:3;--y:4;--c:#0b3559;--i:5"></i><i
+          style="--x:3;--y:3;--c:#155aa0;--i:6"></i><i style="--x:3;--y:2;--c:#1a6fc4;--i:7"></i><i
+          style="--x:3;--y:1;--c:#4fc3f7;--i:8"></i></div>
+      <div class="pl-title">Студентська платформа</div>
+      <div class="pl-sub">частина World Students</div>
+      <div class="pl-bar"><b id="plBar"></b></div>
+      <div class="pl-count"><span id="plNum">0</span>%</div>
+    </div>
+  </div>
 
-<div class="topbar">
-<div class="container"><span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>пр. Дмитра Яворницького, 19, Дніпро, Україна, 49005</span><span><b>World
- Students:</b>локальна студентська платформа НТУ «ДП»</span></div>
-</div>
+  <div class="topbar">
+    <div class="container"><span><svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" />
+          <circle cx="12" cy="9.5" r="2.5" />
+        </svg>пр. Дмитра Яворницького, 19, Дніпро, Україна, 49005</span></div>
+  </div>
 
-<header class="header">
-<div class="scroll-progress-bar" id="scrollProgress"></div>
-<div class="container header-inner">
-<a class="brand" href="index.html"><img src="assets/img/logo.svg" alt="НТУ ДП"><span
- class="brand-copy"><strong>Students Platform</strong><span>від студентів для студентів</span></span></a>
-<nav class="nav">
-<a href="about.html" class="nav__link" data-nav="about">Про університет</a>
-<a href="education.html" class="nav__link" data-nav="education">Навчання</a>
-<a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
-<a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
-<a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
-<a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
-<a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
-</nav>
-<button class="burger" onclick="toggleMenu()" aria-label="Меню"><span></span><span></span><span></span></button>
-</div>
-</header>
-<div class="mobile-nav" id="mobileNav"><a href="index.html" data-nav="home">Головна</a>
-<a href="about.html" class="nav__link" data-nav="about">Про університет</a>
-<a href="education.html" class="nav__link" data-nav="education">Навчання</a>
-<a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
-<a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
-<a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
-<a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
-<a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
-</div>
+  <header class="header">
+    <div class="scroll-progress-bar" id="scrollProgress"></div>
+    <div class="container header-inner">
+      <a class="brand" href="index.html"><img src="assets/img/logo.svg" alt="НТУ ДП"><span
+          class="brand-copy"><strong>Part of World Students</strong><span>від студентів для студентів</span></span></a>
+      <nav class="nav">
+        <a href="education.html" class="nav__link" data-nav="education">Навчання</a>
+        <a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
+        <a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
+        <a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
+        <a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
+        <a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
+      </nav>
+      <div class="ctl"><button type="button" class="lang-switch" data-lang-toggle role="switch" aria-checked="false"
+          aria-label="Мова"><svg class="ls-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <circle class="ls-navy" cx="15" cy="31" r="12" />
+            <path d="M9.2 38.6 15 22.4l5.8 16.200M11.300 33.600h7.400" fill="none" stroke="#fff" stroke-width="2.4"
+              stroke-linecap="round" stroke-linejoin="round" />
+            <circle class="ls-navy" cx="34" cy="15" r="11" />
+            <g fill="none" stroke="#2fd6c9" stroke-width="1.5" stroke-linecap="round">
+              <circle cx="34" cy="15" r="6.400" />
+              <ellipse cx="34" cy="15" rx="2.700" ry="6.400" />
+              <path d="M27.600 15h12.800M28.800 11.500h10.400M28.800 18.500h10.400" />
+            </g>
+            <g fill="none" stroke="#2fd6c9" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.500 19.500c.8-4.600 4-7.500 8.500-8.200M16.500 8.200l2.800 3.100-3.300 2.200" />
+              <path d="M38.500 27.500c-.8 4.600-4 7.500-8.500 8.200M32.500 38.800l-2.800-3.100 3.300-2.200" />
+            </g>
+          </svg><span class="ls-code"><span class="ls-uk">UA</span><span class="ls-en">EN</span></span></button><button
+          type="button" class="ctl-theme" data-theme-toggle aria-label="Змінити тему"><svg class="i-moon"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+          </svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+            stroke-linecap="round">
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+          </svg></button></div>
+      <button class="burger" onclick="toggleMenu()" aria-label="Меню"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+  <div class="mobile-nav" id="mobileNav"><a href="index.html" data-nav="home">Головна</a>
+    <a href="education.html" class="nav__link" data-nav="education">Навчання</a>
+    <a href="student-life.html" class="nav__link" data-nav="life">Студентське життя</a>
+    <a href="abiturient.html" class="nav__link" data-nav="abiturient">Абітурієнтам</a>
+    <a href="sections.html" class="nav__link" data-nav="sections">Навігація</a>
+    <a href="authors.html" class="nav__link" data-nav="authors">Автори</a>
+    <a href="contact.html" class="nav__link" data-nav="contact">Контакти</a>
+  </div>
 
 
-<main>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal hero-text-side">
+          <h1>Студентська платформа</h1>
+          <p class="lead">World Students: локальна студентська платформа НТУ «ДП», створена студентами для студентів.
+          </p>
+          <p class="lead">Це зручний і повністю безкоштовний простір, що об'єднує головне про вступ, навчання й
+            студентське життя в одному місці - доступний з будь-якої точки світу.</p>
+          <div class="actions actions__main actions__hero">
+            <a class="btn btn-primary" href="sections.html">Навігація</a>
+            <a class="btn btn-secondary" href="abiturient.html">Абітурієнтам</a>
+          </div>
+        </div>
 
-<section class="hero">
-<div class="container hero-grid">
-<div class="reveal hero-text-side">
-<h1>Студентська платформа Політехніки</h1>
-<p class="lead">Dnipro Polytechnic Students — неофіційна студентська платформа НТУ «Дніпровська політехніка», створена студентами для студентів.</p>
-<p class="lead">Це зручний і повністю безкоштовний простір, що об'єднує головне про вступ, навчання й студентське життя в одному місці — доступний з будь-якої точки світу.</p>
-<div class="actions actions__main actions__hero">
-<a class="btn btn-primary" href="sections.html">Навігація</a>
-<a class="btn btn-secondary" href="abiturient.html">Абітурієнтам</a>
-</div>
-</div>
+        <div class="reveal hero-visual-side">
+          <div class="floating-card float-1">Зручно</div>
+          <div class="floating-card float-2">Сучасно</div>
+          <div class="floating-card float-3">Цікаво</div>
 
-<div class="reveal hero-visual-side">
-<div class="floating-card float-1">Зручно</div>
-<div class="floating-card float-2">Сучасно</div>
-<div class="floating-card float-3">Цікаво</div>
+          <div class="slider slider--tall">
+            <div class="slider__track">
+              <div class="slider__slide is-active">
+                <img src="assets/img/ntudp-2022-slide-1.webp" alt="Головний корпус НТУ ДП">
+                <div class="slider__caption slider__caption--rich">
+                  <strong>Дніпровська політехніка</strong>
+                  <p>Головний історичний корпус на проспекті Дмитра Яворницького, 19. Фундаментальний осередок освіти та
+                    науки, заснований у 1899 році.</p>
+                </div>
+              </div>
+              <div class="slider__slide">
+                <img src="assets/img/studentsFirst.webp" alt="Студентське життя">
+                <div class="slider__caption slider__caption--rich">
+                  <strong>Сучасний погляд на навчання</strong>
+                  <p>Комфортні аудиторії та затишна атмосфера для того, щоб кожен студент міг зосередитися на головному
+                    - отриманні якісних знань.</p>
+                </div>
+              </div>
+              <div class="slider__slide">
+                <img src="assets/img/dream-building.webp" alt="Місія університету">
+                <div class="slider__caption slider__caption--rich">
+                  <strong>Місія та стратегічні цілі університету</strong>
+                  <p>Інтеграція у світовий науково-освітній простір, підготовка затребуваних фахівців та постійний рух
+                    уперед разом із глобальними трендами.</p>
+                </div>
+              </div>
+              <div class="slider__slide">
+                <img src="assets/img/studentsSecond.webp" alt="Традиції та інновації">
+                <div class="slider__caption slider__caption--rich">
+                  <strong>Традиції, перевірені часом</strong>
+                  <p>Поєднання класичної академічної культури та новітніх цифрових екосистем для всебічного розвитку
+                    нової генерації української еліти.</p>
+                </div>
+              </div>
+              <div class="slider__slide">
+                <img src="assets/img/studentsThird.webp" alt="Успішні випускники">
+                <div class="slider__caption slider__caption--rich">
+                  <strong>Твій впевнений старт у майбутнє</strong>
+                  <p>Отримання диплома провідного технологічного університету - це відкриті двері до успішної кар'єри в
+                    найкращих компаніях України та світу.</p>
+                </div>
+              </div>
+              <div class="slider__arrow slider__arrow--prev">‹</div>
+              <div class="slider__arrow slider__arrow--next">›</div>
+              <div class="slider__dots"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="slider slider--tall">
-<div class="slider__track">
-<div class="slider__slide is-active">
-<img src="assets/img/ntudp-2022-slide-1.jpg" alt="Головний корпус НТУ ДП">
-<div class="slider__caption slider__caption--rich">
-<strong>Дніпровська політехніка</strong>
-<p>Головний історичний корпус на проспекті Дмитра Яворницького, 19. Фундаментальний осередок освіти та
- науки, заснований у 1899 році.</p>
-</div>
-</div>
-<div class="slider__slide">
-<img src="assets/img/studentsFirst.jpg" alt="Студентське життя">
-<div class="slider__caption slider__caption--rich">
-<strong>Сучасний погляд на навчання</strong>
-<p>Комфортні аудиторії та затишна атмосфера для того, щоб кожен студент міг зосередитися на головному
- — отриманні якісних знань.</p>
-</div>
-</div>
-<div class="slider__slide">
-<img src="https://nmu.org.ua/wp-content/uploads/2025/02/ntudp-2022-slide-2.jpg"
- alt="Місія університету">
-<div class="slider__caption slider__caption--rich">
-<strong>Місія та стратегічні цілі університету</strong>
-<p>Інтеграція у світовий науково-освітній простір, підготовка затребуваних фахівців та постійний рух
- уперед разом із глобальними трендами.</p>
-</div>
-</div>
-<div class="slider__slide">
-<img src="assets/img/studentsSecond.jpg" alt="Традиції та інновації">
-<div class="slider__caption slider__caption--rich">
-<strong>Традиції, перевірені часом</strong>
-<p>Поєднання класичної академічної культури та новітніх цифрових екосистем для всебічного розвитку
- нової генерації української еліти.</p>
-</div>
-</div>
-<div class="slider__slide">
-<img src="assets/img/studentsThird.jpg" alt="Успішні випускники">
-<div class="slider__caption slider__caption--rich">
-<strong>Твій впевнений старт у майбутнє</strong>
-<p>Отримання диплома провідного технологічного університету — це відкриті двері до успішної кар'єри в
- найкращих компаніях України та світу.</p>
-</div>
-</div>
-<div class="slider__arrow slider__arrow--prev">‹</div>
-<div class="slider__arrow slider__arrow--next">›</div>
-<div class="slider__dots"></div>
-</div>
-</div>
-</div>
-</div>
-</section>
+    <section class="section ba-section">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="label">Наш універ мрії</div>
+          <h2>Дніпровська політехніка: зараз і в мріях студентів</h2>
+          <p>Потягніть повзунок, щоб порівняти головний корпус сьогодні з візією оновленого входу до університету. <a
+              href="campus-dream.html">Дивитись усю візію →</a></p>
+        </div>
+        <div class="ba reveal" data-ba role="group" aria-label="Порівняння: зараз і візія">
+          <img class="ba__img" src="assets/img/dream-building.webp" alt="Візія оновленого входу до університету"
+            draggable="false">
+          <div class="ba__before"><img class="ba__img" src="assets/img/oldNTUDP.jpg"
+              alt="Головний корпус університету сьогодні" draggable="false"></div>
+          <span class="ba__tag ba__tag--before">Зараз</span>
+          <span class="ba__tag ba__tag--after">Мрія</span>
+          <div class="ba__handle" role="slider" tabindex="0" aria-orientation="horizontal" aria-valuemin="0"
+            aria-valuemax="100" aria-valuenow="50" aria-label="Положення розділювача">
+            <span class="ba__knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
+              </svg></span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section class="section">
-<div class="container">
-<div class="section-head reveal">
-<div class="label">Платформа</div>
-<h2>Не просто перелік сторінок, а повноцінний студентський портал</h2>
-<p>Сайт розширено до набору сторінок, які повторюють логіку офіційного університетського сайту, але подані як
- сучасний студентський продукт.</p>
-</div>
-<div class="grid-4">
-<div class="card reveal">
-<h3>Університет</h3>
-<p>Про університет, історія, структура, кампус і ключові факти.</p><a href="about.html">Перейти →</a>
-</div>
-<div class="card reveal">
-<h3>Навчання</h3>
-<p>Освітні ресурси, спеціальності, форми навчання, сервіси для студентів.</p><a
- href="education.html">Перейти →</a>
-</div>
-<div class="card reveal">
-<h3>Наука</h3>
-<p>Наукові напрями, проєкти, видання, конференції та студентська наука.</p><a href="science.html">Перейти
- →</a>
-</div>
-<div class="card reveal">
-<h3>Міжнародність</h3>
-<p>Міжнародна співпраця, культурно-освітні центри та академічні можливості.</p><a href="international.html">Перейти
- →</a>
-</div>
-</div>
-</div>
-</section>
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="label">Платформа</div>
+          <h2>Платформа росте разом зі студентами: нові розділи, матеріали та сервіси з'являються тоді, коли вони
+            справді потрібні.</h2>
+        </div>
+        <div class="grid-4">
+          <div class="card reveal">
+            <h3>Університет</h3>
+            <p>Про університет, історія, структура, кампус і ключові факти.</p><a href="about.html">Перейти →</a>
+          </div>
+          <div class="card reveal">
+            <h3>Навчання</h3>
+            <p>Освітні ресурси, спеціальності, форми навчання, сервіси для студентів.</p><a
+              href="education.html">Перейти →</a>
+          </div>
+          <div class="card reveal">
+            <h3>Наука</h3>
+            <p>Наукові напрями, проєкти, видання, конференції та студентська наука.</p><a href="science.html">Перейти
+              →</a>
+          </div>
+          <div class="card reveal">
+            <h3>Міжнародність</h3>
+            <p>Міжнародна співпраця, культурно-освітні центри та академічні можливості.</p><a
+              href="international.html">Перейти
+              →</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section class="section">
-<div class="container">
-<div class="section-head reveal">
-<div class="label">Стрічка</div>
-<h2>Головні новини університету</h2>
-<p>Коротко про те, що зараз відбувається в НТУ «ДП». Повні новини — на офіційному сайті nmu.org.ua.</p>
-</div>
-<div class="grid-3">
-<article class="card reveal">
-<h3>Старт вступної кампанії 2026</h3>
-<p>Приймальна комісія відкрила реєстрацію електронних кабінетів вступників. Консультації проходять
- щодня в 4-му корпусі та онлайн.</p>
-</article>
-<article class="card reveal">
-<h3>Наукові гранти та публікації</h3>
-<p>Викладачі та аспіранти університету продовжують публікуватися в міжнародних виданнях і залучати
- грантове фінансування для лабораторій.</p>
-</article>
-<article class="card reveal">
-<h3>Міжнародні партнерства</h3>
-<p>Політехніка розвиває співпрацю з європейськими університетами: обмін студентами, спільні освітні
- програми та стажування.</p>
-</article>
-<article class="card reveal">
-<h3>Стипендіальні програми</h3>
-<p>Для студентів з високим середнім балом і активною науковою чи громадською діяльністю діють
- академічні та іменні стипендії.</p>
-</article>
-<article class="card reveal">
-<h3>Спортивні досягнення</h3>
-<p>Збірні університету виступають на всеукраїнських студентських змаганнях з різних видів спорту,
- тренування — у спорткомплексі кампусу.</p>
-</article>
-<article class="card reveal">
-<h3>Оновлення студентської платформи</h3>
-<p>Команда World Students продовжує додавати нові розділи: кафедри, вступ, контакти — стежте за
- оновленнями в розділі<a href="news.html">«Новини платформи»</a>.</p>
-</article>
-</div>
-</div>
-</section>
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="label">Стрічка</div>
+          <h2>Головні новини університету</h2>
+          <p>Коротко про те, що зараз відбувається в НТУ «ДП». Повні новини - на офіційному сайті nmu.org.ua.</p>
+        </div>
+        <div class="news-slider reveal" data-news-slider>
+          <div class="news-viewport">
+            <div class="news-track">
+              <div class="news-slide grid-3">
+                <article class="card">
+                  <h3>Старт вступної кампанії 2026</h3>
+                  <p>Приймальна комісія відкрила реєстрацію електронних кабінетів вступників. Консультації проходять
+                    щодня в 4-му корпусі та онлайн.</p>
+                </article>
+                <article class="card">
+                  <h3>Наукові гранти та публікації</h3>
+                  <p>Викладачі та аспіранти університету продовжують публікуватися в міжнародних виданнях і залучати
+                    грантове фінансування для лабораторій.</p>
+                </article>
+                <article class="card">
+                  <h3>Міжнародні партнерства</h3>
+                  <p>Політехніка розвиває співпрацю з європейськими університетами: обмін студентами, спільні освітні
+                    програми та стажування.</p>
+                </article>
+              </div>
+              <div class="news-slide grid-3">
+                <article class="card">
+                  <h3>Стипендіальні програми</h3>
+                  <p>Для студентів з високим середнім балом і активною науковою чи громадською діяльністю діють
+                    академічні та іменні стипендії.</p>
+                </article>
+                <article class="card">
+                  <h3>Спортивні досягнення</h3>
+                  <p>Збірні університету виступають на всеукраїнських студентських змаганнях з різних видів спорту,
+                    тренування - у спорткомплексі кампусу.</p>
+                </article>
+                <article class="card">
+                  <h3>Оновлення студентської платформи</h3>
+                  <p>Команда World Students продовжує додавати нові розділи: кафедри, вступ, контакти - стежте за
+                    оновленнями в розділі <a href="news.html">«Новини платформи»</a>.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+          <div class="news-controls">
+            <button type="button" class="news-arrow news-prev" aria-label="Попередні новини" disabled><svg
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="M15 5l-7 7 7 7" />
+              </svg></button>
+            <div class="news-dots"><button type="button" class="is-active" aria-label="Слайд 1"></button><button
+                type="button" aria-label="Слайд 2"></button></div>
+            <button type="button" class="news-arrow news-next" aria-label="Наступні новини"><svg viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <path d="M9 5l7 7-7 7" />
+              </svg></button>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section class="section section-soft">
-<div class="container two-col">
-<div class="panel reveal panel-info">
-<div class="label">World Students</div>
-<h2>Дніпровська політехніка як локальний кампус глобальної платформи</h2>
-<p class="lead">World Students — це концепція єдиного студентського застосунку, де кожен університет має
- власну сторінку, власний кабінет, власні події, матеріали, контакти, новини та спільноту.</p>
-</div>
-<div class="gallery reveal">
-<img src="https://nmu.org.ua/wp-content/uploads/2025/02/ntudp-2022-slide-2.jpg" alt="Місія університету">
-<img src="https://nmu.org.ua/wp-content/uploads/2025/02/ntudp-2022-slide-4-1024x576.jpg"
- alt="Традиції та інновації">
-</div>
-</div>
-</section>
+    <section class="section section-soft">
+      <div class="container">
+        <div class="panel reveal panel-info panel-info--single">
+          <div class="label">World Students</div>
+          <h2>Дніпровська політехніка як локальний кампус глобальної платформи</h2>
+          <p class="lead">World Students - це концепція єдиного студентського застосунку, де кожен університет має
+            власну сторінку, власний кабінет, власні події, матеріали, контакти, новини та спільноту.</p>
+        </div>
+      </div>
+    </section>
 
-<section class="section section-soft faculties-overview">
-<div class="container">
-<div class="section-head reveal">
-<div class="label">Освітній простір</div>
-<h2>Провідні факультети та інститути Дніпровської Політехніки</h2>
-<p>НТУ «ДП» об'єднує потужні науково-педагогічні школи. Обери свій напрям розвитку серед офіційних факультетів
- та інститутів університету:</p>
-</div>
+    <section class="section section-soft faculties-overview">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="label">Освітній простір</div>
+          <h2>Провідні факультети та інститути Дніпровської Політехніки</h2>
+          <p>НТУ «ДП» об'єднує потужні науково-педагогічні школи. Обери свій напрям розвитку серед офіційних факультетів
+            та інститутів університету:</p>
+        </div>
 
-<div class="grid-3">
-<div class="card reveal card-faculty">
-<h3>Факультет інформаційних технологій</h3>
-<p>Головний ІТ-хаб університету: Інженерія програмного забезпечення (121), Комп'ютерні науки (122),
- Кібербезпека
- (125) та Системний аналіз.</p>
-<a href="about.html#specialties">Спеціальності ФІТ →</a>
-</div>
+        <div class="grid-3">
+          <div class="card reveal card-faculty">
+            <h3>Факультет інформаційних технологій</h3>
+            <p>Головний ІТ-хаб університету: Інженерія програмного забезпечення (121), Комп'ютерні науки (122),
+              Кібербезпека
+              (125) та Системний аналіз.</p>
+            <a href="about.html#specialties">Спеціальності ФІТ →</a>
+          </div>
 
-<div class="card reveal card-faculty">
-<h3>Електротехнічний факультет</h3>
-<p>Сучасна електроенергетика, електротехніка та електромеханіка (141), автоматизація
- комп'ютерно-інтегрованих
- технологій та робототехніка.</p>
-<a href="about.html#specialties">Дивитись програми →</a>
-</div>
+          <div class="card reveal card-faculty">
+            <h3>Електротехнічний факультет</h3>
+            <p>Сучасна електроенергетика, електротехніка та електромеханіка (141), автоматизація
+              комп'ютерно-інтегрованих
+              технологій та робототехніка.</p>
+            <a href="about.html#specialties">Дивитись програми →</a>
+          </div>
 
-<div class="card reveal card-faculty">
-<h3>Механіко-машинобудівний факультет</h3>
-<p>Прикладна механіка, галузеве машинобудування, транспортні технології та автомобільний транспорт. База для
- майбутніх інженерів-конструкторів.</p>
-<a href="about.html#specialties">Детальніше →</a>
-</div>
+          <div class="card reveal card-faculty">
+            <h3>Механіко-машинобудівний факультет</h3>
+            <p>Прикладна механіка, галузеве машинобудування, транспортні технології та автомобільний транспорт. База для
+              майбутніх інженерів-конструкторів.</p>
+            <a href="about.html#specialties">Детальніше →</a>
+          </div>
 
-<div class="card reveal card-faculty">
-<h3>Навчально-науковий інститут природокористування</h3>
-<p>Історичний і фундаментальний підрозділ: Гірнича справа (184), екологія, цивільна безпека та нафтогазова
- інженерія і технології.</p>
-<a href="about.html#specialties">Гірничі технології →</a>
-</div>
+          <div class="card reveal card-faculty">
+            <h3>Навчально-науковий інститут природокористування</h3>
+            <p>Історичний і фундаментальний підрозділ: Гірнича справа (184), екологія, цивільна безпека та нафтогазова
+              інженерія і технології.</p>
+            <a href="about.html#specialties">Гірничі технології →</a>
+          </div>
 
-<div class="card reveal card-faculty">
-<h3>Факультет менеджменту</h3>
-<p>Підготовка управлінців нового покоління: Менеджмент (073), Маркетинг (075), Публічне управління та
- адміністрування (281).</p>
-<a href="about.html#specialties">Економічний блок →</a>
-</div>
+          <div class="card reveal card-faculty">
+            <h3>Факультет менеджменту</h3>
+            <p>Підготовка управлінців нового покоління: Менеджмент (073), Маркетинг (075), Публічне управління та
+              адміністрування (281).</p>
+            <a href="about.html#specialties">Економічний блок →</a>
+          </div>
 
-<div class="card reveal card-faculty">
-<h3>Інститут гуманітарних і соціальних наук</h3>
-<p>Право (081), історія та політичні науки, філологія і переклад, публічне управління. Поєднання
- гуманітарних традицій та сучасного правознавства.</p>
-<a href="about.html#specialties">Гуманітарний напрям →</a>
-</div>
-</div>
-</div>
-</section>
+          <div class="card reveal card-faculty">
+            <h3>Інститут гуманітарних і соціальних наук</h3>
+            <p>Право (081), історія та політичні науки, філологія і переклад, публічне управління. Поєднання
+              гуманітарних традицій та сучасного правознавства.</p>
+            <a href="about.html#specialties">Гуманітарний напрям →</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section class="section digital-campus">
-<div class="container two-col digital-col">
-<div class="content reveal">
-<div class="label">Електронний університет</div>
-<h2>Цифрова екосистема для навчання в НТУ «ДП»</h2>
-<p class="lead">Тобі не потрібні стоси паперів — уся Політехніка доступна в твоєму смартфоні та браузері.</p>
-<p>Офіційні платформи інтегровані в єдиний простір, що дозволяє студентам гнучко керувати своїм часом:</p>
+    <section class="section digital-campus">
+      <div class="container two-col digital-col">
+        <div class="content reveal">
+          <div class="label">Електронний університет</div>
+          <h2>Цифрова екосистема для навчання в НТУ «ДП»</h2>
+          <p class="lead">Тобі не потрібні стоси паперів - уся Політехніка доступна в твоєму смартфоні та браузері.</p>
+          <p>Офіційні платформи інтегровані в єдиний простір, що дозволяє студентам гнучко керувати своїм часом:</p>
 
-<div class="mini-features digital-features">
-<div class="m-feature feature-item">
-<strong>Особистий кабінет студента (cabinet.nmu.org.ua):</strong>
-<span class="feature-desc">електронний заліковий лист, моніторинг успішності, вибір вибіркових дисциплін
- та
- замовлення довідок у кілька кліків.</span>
-</div>
-<div class="m-feature feature-item">
-<strong>Платформа дистанційного навчання Office 365 & Moodle:</strong>
-<span class="feature-desc">повний доступ до навчальних матеріалів, лекцій, лабораторних робіт та пряма
- комунікація з викладачами через Microsoft Teams.</span>
-</div>
-<div class="m-feature feature-item">
-<strong>Цифровий розклад:</strong>
-<span class="feature-desc">динамічний розклад занять з автоматичним оновленням чисельника/знаменника та
- прямими посиланнями на онлайн-аудиторії.</span>
-</div>
-</div>
-</div>
+          <div class="mini-features digital-features">
+            <div class="m-feature feature-item">
+              <strong>Особистий кабінет студента (cabinet.nmu.org.ua):</strong>
+              <span class="feature-desc">електронний заліковий лист, моніторинг успішності, вибір вибіркових дисциплін
+                та
+                замовлення довідок у кілька кліків.</span>
+            </div>
+            <div class="m-feature feature-item">
+              <strong>Платформа дистанційного навчання Office 365 & Moodle:</strong>
+              <span class="feature-desc">повний доступ до навчальних матеріалів, лекцій, лабораторних робіт та пряма
+                комунікація з викладачами через Microsoft Teams.</span>
+            </div>
+            <div class="m-feature feature-item">
+              <strong>Цифровий розклад:</strong>
+              <span class="feature-desc">динамічний розклад занять з автоматичним оновленням чисельника/знаменника та
+                прямими посиланнями на онлайн-аудиторії.</span>
+            </div>
+          </div>
+        </div>
 
-<div class="panel reveal digital-banner">
-<img src="./assets/img/digital_ecosystem.jpg" alt="#" class="digital-banner__image">
-</div>
-</div>
-</section>
+        <div class="panel reveal digital-banner">
+          <img src="./assets/img/digital_ecosystem.webp" alt="#" class="digital-banner__image">
+        </div>
+      </div>
+    </section>
 
-<section class="section section-soft campus-events">
-<div class="container">
-<div class="section-head reveal">
-<div class="label">Пульс Політехніки</div>
-<h2>Події, які ти не маєш права пропустити</h2>
-<p>Життя в кампусі вирує щодня. Будь у центрі наукових та розважальних трендів НТУ «ДП»:</p>
-</div>
+    <section class="section section-soft">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="label">Хронологія</div>
+          <h2>Ключові етапи розвитку</h2>
+          <p>Університет змінював назви, але зберігав головне - традицію якісної технічної освіти.</p>
+        </div>
+        <div class="tl" data-tl>
+          <div class="tl__line"><span class="tl__fill"></span></div>
+          <div class="tl__item"><span class="tl__dot"></span>
+            <div class="tl__card"><span class="tl__year">1899</span>
+              <h3>Катеринославське вище гірниче училище</h3>
+              <p>Заснування першого технічного навчального закладу в Катеринославі (нині - Дніпро).</p>
+            </div>
+          </div>
+          <div class="tl__item"><span class="tl__dot"></span>
+            <div class="tl__card"><span class="tl__year">1912</span>
+              <h3>Катеринославський гірничий інститут</h3>
+              <p>Отримання статусу інституту, розширення навчальних програм.</p>
+            </div>
+          </div>
+          <div class="tl__item"><span class="tl__dot"></span>
+            <div class="tl__card"><span class="tl__year">1926</span>
+              <h3>Дніпропетровський гірничий інститут</h3>
+              <p>Перейменування після зміни назви міста. Активний розвиток наукових кафедр.</p>
+            </div>
+          </div>
+          <div class="tl__item"><span class="tl__dot"></span>
+            <div class="tl__card"><span class="tl__year">1993</span>
+              <h3>Державна гірнича академія України</h3>
+              <p>Надання статусу академії, початок підготовки фахівців широкого профілю.</p>
+            </div>
+          </div>
+          <div class="tl__item"><span class="tl__dot"></span>
+            <div class="tl__card"><span class="tl__year">1997</span>
+              <h3>Національна гірнича академія України</h3>
+              <p>Присвоєння статусу національного навчального закладу.</p>
+            </div>
+          </div>
+          <div class="tl__item"><span class="tl__dot"></span>
+            <div class="tl__card"><span class="tl__year">2002</span>
+              <h3>Національний гірничий університет</h3>
+              <p>Перетворення на університет - нові факультети, міжнародні програми, зростання студентського
+                контингенту.</p>
+            </div>
+          </div>
+          <div class="tl__item"><span class="tl__dot"></span>
+            <div class="tl__card"><span class="tl__year">2017</span>
+              <h3>НТУ «Дніпровська політехніка»</h3>
+              <p>Сучасна назва, що відображає широкий технічний профіль. Активна цифровізація та міжнародна співпраця.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="grid-3">
-<div class="institute-card reveal event-card bg-white-card">
-<span class="event-tag tag-it">Наука та IT</span>
-<h4>PolyTech Hack 2026</h4>
-<p class="event-desc">Головний внутрішній хакатон університету для розробників, дизайнерів та маркетологів.
- Створюй реальні рішення для автоматизації кампусу.</p>
-<span class="event-status">Реєстрація відкрита</span>
-</div>
+    <section class="section section-soft campus-events">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="label">Пульс Політехніки</div>
+          <h2>Події, які ти не маєш права пропустити</h2>
+          <p>Життя в кампусі вирує щодня. Будь у центрі наукових та розважальних трендів НТУ «ДП»:</p>
+        </div>
 
-<div class="institute-card reveal event-card bg-white-card">
-<span class="event-tag tag-grant">Міжнародні гранти</span>
-<h4>Erasmus+: Відбір до ТУ Гейдельберг</h4>
-<p class="event-desc">Конкурсний відбір на безкоштовне семестрове навчання в Німеччині для студентів 2-3
- курсів
- технічних спеціальностей. Перевірка знання мови.</p>
-<span class="event-status">Документи до 30.10</span>
-</div>
+        <div class="grid-3">
+          <div class="institute-card reveal event-card bg-white-card">
+            <span class="event-tag tag-it">Наука та IT</span>
+            <h4>PolyTech Hack 2026</h4>
+            <p class="event-desc">Головний внутрішній хакатон університету для розробників, дизайнерів та маркетологів.
+              Створюй реальні рішення для автоматизації кампусу.</p>
+            <span class="event-status">Реєстрація відкрита</span>
+          </div>
 
-<div class="institute-card reveal event-card bg-white-card">
-<span class="event-tag tag-life">СтудЛайф</span>
-<h4>Фестиваль «Студентська весна»</h4>
-<p class="event-desc">Традиційний творчий батл між факультетами в актовій залі 1-го корпусу. Танці, театр,
- вокал
- та унікальний гумор нашої Політехніки.</p>
-<span class="event-status">Готуй свій факультет!</span>
-</div>
-</div>
-</div>
-</section>
+          <div class="institute-card reveal event-card bg-white-card">
+            <span class="event-tag tag-grant">Міжнародні гранти</span>
+            <h4>Erasmus+: Відбір до ТУ Гейдельберг</h4>
+            <p class="event-desc">Конкурсний відбір на безкоштовне семестрове навчання в Німеччині для студентів 2-3
+              курсів
+              технічних спеціальностей. Перевірка знання мови.</p>
+            <span class="event-status">Документи до 30.10</span>
+          </div>
 
-</main>
+          <div class="institute-card reveal event-card bg-white-card">
+            <span class="event-tag tag-life">СтудЛайф</span>
+            <h4>Фестиваль «Студентська весна»</h4>
+            <p class="event-desc">Традиційний творчий батл між факультетами в актовій залі 1-го корпусу. Танці, театр,
+              вокал
+              та унікальний гумор нашої Політехніки.</p>
+            <span class="event-status">Готуй свій факультет!</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<footer class="footer">
-<div class="container footer-grid">
-<div>
-<h4>Студентська платформа Політехніки.</h4>
-<p>Dnipro Polytechnic Students — неофіційна студентська платформа НТУ «Дніпровська політехніка», створена студентами для студентів. Локальний кампус
- глобальної концепції World Students.</p>
-</div>
-<div>
-<h4>Університет</h4><a href="about.html">Про університет</a><a href="history.html">Історія</a><a
- href="stories.html">Історії політехніки</a><a
- href="structure.html">Структура</a><a href="campus.html">Кампус</a>
-</div>
-<div>
-<h4>Напрями</h4><a href="education.html">Навчання</a><a href="assignments.html">Домашні завдання</a><a href="exam-prep.html">Підготовка до екзаменів</a><a href="materials.html">Навчальні матеріали</a><a href="science.html">Наука</a><a
- href="international.html">Міжнародна діяльність</a><a href="library.html">Бібліотека</a>
-</div>
-<div>
-<h4>Платформа</h4><a href="platform.html">Про платформу</a><a href="student-life.html">Студентське
- життя</a><a href="media.html">Фото і відео</a><a href="sources.html">Джерела</a><a
- href="authors.html">Автори</a><a href="campus-dream.html">Наш універ мрії</a>
-</div>
-</div>
-<div class="container footer-bottom">© <span id="year"></span> · Студентська платформа Політехніки · World Students</div>
-</footer>
+  </main>
 
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <h4>Студентська платформа.</h4>
+        <p>World Students: локальна студентська платформа НТУ «ДП», створена студентами для студентів.</p>
+      </div>
+      <div>
+        <h4>Університет</h4><a href="about.html">Про університет</a><a href="history.html">Історія</a><a
+          href="stories.html">Історії політехніки</a><a href="structure.html">Структура</a><a
+          href="campus.html">Кампус</a>
+      </div>
+      <div>
+        <h4>Напрями</h4><a href="education.html">Навчання</a><a href="assignments.html">Домашні завдання</a><a
+          href="exam-prep.html">Підготовка до екзаменів</a><a href="materials.html">Навчальні матеріали</a><a
+          href="science.html">Наука</a><a href="international.html">Міжнародна діяльність</a>
+      </div>
+      <div>
+        <h4>Платформа</h4><a href="platform.html">Про платформу</a><a href="student-life.html">Студентське
+          життя</a><a href="media.html">Фото і відео</a><a href="sources.html">Джерела</a><a
+          href="authors.html">Автори</a><a href="campus-dream.html">Наш універ мрії</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© <span id="year"></span> · Студентська платформа · World Students</div>
+  </footer>
+
+  <script src="assets/js/i18n-en.js"></script>
+  <script src="assets/js/chat-config.js"></script>
 <script src="assets/js/main.js"></script>
+<script src="assets/js/chat.js"></script>
 
 </body>
 

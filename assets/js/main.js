@@ -1,11 +1,31 @@
-document.body.classList.add('loading')
-window.addEventListener('load', () => {
-	setTimeout(() => {
+(function () {
+	document.body.classList.add('loading')
+	const t0 = performance.now(), MIN = 1700
+	let loaded = false, shown = 0, finished = false
+	window.addEventListener('load', () => (loaded = true))
+	const bar = () => document.getElementById('plBar'), num = () => document.getElementById('plNum')
+	function finish() {
+		if (finished) return
+		finished = true
 		const p = document.querySelector('.preloader')
-		if (p) p.classList.add('hide')
-		document.body.classList.remove('loading')
-	}, 420)
-})
+		setTimeout(() => {
+			if (p) p.classList.add('hide')
+			document.body.classList.remove('loading')
+		}, 260)
+	}
+	function tick() {
+		const el = performance.now() - t0
+		const target = loaded && el >= MIN ? 100 : Math.min(88, (el / MIN) * 88)
+		shown += (target - shown) * 0.1
+		if (target === 100 && shown > 99.4) shown = 100
+		if (bar()) bar().style.width = shown + '%'
+		if (num()) num().textContent = Math.round(shown)
+		if (shown >= 100) return finish()
+		requestAnimationFrame(tick)
+	}
+	requestAnimationFrame(tick)
+	setTimeout(() => { loaded = true }, 7000)
+})()
 function updateMobileNavOffset() {
 	const header = document.querySelector('.header')
 	if (!header) return
@@ -63,6 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	initInstituteBlocks()
 	initAuthorsPage()
 	initGalleryLightbox()
+	initResourceFilter()
+	initMediaFilter()
 	document.querySelectorAll('.mobile-nav a').forEach(a => {
 		a.addEventListener('click', () => {
 			document.getElementById('mobileNav')?.classList.remove('open')
@@ -116,8 +138,11 @@ function initGalleryLightbox() {
 		groupsMap[key].push(item)
 	})
 	Object.values(groupsMap).forEach(group => {
-		group.forEach((item, index) => {
-			item.addEventListener('click', () => open(group, index))
+		group.forEach(item => {
+			item.addEventListener('click', () => {
+				const visible = group.filter(i => !i.hidden)
+				open(visible, visible.indexOf(item))
+			})
 		})
 	})
 
@@ -147,7 +172,7 @@ function initSliders() {
       dots = slides.map((_, i) => {
         const b = document.createElement('button');
         b.className = 'slider__dot' + (i === 0 ? ' is-active' : '');
-        b.setAttribute('aria-label', `Слайд ${i + 1}`);
+        b.setAttribute('aria-label', T('Слайд') + ' ' + (i + 1));
         b.addEventListener('click', () => restart(() => go(i)));
         dotsWrap.appendChild(b);
         return b;
@@ -345,6 +370,12 @@ function initAuthorsPage() {
 }
 
 /* ===== Contact form: validation (UA messages) + Formspree submit ===== */
+// Сувора перевірка email: локальна частина, домен з крапкою, TLD від 2 літер, без подвійних крапок
+const EMAIL_RE = /^(?!.*\.\.)[A-Za-z0-9](?:[A-Za-z0-9._%+\-]{0,62}[A-Za-z0-9])?@(?:[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,24}$/
+function isValidEmail(value) {
+	const v = String(value).trim()
+	return v.length <= 254 && EMAIL_RE.test(v)
+}
 function initContactForm() {
 	const form = document.getElementById('contactForm')
 	if (!form) return
@@ -352,10 +383,10 @@ function initContactForm() {
 	const submitBtn = form.querySelector('[data-submit]')
 
 	const patternMessages = {
-		phone: 'Формат номера: +380XXXXXXXXX (12 цифр після коду країни)',
+		phone: T('Формат номера: +380XXXXXXXXX (12 цифр після коду країни)'),
 	}
 	const typeMessages = {
-		email: 'Введіть коректну email-адресу, наприклад student@example.com',
+		email: T('Введіть коректну email-адресу, наприклад student@example.com'),
 	}
 
 	// Власні regex-перевірки: не покладаємось лише на нативний checkValidity(),
@@ -363,7 +394,7 @@ function initContactForm() {
 	// а нативна email-валідація по специфікації занадто лояльна (пропускає адреси без домену верхнього рівня).
 	const customValidators = {
 		phone: value => /^\+380\d{9}$/.test(value.trim()),
-		email: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()),
+		email: value => isValidEmail(value),
 	}
 
 	function fieldWrap(field) {
@@ -381,26 +412,26 @@ function initContactForm() {
 		const wrap = fieldWrap(field)
 		if (!wrap) return
 		const errEl = wrap.querySelector('.field-error')
-		let msg = 'Перевірте правильність заповнення поля'
+		let msg = T('Перевірте правильність заповнення поля')
 		const customCheck = customValidators[field.name]
 		if (field.required && !field.value.trim()) {
 			msg =
 				field.tagName === 'SELECT'
-					? 'Будь ласка, оберіть варіант зі списку'
-					: "Це поле обов'язкове для заповнення"
+					? T('Будь ласка, оберіть варіант зі списку')
+					: T("Це поле обов'язкове для заповнення")
 		} else if (customCheck && field.value.trim() && !customCheck(field.value)) {
-			msg = patternMessages[field.name] || typeMessages[field.type] || 'Некоректний формат значення'
+			msg = patternMessages[field.name] || typeMessages[field.type] || T('Некоректний формат значення')
 		} else if (field.validity.valueMissing) {
 			msg =
 				field.tagName === 'SELECT'
-					? 'Будь ласка, оберіть варіант зі списку'
-					: "Це поле обов'язкове для заповнення"
+					? T('Будь ласка, оберіть варіант зі списку')
+					: T("Це поле обов'язкове для заповнення")
 		} else if (field.validity.typeMismatch) {
-			msg = typeMessages[field.type] || 'Некоректне значення поля'
+			msg = typeMessages[field.type] || T('Некоректне значення поля')
 		} else if (field.validity.patternMismatch) {
-			msg = patternMessages[field.name] || 'Некоректний формат значення'
+			msg = patternMessages[field.name] || T('Некоректний формат значення')
 		} else if (field.validity.tooShort) {
-			msg = `Замало символів: мінімум ${field.minLength}`
+			msg = T('Замало символів: мінімум') + ' ' + field.minLength
 		}
 		if (errEl) errEl.textContent = msg
 		wrap.classList.add('field--invalid')
@@ -414,12 +445,12 @@ function initContactForm() {
 		if (errEl) errEl.textContent = ''
 	}
 
-	form.querySelectorAll('input, select').forEach(field => {
+	form.querySelectorAll('input, select, textarea').forEach(field => {
 		if (field.type === 'checkbox') {
 			field.addEventListener('invalid', e => {
 				e.preventDefault()
 				statusEl.style.color = '#c0392b'
-				statusEl.textContent = 'Потрібна згода на обробку персональних даних'
+				statusEl.textContent = T('Потрібна згода на обробку персональних даних')
 			})
 			field.addEventListener('change', () => {
 				if (field.checked && statusEl) statusEl.textContent = ''
@@ -448,7 +479,7 @@ function initContactForm() {
 	form.addEventListener('submit', async e => {
 		e.preventDefault()
 		let firstInvalid = null
-		form.querySelectorAll('input, select').forEach(field => {
+		form.querySelectorAll('input, select, textarea').forEach(field => {
 			if (field.name === '_gotcha') return
 			if (!isFieldValid(field)) {
 				if (field.type !== 'checkbox') showError(field)
@@ -459,7 +490,7 @@ function initContactForm() {
 			firstInvalid.focus()
 			if (statusEl) {
 				statusEl.style.color = '#c0392b'
-				statusEl.textContent = 'Будь ласка, виправте помилки у формі вище'
+				statusEl.textContent = T('Будь ласка, виправте помилки у формі вище')
 			}
 			return
 		}
@@ -468,7 +499,7 @@ function initContactForm() {
 		if (statusEl) statusEl.textContent = ''
 		const originalText = submitBtn.textContent
 		submitBtn.disabled = true
-		submitBtn.textContent = 'Надсилання...'
+		submitBtn.textContent = T('Надсилання...')
 
 		try {
 			const data = new FormData(form)
@@ -482,20 +513,20 @@ function initContactForm() {
 				if (statusEl) {
 					statusEl.style.color = '#2D9B70'
 					statusEl.textContent =
-						'Дякуємо! Повідомлення надіслано, ми відповімо найближчим часом.'
+						T('Дякуємо! Повідомлення надіслано, ми відповімо найближчим часом.')
 				}
 			} else {
 				if (statusEl) {
 					statusEl.style.color = '#c0392b'
 					statusEl.textContent =
-						'Не вдалося надіслати форму. Спробуйте ще раз або напишіть на пошту напряму.'
+						T('Не вдалося надіслати форму. Спробуйте ще раз або напишіть на пошту напряму.')
 				}
 			}
 		} catch (err) {
 			if (statusEl) {
 				statusEl.style.color = '#c0392b'
 				statusEl.textContent =
-					"Немає з'єднання із сервером. Перевірте інтернет і спробуйте ще раз."
+					T("Немає з'єднання із сервером. Перевірте інтернет і спробуйте ще раз.")
 			}
 		} finally {
 			submitBtn.disabled = false
@@ -503,15 +534,35 @@ function initContactForm() {
 		}
 	})
 }
-function demoSubmit(event, text = 'Дані збережено в демо-режимі.') {
+function demoEmailError(form) {
+	const bad = [...form.querySelectorAll('input[type="email"]')].find(i => !isValidEmail(i.value))
+	if (!bad) return false
+	bad.focus()
+	let note = form.querySelector('[data-note]')
+	if (!note) {
+		note = document.createElement('p')
+		note.setAttribute('data-note', '')
+		form.appendChild(note)
+	}
+	note.style.display = 'block'
+	note.style.color = '#c0392b'
+	note.textContent = T('Введіть коректну email-адресу, наприклад student@example.com')
+	return true
+}
+function demoSubmit(event, text = T('Дані збережено в демо-режимі.')) {
 	event.preventDefault()
+	if (demoEmailError(event.currentTarget)) return
 	const note = event.currentTarget.querySelector('[data-note]')
-	if (note) note.textContent = text
+	if (note) {
+		note.style.color = ''
+		note.textContent = text
+	}
 }
 function demoLogin(event) {
 	event.preventDefault()
+	if (demoEmailError(event.currentTarget)) return
 	const btn = event.currentTarget.querySelector('button')
-	btn.textContent = 'Вхід...'
+	btn.textContent = T('Вхід...')
 	setTimeout(() => (window.location.href = 'personal-area.html'), 650)
 }
 function saveProfile(event) {
@@ -553,4 +604,382 @@ function toggleCheck(el) {
 	el.classList.toggle('checked')
 	const card = el.closest('.task-card')
 	card.classList.toggle('done')
+}
+
+function T(s) {
+	return (document.documentElement.lang === 'en' && window.I18N_EN && window.I18N_EN[s]) || s
+}
+/* ===== Theme switcher + language switcher (UA / EN) ===== */
+const I18N = { orig: new WeakMap(), attrs: ['alt', 'title', 'placeholder', 'aria-label'] }
+function i18nNorm(s) { return s.replace(/\s+/g, ' ').trim() }
+function applyLang(lang) {
+	const dict = window.I18N_EN || {}
+	const en = lang === 'en'
+	document.documentElement.lang = en ? 'en' : 'uk'
+	const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+		acceptNode: n => (n.parentElement && /^(SCRIPT|STYLE|NOSCRIPT)$/.test(n.parentElement.tagName) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
+	})
+	let n
+	while ((n = w.nextNode())) {
+		if (!I18N.orig.has(n)) I18N.orig.set(n, n.nodeValue)
+		const base = I18N.orig.get(n), key = i18nNorm(base)
+		if (!key) continue
+		const tr = en && dict[key]
+		n.nodeValue = tr ? base.match(/^\s*/)[0] + tr + base.match(/\s*$/)[0] : base
+	}
+	document.querySelectorAll('[alt],[title],[placeholder],[aria-label]').forEach(el => {
+		I18N.attrs.forEach(a => {
+			if (!el.hasAttribute(a)) return
+			const k = 'i18nOrig' + a.replace(/(^|-)(\w)/g, (_, __, c) => c.toUpperCase())
+			if (!(k in el.dataset)) el.dataset[k] = el.getAttribute(a)
+			const t = en && dict[i18nNorm(el.dataset[k])]
+			el.setAttribute(a, t || el.dataset[k])
+		})
+	})
+	if (!document.documentElement.dataset.titleUk) document.documentElement.dataset.titleUk = document.title
+	const tt = en && dict[i18nNorm(document.documentElement.dataset.titleUk)]
+	document.title = tt || document.documentElement.dataset.titleUk
+	const md = document.querySelector('meta[name="description"]')
+	if (md) {
+		if (!md.dataset.uk) md.dataset.uk = md.content
+		md.content = (en && dict[i18nNorm(md.dataset.uk)]) || md.dataset.uk
+	}
+	document.querySelectorAll('[data-lang-toggle]').forEach(b => b.setAttribute('aria-checked', en ? 'true' : 'false'))
+	const tb = document.querySelector('[data-theme-toggle]')
+	if (tb) tb.setAttribute('aria-label', en ? 'Toggle theme' : T('Змінити тему'))
+}
+function setTheme(t) {
+	document.documentElement.setAttribute('data-theme', t)
+	try { localStorage.setItem('ntu-theme', t) } catch (e) {}
+}
+document.addEventListener('DOMContentLoaded', () => {
+	document.querySelectorAll('[data-theme-toggle]').forEach(b =>
+		b.addEventListener('click', () => setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark')))
+	document.querySelectorAll('[data-lang-toggle]').forEach(b =>
+		b.addEventListener('click', () => {
+			const next = document.documentElement.lang === 'en' ? 'uk' : 'en'
+			try { localStorage.setItem('ntu-lang', next) } catch (e) {}
+			applyLang(next)
+		}))
+	let l = 'uk'
+	try { l = localStorage.getItem('ntu-lang') || 'uk' } catch (e) {}
+	applyLang(l)
+})
+
+/* ===== Home: before / after slider + news slider ===== */
+function whenPageReady(cb) {
+	if (!document.body.classList.contains('loading')) return cb()
+	const mo = new MutationObserver(() => {
+		if (!document.body.classList.contains('loading')) {
+			mo.disconnect()
+			cb()
+		}
+	})
+	mo.observe(document.body, { attributes: true, attributeFilter: ['class'] })
+}
+function initBeforeAfter() {
+	const ba = document.querySelector('[data-ba]')
+	if (!ba) return
+	const handle = ba.querySelector('.ba__handle')
+	let raf = 0, dragging = false
+	const set = v => {
+		v = Math.max(0, Math.min(100, v))
+		ba.style.setProperty('--pos', v + '%')
+		handle.setAttribute('aria-valuenow', Math.round(v))
+	}
+	const fromEvent = e => {
+		const r = ba.getBoundingClientRect()
+		set(((e.clientX - r.left) / r.width) * 100)
+	}
+	const stopAuto = () => {
+		cancelAnimationFrame(raf)
+		ba.classList.add('is-touched')
+	}
+	ba.addEventListener('pointerdown', e => {
+		stopAuto()
+		dragging = true
+		ba.classList.add('is-drag')
+		ba.setPointerCapture(e.pointerId)
+		fromEvent(e)
+	})
+	ba.addEventListener('pointermove', e => dragging && fromEvent(e))
+	const end = () => {
+		dragging = false
+		ba.classList.remove('is-drag')
+	}
+	ba.addEventListener('pointerup', end)
+	ba.addEventListener('pointercancel', end)
+	handle.addEventListener('keydown', e => {
+		const cur = parseFloat(handle.getAttribute('aria-valuenow'))
+		const step = e.shiftKey ? 15 : 5
+		const map = { ArrowLeft: cur - step, ArrowDown: cur - step, ArrowRight: cur + step, ArrowUp: cur + step, Home: 0, End: 100 }
+		if (!(e.key in map)) return
+		e.preventDefault()
+		stopAuto()
+		set(map[e.key])
+	})
+	// intro sweep: 50 -> 12 -> 88 -> 50 when the block first scrolls into view
+	if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+	const ease = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+	const legs = [[50, 12, 800], [12, 88, 1300], [88, 50, 900]]
+	function sweep() {
+		let i = 0, t0 = performance.now()
+		const step = now => {
+			const [a, b, d] = legs[i]
+			const k = Math.min(1, (now - t0) / d)
+			set(a + (b - a) * ease(k))
+			if (k < 1) raf = requestAnimationFrame(step)
+			else if (++i < legs.length) {
+				t0 = now
+				raf = requestAnimationFrame(step)
+			}
+		}
+		raf = requestAnimationFrame(step)
+	}
+	const io = new IntersectionObserver(entries => {
+		if (!entries[0].isIntersecting) return
+		io.disconnect()
+		whenPageReady(() => setTimeout(() => !ba.classList.contains('is-touched') && sweep(), 350))
+	}, { threshold: 0.45 })
+	io.observe(ba)
+}
+/* Smooth slider: eased slide, finger/mouse drag that follows the pointer, optional autoplay */
+function makeSlider(o) {
+	const { root, track, slides, prev, next, dots } = o
+	let i = 0, timer = 0, startX = null, dx = 0, w = 1, moved = false
+	function go(n, instant) {
+		i = Math.max(0, Math.min(slides.length - 1, n))
+		track.style.transition = instant ? 'none' : ''
+		track.style.transform = 'translate3d(' + -100 * i + '%,0,0)'
+		if (prev) prev.disabled = i === 0
+		if (next) next.disabled = i === slides.length - 1
+		dots.forEach((d, k) => d.classList.toggle('is-active', k === i))
+		slides.forEach((sl, k) => {
+			sl.classList.toggle('is-current', k === i)
+			sl.setAttribute('aria-hidden', k === i ? 'false' : 'true')
+		})
+	}
+	const loop = n => go(n >= slides.length ? 0 : n < 0 ? slides.length - 1 : n)
+	function play() {
+		if (!o.autoplay) return
+		clearInterval(timer)
+		timer = setInterval(() => !document.hidden && loop(i + 1), o.autoplay)
+	}
+	const stop = () => clearInterval(timer)
+	const step = d => { loop(i + d); play() }
+	if (prev) prev.addEventListener('click', () => (o.loop ? step(-1) : (go(i - 1), play())))
+	if (next) next.addEventListener('click', () => (o.loop ? step(1) : (go(i + 1), play())))
+	dots.forEach((d, k) => d.addEventListener('click', () => (go(k), play())))
+	root.addEventListener('pointerdown', e => {
+		if (e.pointerType === 'mouse' && e.button !== 0) return
+		if (e.target.closest('a, button')) return
+		startX = e.clientX
+		dx = 0
+		moved = false
+		w = root.getBoundingClientRect().width || 1
+		stop()
+	})
+	root.addEventListener('pointermove', e => {
+		if (startX === null) return
+		dx = e.clientX - startX
+		if (!moved && Math.abs(dx) < 6) return
+		moved = true
+		let d = dx
+		if ((i === 0 && d > 0) || (i === slides.length - 1 && d < 0)) d *= 0.35 // rubber band at the ends
+		track.style.transition = 'none'
+		track.style.transform = 'translate3d(calc(' + -100 * i + '% + ' + d + 'px),0,0)'
+	})
+	const release = () => {
+		if (startX === null) return
+		const d = dx
+		startX = null
+		if (moved && Math.abs(d) > Math.min(90, w * 0.12)) go(i + (d < 0 ? 1 : -1))
+		else go(i)
+		play()
+	}
+	root.addEventListener('pointerup', release)
+	root.addEventListener('pointercancel', release)
+	root.addEventListener('pointerleave', e => e.pointerType === 'mouse' && release())
+	root.addEventListener('dragstart', e => e.preventDefault())
+	root.addEventListener('mouseenter', stop)
+	root.addEventListener('mouseleave', play)
+	root.addEventListener('focusin', stop)
+	root.addEventListener('focusout', play)
+	go(0, true)
+	requestAnimationFrame(() => (track.style.transition = ''))
+	play()
+}
+function initNewsSlider() {
+	const root = document.querySelector('[data-news-slider]')
+	if (!root) return
+	makeSlider({
+		root,
+		track: root.querySelector('.news-track'),
+		slides: [...root.querySelectorAll('.news-slide')],
+		prev: root.querySelector('.news-prev'),
+		next: root.querySelector('.news-next'),
+		dots: [...root.querySelectorAll('.news-dots button')],
+		autoplay: 7000,
+		loop: false,
+	})
+}
+function initFactsSlider() {
+	const root = document.querySelector('[data-facts-slider]')
+	if (!root) return
+	makeSlider({
+		root,
+		track: root.querySelector('.facts-track'),
+		slides: [...root.querySelectorAll('.facts-slide')],
+		prev: root.querySelector('.facts-prev'),
+		next: root.querySelector('.facts-next'),
+		dots: [...root.querySelectorAll('.facts-dots button')],
+		autoplay: 6000,
+		loop: true,
+	})
+}
+document.addEventListener('DOMContentLoaded', () => {
+	initBeforeAfter()
+	initNewsSlider()
+	initFactsSlider()
+})
+
+/* ===== Card carousels: grids of 3+ cards become sliders ===== */
+function initCardCarousels() {
+	const ARW = d => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + d + '"/></svg>'
+	document.querySelectorAll('.grid-3, .grid-4').forEach(grid => {
+		if (grid.closest('[data-news-slider]') || grid.classList.contains('news-slide')) return
+		const items = [...grid.children]
+		if (items.length < 3 || !items.every(c => /(^|\s)(card|institute-card|card-faculty)(\s|$)/.test(c.className))) return
+		const wrap = document.createElement('div')
+		wrap.className = 'cc'
+		grid.parentNode.insertBefore(wrap, grid)
+		wrap.appendChild(grid)
+		grid.classList.add('cc-track')
+		grid.style.setProperty('--cc-n', grid.classList.contains('grid-4') ? 4 : 3)
+		grid.classList.remove('reveal')
+		items.forEach(c => c.classList.remove('reveal'))
+		const prev = document.createElement('button'), next = document.createElement('button'), dots = document.createElement('div')
+		prev.type = next.type = 'button'
+		prev.className = 'cc-arrow cc-prev'
+		next.className = 'cc-arrow cc-next'
+		prev.innerHTML = ARW('M15 5l-7 7 7 7')
+		next.innerHTML = ARW('M9 5l7 7-7 7')
+		dots.className = 'cc-dots'
+		wrap.append(prev, next, dots)
+		let pages = 1, step = 1, perView = 1
+		const gap = () => parseFloat(getComputedStyle(grid).columnGap) || 24
+		function measure() {
+			const w = items[0].getBoundingClientRect().width
+			perView = Math.max(1, Math.round((grid.clientWidth + gap()) / (w + gap())))
+			step = (w + gap()) * perView
+			pages = Math.ceil(items.length / perView)
+			wrap.classList.toggle('is-static', pages <= 1)
+			prev.setAttribute('aria-label', T('Назад'))
+			next.setAttribute('aria-label', T('Вперед'))
+			if (dots.children.length !== pages) {
+				dots.innerHTML = ''
+				for (let i = 0; i < pages; i++) {
+					const b = document.createElement('button')
+					b.type = 'button'
+					b.setAttribute('aria-label', T('Слайд') + ' ' + (i + 1))
+					b.addEventListener('click', () => grid.scrollTo({ left: i * step }))
+					dots.appendChild(b)
+				}
+			}
+			update()
+		}
+		function update() {
+			const max = grid.scrollWidth - grid.clientWidth
+			const at = grid.scrollLeft
+			let p = Math.round(at / step)
+			if (at >= max - 8) p = pages - 1
+			p = Math.max(0, Math.min(pages - 1, p))
+			prev.disabled = at <= 8
+			next.disabled = at >= max - 8
+			;[...dots.children].forEach((d, i) => d.classList.toggle('is-active', i === p))
+		}
+		prev.addEventListener('click', () => grid.scrollBy({ left: -step }))
+		next.addEventListener('click', () => grid.scrollBy({ left: step }))
+		grid.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true })
+		new ResizeObserver(measure).observe(grid)
+		measure()
+	})
+}
+/* ===== Dynamic timeline: scroll-driven line, items slide in, dots light up ===== */
+function initTimelines() {
+	document.querySelectorAll('[data-tl]').forEach(tl => {
+		const items = [...tl.querySelectorAll('.tl__item')]
+		const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+		const io = new IntersectionObserver(es => es.forEach(e => {
+			if (e.isIntersecting) {
+				e.target.classList.add('is-in')
+				io.unobserve(e.target)
+			}
+		}), { threshold: 0.2, rootMargin: '0px 0px -8% 0px' })
+		items.forEach((it, i) => {
+			it.style.transitionDelay = (i % 2) * 0.08 + 's'
+			reduce ? it.classList.add('is-in') : io.observe(it)
+		})
+		let ticking = false
+		function update() {
+			ticking = false
+			const r = tl.getBoundingClientRect(), vh = innerHeight, mark = vh * 0.58
+			const p = Math.max(0, Math.min(1, (mark - r.top) / r.height))
+			tl.style.setProperty('--tl-p', p.toFixed(4))
+			items.forEach(it => {
+				const d = it.querySelector('.tl__dot').getBoundingClientRect()
+				it.classList.toggle('is-active', d.top + d.height / 2 < mark)
+			})
+		}
+		const req = () => !ticking && ((ticking = true), requestAnimationFrame(update))
+		addEventListener('scroll', req, { passive: true })
+		addEventListener('resize', req)
+		update()
+	})
+}
+document.addEventListener('DOMContentLoaded', () => {
+	initCardCarousels()
+	initTimelines()
+})
+
+
+/* ===== Materials: search + type filter ===== */
+function initResourceFilter() {
+	const grid = document.getElementById('resGrid')
+	if (!grid) return
+	const cards = Array.from(grid.querySelectorAll('.res-card'))
+	const search = document.getElementById('resSearch')
+	const empty = document.getElementById('resEmpty')
+	const chips = document.querySelectorAll('.res-chip')
+	let type = 'all'
+	function apply() {
+		const q = search.value.trim().toLowerCase()
+		let shown = 0
+		cards.forEach(c => {
+			// card text is Ukrainian in data-text, so search matches visible text in either language
+			const hay = c.dataset.text + ' ' + c.textContent.toLowerCase()
+			const ok = (type === 'all' || c.dataset.type === type) && (!q || hay.includes(q))
+			c.hidden = !ok
+			if (ok) shown++
+		})
+		empty.hidden = shown > 0
+	}
+	chips.forEach(ch => ch.addEventListener('click', () => {
+		chips.forEach(x => x.classList.toggle('is-active', x === ch))
+		type = ch.dataset.filter
+		apply()
+	}))
+	search.addEventListener('input', apply)
+}
+
+/* ===== Media gallery: category filter ===== */
+function initMediaFilter() {
+	const items = document.querySelectorAll('.mg-grid .gallery-item')
+	if (!items.length) return
+	const chips = document.querySelectorAll('[data-mg-filter]')
+	chips.forEach(ch => ch.addEventListener('click', () => {
+		chips.forEach(x => x.classList.toggle('is-active', x === ch))
+		const f = ch.dataset.mgFilter
+		items.forEach(i => { i.hidden = !(f === 'all' || i.dataset.cat === f) })
+	}))
 }
