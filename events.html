@@ -124,11 +124,57 @@
 <div class="section__contacts">
 <h2>Організовуєш подію й хочеш анонс на платформі?</h2>
 <p>Напиши нам - розкажемо про твою подію студентам з усіх інститутів.</p>
-<a class="btn btn-primary btn-primary__contacts" href="contact.html">Заанонсувати подію</a>
+<button type="button" class="btn btn-primary btn-primary__contacts" data-open-modal="eventModal">Заанонсувати подію</button>
 </div>
 </div>
 </section>
 
+<div class="modal" id="eventModal" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle" hidden>
+<div class="modal__box">
+<button type="button" class="modal__close" data-close-modal aria-label="Закрити">✕</button>
+<form id="contactForm" action="https://formspree.io/f/mwvgvlay" method="POST" novalidate>
+<div class="form-head">
+<h3 id="eventModalTitle">Анонсувати подію</h3>
+<p>Вкажіть дату, тему й короткий опис: ми розглянемо анонс і розповімо про подію студентам.</p>
+</div>
+<input type="text" name="_gotcha" class="honeypot-field" tabindex="-1" autocomplete="off">
+<input type="hidden" name="_subject" value="Анонс події на платформі">
+<div class="two-field-row">
+<div class="field">
+<label for="ev-date">Дата події<span class="required">*</span></label>
+<input id="ev-date" name="date" type="date" required>
+<span class="field-error"></span>
+</div>
+<div class="field">
+<label for="ev-name">Ваше ім'я<span class="required">*</span></label>
+<input id="ev-name" name="name" type="text" required minlength="2" placeholder="Як до вас звертатися">
+<span class="field-error"></span>
+</div>
+</div>
+<div class="field">
+<label for="ev-topic">Тема події<span class="required">*</span></label>
+<input id="ev-topic" name="topic" type="text" required minlength="3" maxlength="120" placeholder="Наприклад: кіновечір у гуртожитку №2">
+<span class="field-error"></span>
+</div>
+<div class="field">
+<label for="ev-message">Опис події<span class="required">*</span></label>
+<textarea id="ev-message" name="message" rows="4" required minlength="10" maxlength="1000" placeholder="Де, о котрій годині, для кого та як долучитися"></textarea>
+<span class="field-error"></span>
+</div>
+<div class="field">
+<label for="ev-email">Email для зв'язку</label>
+<input id="ev-email" name="email" type="email" placeholder="student@example.com">
+<span class="field-error"></span>
+</div>
+<div class="consent-field">
+<input type="checkbox" id="ev-consent" name="consent" required>
+<label for="ev-consent">Погоджуюсь на обробку персональних даних для розгляду цього анонсу<span class="required">*</span></label>
+</div>
+<button class="btn btn-primary btn-primary--full" type="submit" data-submit>Надіслати анонс</button>
+<p data-form-status class="form-note-status"></p>
+</form>
+</div>
+</div>
 </main>
 <footer class="footer">
 <div class="container footer-grid">

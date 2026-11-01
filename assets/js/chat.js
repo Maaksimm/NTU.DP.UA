@@ -14,6 +14,46 @@
 		try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v) } catch (e) { return null }
 	}
 
+
+	/* ---------- фільтр нецензурної лексики (укр / рос / англ) ---------- */
+	var LAT2CYR = { a: 'а', e: 'е', o: 'о', p: 'р', c: 'с', x: 'х', y: 'у', i: 'і', k: 'к', m: 'м', t: 'т', b: 'в', h: 'н', '0': 'о', '3': 'з', '@': 'а', '$': 'с' }
+	var PFX = '(?:на|по|за|ви|до|роз|з|с|пере|при|під|об|від|не|о|у|від)?'
+	var RU_UA = [
+		new RegExp('^' + PFX + 'ху[йяеєюїиі]'),
+		/пізд|пизд|пезд/,
+		new RegExp('^' + PFX + '[еєїи]б(?:а[нтлвшк]|у|ну|ля|ло|ли|ь)'),
+		/^[еєїи]бл[оа]н?/,
+		/^(?:за|на|по|ви|до|роз)?йоб/,
+		/^у[еёє]б(?:ок|ан|ки)/,
+		/^бл(?:я|ят|яд|ять|ядь|ядс|яди|яха)$|^бл(?:ят|яд)/,
+		/^су(?:ка|ки|ку|кою|ці|ко|ків)$|^су(?:чар|чк)/,
+		/^муд(?:ак|ач|ил|ень|озвон)/,
+		/^(?:на|по|за)?хер(?:ня|ню|ні|ово|овий|ова)?$/,
+		/^г[ао]ндон/,
+		/^залуп/,
+		/^п[іи]д[оа]р(?:а|и|у|ом|ас|ами|ів)?$/,
+		/^п[іи]дар(?:ас|аз)/,
+		/^шлюх/,
+		/^курв/,
+		/^дроч/,
+		/^мраз[ьіи]$/,
+		/^долбо[её]б/,
+		/^довбо[еєї]б/
+	]
+	var EN = /fuck|shit|bitch|cunt|asshole|whore|slut|blyat|blyad|dick(?:head)?s?$|nigg/
+	function squash(s) { return s.replace(/(.)\1+/g, '$1') }
+	function isProfane(text) {
+		var raw = String(text).toLowerCase()
+		if (EN.test(squash(raw.replace(/[^a-z]+/g, ' '))) || /f+u+c+k|sh+i+t/.test(raw.replace(/[^a-z]/g, ''))) return true
+		var mapped = raw.replace(/[a-z0-9@$]/g, function (ch) { return LAT2CYR[ch] || ch })
+		var words = mapped.split(/[^а-яіїєґё]+/).filter(Boolean).map(squash)
+		for (var i = 0; i < words.length; i++)
+			for (var j = 0; j < RU_UA.length; j++) if (RU_UA[j].test(words[i])) return true
+		// літери через пробіли/крапки: «х у й», «п.і.з.д.а»
+		var glued = squash(mapped.replace(/[^а-яіїєґё]/g, ''))
+		return /хуй|хуя|пізд|пизд|[еєїи]бат|бляд|блят|блять|залуп/.test(glued)
+	}
+
 	var uid = ls(KEY_UID)
 	if (!uid) { uid = 'v' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36); ls(KEY_UID, uid) }
 
@@ -111,10 +151,13 @@
 		messages.forEach(function (m) {
 			var mine = m.u === uid
 			var b = el('div', 'chat-msg' + (mine ? ' is-mine' : ''))
-			var who = el('span', 'chat-msg__who', m.n || t('Гість'))
+			var bad = isProfane(m.t) || isProfane(m.n || '')
+			var who = el('span', 'chat-msg__who', bad ? t('Гість') : (m.n || t('Гість')))
 			who.style.color = mine ? '' : colorFor(m.n || '')
 			b.appendChild(who)
-			b.appendChild(el('p', 'chat-msg__text', m.t))
+			var txt = el('p', 'chat-msg__text', bad ? t('Повідомлення приховано: нецензурна лексика') : m.t)
+			if (bad) txt.classList.add('is-hidden')
+			b.appendChild(txt)
 			b.appendChild(el('time', 'chat-msg__time', fmt(m.ts)))
 			list.appendChild(b)
 		})
@@ -192,14 +235,19 @@
 	}
 
 	/* ---------- events ---------- */
-	function open() {
+	function open(kind) {
 		isOpen = true
 		panel.hidden = false
 		root.classList.add('is-open')
 		unread = 0
 		badge.hidden = true
 		list.scrollTop = list.scrollHeight
-		setTimeout(function () { (nameIn.value ? msgIn : nameIn).focus() }, 50)
+		if (kind === 'help' && !msgIn.value) msgIn.value = t('Потрібна допомога з предметом: ')
+		setTimeout(function () {
+			var f = nameIn.value ? msgIn : nameIn
+			f.focus()
+			if (f === msgIn) f.setSelectionRange(f.value.length, f.value.length)
+		}, 50)
 	}
 	function shut() {
 		isOpen = false
@@ -212,7 +260,7 @@
 	document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen) shut() })
 	document.addEventListener('click', function (e) {
 		var o = e.target.closest && e.target.closest('[data-open-chat]')
-		if (o) { e.preventDefault(); open() }
+		if (o) { e.preventDefault(); open(o.getAttribute('data-open-chat')) }
 	})
 
 	form.addEventListener('submit', function (e) {
@@ -222,6 +270,7 @@
 		note.textContent = ''
 		if (!name) { note.textContent = t("Вкажіть ім'я"); nameIn.focus(); return }
 		if (!text) return
+		if (isProfane(text) || isProfane(name)) { note.textContent = t('Нецензурна лексика заборонена. Будь ласка, спілкуйтеся ввічливо.'); return }
 		if (Date.now() - lastSent < 2000) { note.textContent = t('Не так швидко - зачекайте секунду'); return }
 		lastSent = Date.now()
 		ls(KEY_NAME, name)

@@ -57,7 +57,7 @@
 <p class="lead">Застряг на лабораторній, не встигаєш до дедлайну курсової чи хвилюєшся перед сесією?
  Студентська взаємодопомога - це конспекти, поради від старшокурсників і формат «студент студенту», без
  зайвого офіціозу.</p>
-<div class="actions"><a class="btn btn-primary" href="#ask">Попросити допомогу</a></div>
+<div class="actions"><button type="button" class="btn btn-primary" data-open-chat="help">Попросити допомогу в чаті</button></div>
 </div>
 </section>
 
@@ -114,7 +114,7 @@
 <div class="card reveal">
 <div class="icon-number">01</div>
 <h3>Опиши задачу</h3>
-<p>Заповни форму нижче: предмет, тема і що саме викликає труднощі.</p>
+<p>Натисни кнопку «Попросити допомогу» й напиши в чаті: предмет, тема і що саме викликає труднощі.</p>
 </div>
 <div class="card reveal">
 <div class="icon-number">02</div>
@@ -124,71 +124,20 @@
 <div class="card reveal">
 <div class="icon-number">03</div>
 <h3>Отримуєш відповідь</h3>
-<p>Пояснення, підказку чи корисні матеріали надсилаємо на вказану пошту або в чат.</p>
+<p>Пояснення, підказку чи корисні матеріали отримаєш прямо в чаті від студентів, які вже розібралися в темі.</p>
 </div>
 </div>
 </div>
 </section>
 
 <section class="section section-soft" id="ask">
-<div class="container two-col">
-<div class="content reveal">
+<div class="container">
+<div class="panel panel-info reveal" style="text-align:center">
 <div class="label">Попроси допомоги</div>
-<h2>Заповни форму - і не залишайся з дедлайном сам на сам</h2>
-<p style="color:var(--muted);font-size:14.5px;margin-top:14px">Це студентська взаємодопомога, а не сервіс
- «зробимо за тебе» - ми пояснюємо і підказуємо, щоб ти сам(а) розібрався(лась) у темі.</p>
+<h2 style="font-size:24px">Відкрий чат - і не залишайся з дедлайном сам на сам</h2>
+<p style="max-width:640px;margin:14px auto 22px">Це студентська взаємодопомога, а не сервіс «зробимо за тебе»: ми пояснюємо і підказуємо, щоб ти сам(а) розібрався(лась) у темі. Вкажи ім'я, предмет і задачу, а студенти відповідуть у чаті. Просимо спілкуватися ввічливо: нецензурна лексика в чаті блокується.</p>
+<button type="button" class="btn btn-primary" data-open-chat="help">Відкрити чат і попросити допомогу</button>
 </div>
-<form class="form-card reveal" id="contactForm" action="https://formspree.io/f/mwvgvlay" method="POST"
- novalidate>
-<div class="form-head">
-<h3>Опиши, що потрібно</h3>
-<p>Відповімо на вказану пошту.</p>
-</div>
-<input type="text" name="_gotcha" class="honeypot-field" tabindex="-1" autocomplete="off">
-<input type="hidden" name="_subject" value="Запит на допомогу з ДЗ / екзаменом / проєктом">
-
-<div class="field">
-<label for="cf-name">Ім'я<span class="required">*</span></label>
-<input id="cf-name" name="name" type="text" required minlength="2" placeholder="Як до вас звертатися">
-<span class="field-error"></span>
-</div>
-<div class="two-field-row">
-<div class="field">
-<label for="cf-email">Email<span class="required">*</span></label>
-<input id="cf-email" name="email" type="email" required placeholder="student@example.com">
-<span class="field-error"></span>
-</div>
-<div class="field">
-<label for="cf-subject">Предмет</label>
-<select id="cf-subject" name="subject">
-<option value="">Оберіть предмет</option>
-<option>Вища математика</option>
-<option>Програмування</option>
-<option>Опір матеріалів / механіка</option>
-<option>Електротехніка</option>
-<option>Економіка та фінанси</option>
-<option>Хімія / фізика</option>
-<option>Правознавство</option>
-<option>Іноземна мова</option>
-<option>Інше</option>
-</select>
-<span class="field-error"></span>
-</div>
-</div>
-<div class="field">
-<label for="cf-message">Опиши задачу<span class="required">*</span></label>
-<input id="cf-message" name="message" type="text" required minlength="10"
- placeholder="Наприклад: не розумію, як брати подвійний інтеграл">
-<span class="field-error"></span>
-</div>
-<div class="consent-field">
-<input type="checkbox" id="cf-consent" name="consent" required>
-<label for="cf-consent">Погоджуюсь на обробку персональних даних для розгляду цього звернення<span
- class="required">*</span></label>
-</div>
-<button class="btn btn-primary btn-primary--full" type="submit" data-submit>Попросити допомогу</button>
-<p data-form-status class="form-note-status"></p>
-</form>
 </div>
 </section>
 
