@@ -36,6 +36,6 @@
  * лише в браузері цього пристрою (і синхронізуються між вкладками).
  */
 window.NTU_CHAT = {
-	databaseURL: 'https://ntu-chat-default-rtdb.europe-west1.firebasedatabase.app',
-	apiKey: ''
+	databaseURL: 'https://ntubd-93efc-default-rtdb.europe-west1.firebasedatabase.app',
+	apiKey: 'AIzaSyAB3YiH2DL32jHLzMHOct4H3tCulrf2EnY'
 }
