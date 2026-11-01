@@ -1654,5 +1654,6 @@ window.I18N_EN = {
  "Таблиця вище зібрана з відкритих даних про вступ 2026 року. Остаточні правила прийому, офіційні накази й актуальні рейтингові списки перевіряй на офіційних ресурсах:": "The table above is compiled from open data on the 2026 admission. Check the final admission rules, official orders and current ranking lists on the official resources:",
  "Місця, вартість і середні бали": "Places, cost and average scores",
  "немає": "none",
- "Не вдалося завантажити дані. Відкрийте сторінку vstup.osvita.ua.": "Failed to load the data. Please open the vstup.osvita.ua page."
+ "Не вдалося завантажити дані. Відкрийте сторінку vstup.osvita.ua.": "Failed to load the data. Please open the vstup.osvita.ua page.",
+ "до": "up to"
 };

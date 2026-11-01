@@ -1078,7 +1078,7 @@ function initAdmissionTable() {
 			td2.appendChild(code)
 			td2.appendChild(document.createTextNode(r.s))
 			tr.appendChild(td2)
-			cell(tr, r.b > 0 ? 'до ' + r.b : T('немає'))
+			cell(tr, r.b > 0 ? T('до') + ' ' + r.b : T('немає'))
 			cell(tr, r.k > 0 ? String(r.k) : '-')
 			cell(tr, fmt(r.pr))
 			cell(tr, r.ab || r.ac ? (r.ab ? r.ab.toFixed(1) : '-') + ' / ' + (r.ac ? r.ac.toFixed(1) : '-') : '-')
