@@ -3976,3 +3976,14 @@ a.spec-badge:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .adm-table .adm-code{display:inline-block;margin-right:6px;padding:1px 7px;border-radius:6px;background:var(--blue-soft);color:var(--blue-dark);font:800 12px Manrope,sans-serif}
 .adm-table .adm-fac{display:block;margin-top:3px;color:var(--muted);font-size:12.5px}
 @media(max-width:640px){.stat-row{grid-template-columns:1fr}}
+
+.mg-grid--2{columns:2 340px}
+.video-thumb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.video-thumb-grid .video-thumb-card,.two-col .video-thumb-card{margin-top:0}
+.grid-2-steps{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:14px}
+.grid-2-steps .card p{margin:6px 0 0;font-size:14px}
+.gallery-item--plain{border:0;box-shadow:none;background:transparent;border-radius:calc(var(--border-radius) - 4px)}
+@media(max-width:992px){.video-thumb-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.video-thumb-grid,.grid-2-steps{grid-template-columns:1fr}}
+.photo-vertical-gallery .gallery-item{display:block;height:auto}
+.photo-vertical-gallery .gallery-item img{height:auto;object-fit:contain;margin-bottom:0}

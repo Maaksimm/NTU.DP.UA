@@ -61,12 +61,12 @@
 </section>
 <section class="section">
 <div class="container">
-<div class="gallery reveal"><img src="https://nmu.org.ua/wp-content/uploads/2025/02/ntudp-2022-slide-1.webp"
- alt="Головний корпус"><img
- src="https://nmu.org.ua/wp-content/uploads/2025/02/ntudp-2022-slide-6-1024x576.jpg" alt="Схема кампусу"><img
- src="https://nmu.org.ua/wp-content/uploads/2025/02/ntudp-2022-slide-2.jpg" alt="Місія"><img
- src="https://nmu.org.ua/wp-content/uploads/2025/02/ntudp-2022-slide-4-1024x576.jpg"
- alt="Традиції та інновації"></div>
+<div class="mg-grid mg-grid--2 reveal">
+<button type="button" class="gallery-item" data-lightbox-group="campus"><img src="assets/img/ntudp-2022-slide-1.webp" alt="Інтер&#x27;єр головного корпусу: вітражі з гербом університету" loading="lazy"><span class="gallery-item__overlay">Інтер&#x27;єр головного корпусу: вітражі з гербом університету</span><span class="gallery-item__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg></span></button>
+<button type="button" class="gallery-item" data-lightbox-group="campus"><img src="assets/img/campus-official-6.jpg" alt="Схема кампусу: корпуси, гуртожитки, їдальні, кав&#x27;ярні та інфраструктура" loading="lazy"><span class="gallery-item__overlay">Схема кампусу: корпуси, гуртожитки, їдальні, кав&#x27;ярні та інфраструктура</span><span class="gallery-item__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg></span></button>
+<button type="button" class="gallery-item" data-lightbox-group="campus"><img src="assets/img/campus-official-2.jpg" alt="Головний корпус і наша місія" loading="lazy"><span class="gallery-item__overlay">Головний корпус і наша місія</span><span class="gallery-item__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg></span></button>
+<button type="button" class="gallery-item" data-lightbox-group="campus"><img src="assets/img/campus-official-4.jpg" alt="Традиції в інноваціях: університет у цифрах" loading="lazy"><span class="gallery-item__overlay">Традиції в інноваціях: університет у цифрах</span><span class="gallery-item__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg></span></button>
+</div>
 </div>
 </section>
 
@@ -74,7 +74,7 @@
 <div class="container two-col-reverse">
 <div class="photo-vertical-gallery reveal">
 <div class="img-container">
-<img src="assets/img/fourth-corpus__inner.webp" alt="Мармурові сходи головного корпусу НТУ ДП">
+<button type="button" class="gallery-item gallery-item--plain" data-lightbox-group="campus-view"><img src="assets/img/fourth-corpus__inner.webp" alt="Дніпровська політехніка: панорама кампусу з прапором України" loading="lazy"><span class="gallery-item__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg></span></button>
 <small>Історичний вестибюль головного корпусу - одна з архітектурних перлин Дніпра</small>
 </div>
 </div>
@@ -170,6 +170,15 @@
 </div>
 </div>
 </section>
+<div class="lightbox" id="lifeLightbox" aria-hidden="true">
+<button type="button" class="lightbox__close" id="lightboxClose" aria-label="Закрити">✕</button>
+<button type="button" class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Попереднє фото">‹</button>
+<button type="button" class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Наступне фото">›</button>
+<div class="lightbox__figure">
+<img class="lightbox__img" id="lightboxImg" src="" alt="">
+<p class="lightbox__caption" id="lightboxCaption"></p>
+</div>
+</div>
 </main>
 
 <footer class="footer">

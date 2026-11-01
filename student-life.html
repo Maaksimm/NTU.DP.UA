@@ -143,7 +143,7 @@
           <h2>Фото зі студентського життя</h2>
           <p>Аудиторії, лекторії, спортзали й корпуси - так виглядає Політехніка щодня.</p>
         </div>
-        <div class="gallery gallery--quad reveal">
+        <div class="mg-grid reveal">
           <button type="button" class="gallery-item" data-lightbox-group="campus">
             <img src="assets/img/students-life-01.webp" alt="Студентки НТУ «ДП» на території університету"
               loading="lazy">
@@ -176,9 +176,9 @@
               </svg></span>
           </button>
           <button type="button" class="gallery-item" data-lightbox-group="campus">
-            <img src="assets/img/students-life-06.webp" alt="Студенти й студентки на урочистій лінійці в холі корпусу"
+            <img src="assets/img/students-life-06.webp" alt="Студенти на відкритому заході у дворі Політехніки"
               loading="lazy">
-            <span class="gallery-item__overlay">Студенти й студентки на урочистій лінійці в холі корпусу</span>
+            <span class="gallery-item__overlay">Студенти на відкритому заході у дворі Політехніки</span>
             <span class="gallery-item__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="7" />
@@ -186,10 +186,10 @@
                 <path d="M11 8v6M8 11h6" />
               </svg></span>
           </button>
-          <button type="button" class="gallery-item " data-lightbox-group="campus">
-            <img class="gallery-item__yard" src="assets/img/Screenshot_1.webp" alt="Студенти й студентки на урочистій лінійці в холі корпусу"
+          <button type="button" class="gallery-item" data-lightbox-group="campus">
+            <img src="assets/img/Screenshot_1.webp" alt="Студенти на відкритому заході у дворі Політехніки"
               loading="lazy">
-            <span class="gallery-item__overlay">Студенти й студентки на урочистій лінійці в холі корпусу</span>
+            <span class="gallery-item__overlay">Студенти на відкритому заході у дворі Політехніки</span>
             <span class="gallery-item__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="7" />
@@ -208,7 +208,7 @@
           <h2>Випуск, вручення дипломів і посвята в студенти</h2>
           <p>Дипломи, мантії та щирі емоції - так закінчується і так починається шлях у Політехніці.</p>
         </div>
-        <div class="gallery gallery--duo reveal">
+        <div class="mg-grid mg-grid--2 reveal">
           <button type="button" class="gallery-item" data-lightbox-group="graduation">
             <img src="assets/img/students-life-04-graduation.webp"
               alt="Випускники НТУ «ДП» з дипломами на сходах головного корпусу" loading="lazy">
@@ -261,20 +261,10 @@
             </p>
           </div>
           </div>
-        <div class="gallery gallery--duo reveal" style="margin-top:22px">
+        <div class="mg-grid mg-grid--2 reveal" style="margin-top:22px">
           <button type="button" class="gallery-item" data-lightbox-group="sport">
-            <img src="assets/img/sportzal_ntudp.jpg" alt="Конференс зал НТУ «ДП»" loading="lazy">
-            <span class="gallery-item__overlay">Конференс зал НТУ «ДП»</span>
-            <span class="gallery-item__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="7" />
-                <path d="m21 21-4.3-4.3" />
-                <path d="M11 8v6M8 11h6" />
-              </svg></span>
-          </button>
-          <button type="button" class="gallery-item" data-lightbox-group="sport">
-            <img src="assets/img/studens-fourth.webp" alt="Студенти Політехніки на кампусі" loading="lazy">
-            <span class="gallery-item__overlay">Студенти Політехніки на кампусі</span>
+            <img src="assets/img/sportzal_ntudp.jpg" alt="Зал для заходів НТУ «ДП»" loading="lazy">
+            <span class="gallery-item__overlay">Зал для заходів НТУ «ДП»</span>
             <span class="gallery-item__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="7" />
@@ -292,19 +282,116 @@
           <div class="label">Дивись, а не тільки читай</div>
           <h2>Відео про життя університету ▶</h2>
         </div>
-        <a class="video-thumb-card reveal" href="https://www.youtube.com/watch?v=SAMmFUySSSg" target="_blank"
-          rel="noopener">
-          <div class="video-thumb-card__image">
-            <img src="https://img.youtube.com/vi/SAMmFUySSSg/maxresdefault.jpg"
-              onerror="this.onerror=null;this.src='https://img.youtube.com/vi/SAMmFUySSSg/hqdefault.jpg'"
-              alt="Відео НТУ «Дніпровська політехніка» на YouTube" loading="lazy">
-            <span class="video-thumb-card__play">▶</span>
-          </div>
-          <span class="video-thumb-card__label">Дивитись на YouTube ↗</span>
-        </a>
+        <div class="video-thumb-grid">
+<a class="video-thumb-card reveal" href="https://www.youtube.com/watch?v=SAMmFUySSSg" target="_blank" rel="noopener">
+<div class="video-thumb-card__image">
+<img src="https://img.youtube.com/vi/SAMmFUySSSg/hqdefault.jpg" alt="Студентська весна 2026" loading="lazy">
+<span class="video-thumb-card__play">▶</span>
+</div>
+<span class="video-thumb-card__label">Студентська весна 2026 · Дивитись на YouTube ↗</span>
+</a>
+<a class="video-thumb-card reveal" href="https://www.youtube.com/watch?v=9l-ene7XN9s" target="_blank" rel="noopener">
+<div class="video-thumb-card__image">
+<img src="https://img.youtube.com/vi/9l-ene7XN9s/hqdefault.jpg" alt="День першокурсника НТУ ДП" loading="lazy">
+<span class="video-thumb-card__play">▶</span>
+</div>
+<span class="video-thumb-card__label">День першокурсника НТУ ДП · Дивитись на YouTube ↗</span>
+</a>
+<a class="video-thumb-card reveal" href="https://www.youtube.com/watch?v=M4723nFNdbM" target="_blank" rel="noopener">
+<div class="video-thumb-card__image">
+<img src="https://img.youtube.com/vi/M4723nFNdbM/hqdefault.jpg" alt="Концерт до Хеловіну" loading="lazy">
+<span class="video-thumb-card__play">▶</span>
+</div>
+<span class="video-thumb-card__label">Концерт до Хеловіну · Дивитись на YouTube ↗</span>
+</a>
+<a class="video-thumb-card reveal" href="https://www.youtube.com/watch?v=euPKLSfY9mQ" target="_blank" rel="noopener">
+<div class="video-thumb-card__image">
+<img src="https://img.youtube.com/vi/euPKLSfY9mQ/hqdefault.jpg" alt="Відкриття залу єдиноборств" loading="lazy">
+<span class="video-thumb-card__play">▶</span>
+</div>
+<span class="video-thumb-card__label">Відкриття залу єдиноборств · Дивитись на YouTube ↗</span>
+</a>
+<a class="video-thumb-card reveal" href="https://www.youtube.com/watch?v=dYxN9RPL2Fg" target="_blank" rel="noopener">
+<div class="video-thumb-card__image">
+<img src="https://img.youtube.com/vi/dYxN9RPL2Fg/hqdefault.jpg" alt="Відкриття аудиторії Soft Serve" loading="lazy">
+<span class="video-thumb-card__play">▶</span>
+</div>
+<span class="video-thumb-card__label">Відкриття аудиторії Soft Serve · Дивитись на YouTube ↗</span>
+</a>
+<a class="video-thumb-card reveal" href="https://www.youtube.com/watch?v=oknzB6748C0" target="_blank" rel="noopener">
+<div class="video-thumb-card__image">
+<img src="https://img.youtube.com/vi/oknzB6748C0/hqdefault.jpg" alt="Зустріч випускників 2024" loading="lazy">
+<span class="video-thumb-card__play">▶</span>
+</div>
+<span class="video-thumb-card__label">Зустріч випускників 2024 · Дивитись на YouTube ↗</span>
+</a>
+</div>
         <p style="margin-top:14px;color:var(--muted);font-size:13.5px">Більше відео - на<a
             href="https://www.youtube.com/channel/UCxGd3_ed1r0HSPDcN3BsRqA" target="_blank" rel="noopener"> офіційному
             YouTube-каналі</a> університету або на сторінці <a href="media.html">«Фото і відео»</a>.</p>
+      </div>
+    </section>
+
+    <section class="section" id="dormitories">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="label">Гуртожитки</div>
+          <h2>Де жити студентові: гуртожитки Політехніки</h2>
+          <p>Тільки офіційна інформація зі сторінки університету про поселення. Перед поданням документів перевіряйте актуальні умови в адміністрації студентського кампусу.</p>
+        </div>
+        <div class="table-wrap reveal" style="overflow-x:auto">
+          <table class="table">
+            <thead><tr><th>Гуртожиток</th><th>Адреса</th><th>Примітка</th></tr></thead>
+            <tbody>
+<tr><td>Гуртожиток №1</td><td>просп. Дмитра Яворницького, 21</td><td>Тут працює адміністрація студентського кампусу</td></tr>
+<tr><td>Гуртожиток №2</td><td>просп. Дмитра Яворницького, 17</td><td>За даними університету, на капітальному ремонті</td></tr>
+<tr><td>Гуртожиток №3</td><td>просп. Науки, 61</td><td>-</td></tr>
+<tr><td>Гуртожиток №4</td><td>просп. Науки, 59</td><td>-</td></tr>
+<tr><td>Гуртожиток №5</td><td>просп. Науки, 57</td><td>-</td></tr>
+<tr><td>Гуртожиток №6</td><td>просп. Олександра Поля, 111-Б</td><td>-</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="two-col" style="margin-top:34px">
+          <div class="content reveal">
+            <h3>Хто може поселитися</h3>
+            <ul class="checklist" style="margin-top:14px">
+              <li><span>Гуртожитки призначені насамперед для іногородніх студентів, аспірантів і докторантів на період навчання.</span></li>
+              <li><span>За наявності місць вступників можуть тимчасово поселити на період вступних випробувань, а студентів заочної форми - на час сесії.</span></li>
+              <li><span>Місця розподіляються за заявами, наказами про зарахування, встановленими пільгами та рішеннями відповідальних комісій університету.</span></li>
+            </ul>
+          </div>
+          <div class="reveal">
+            <h3>Як отримати місце першокурснику</h3>
+            <div class="grid-2-steps">
+              <div class="card"><div class="icon-number">01</div><p>Вкажіть потребу в гуртожитку під час вступної кампанії або одразу після рекомендації.</p></div>
+              <div class="card"><div class="icon-number">02</div><p>Після наказу про зарахування подайте заяву в інституті або на факультеті.</p></div>
+              <div class="card"><div class="icon-number">03</div><p>Отримайте направлення з номером гуртожитку, датою прибуття та індивідуальним переліком документів.</p></div>
+              <div class="card"><div class="icon-number">04</div><p>Підпишіть договір, ознайомтеся з правилами проживання й виконайте вимоги реєстрації та оплати.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="two-col" style="margin-top:34px">
+          <div class="panel panel-info reveal">
+            <div class="label">Контакти</div>
+            <ul class="contact-list">
+              <li><b>Студентський кампус:</b> просп. Дмитра Яворницького, 21 (гуртожиток №1)</li>
+              <li><b>Телефон:</b> <a href="tel:+380567965566">+380 56 796-55-66</a>, далі оберіть студентський кампус</li>
+              <li><b>Документи:</b> <a href="https://nmu.org.ua/main/wp-content/uploads/sites/16/2026/10/admission-dormitory-settlement.pdf" target="_blank" rel="noopener">Порядок поселення та проживання (PDF)</a></li>
+              <li><b>Офіційна сторінка:</b> <a href="https://nmu.org.ua/main/admission/housing/" target="_blank" rel="noopener">nmu.org.ua/main/admission/housing</a></li>
+            </ul>
+            <p style="margin-top:14px;color:var(--muted);font-size:13.5px">Вартість проживання, терміни подання заяв і перелік документів університет вказує у направленні та в порядку поселення: на сторінці вони не наведені.</p>
+          </div>
+          <div class="reveal">
+<a class="video-thumb-card reveal" href="https://www.youtube.com/watch?v=YBXQMbmx4ww" target="_blank" rel="noopener">
+<div class="video-thumb-card__image">
+<img src="https://img.youtube.com/vi/YBXQMbmx4ww/hqdefault.jpg" alt="Гуртожиток №1" loading="lazy">
+<span class="video-thumb-card__play">▶</span>
+</div>
+<span class="video-thumb-card__label">Гуртожиток №1 · Дивитись на YouTube ↗</span>
+</a>
+          </div>
+        </div>
       </div>
     </section>
 
