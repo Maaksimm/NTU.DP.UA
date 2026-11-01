@@ -4133,3 +4133,5 @@ a.spec-badge:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .is-dark-bg,.is-dark-bg h1,.is-dark-bg h3,.is-dark-bg .account__email,.is-dark-bg .account__presence,.is-dark-bg .bgpick__title,.is-dark-bg .pf__hi h3,.is-dark-bg .pf__status{color:#fff}
 .is-dark-bg .form-note-status{color:#fff!important}
 .pf__head.has-bg{padding:18px;border-radius:18px}
+.is-dark-bg .rating__none,.is-dark-bg .rating__num{color:rgba(255,255,255,.92)}
+.is-dark-bg .rating__stars{color:#ffe08a}
