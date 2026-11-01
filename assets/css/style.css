@@ -4117,3 +4117,19 @@ a.spec-badge:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 @media(max-width:860px){.users__filters{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.users__filters{grid-template-columns:1fr}.pf__head{flex-direction:column;text-align:center}}
 [data-theme=dark] .pf__facts{background:var(--blue-soft)}
+
+/* ===== Profile background ===== */
+.bgpick{margin-top:14px}
+.bgpick__title{display:block;margin-bottom:8px;font:800 13px Manrope,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.bgpick__swatches{display:flex;flex-wrap:wrap;gap:10px}
+.bgpick__sw{width:38px;height:38px;border-radius:50%;border:3px solid var(--surface);box-shadow:0 0 0 1px var(--line);cursor:pointer;transition:transform .15s}
+.bgpick__sw:hover{transform:scale(1.12)}
+.bgpick__sw:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.has-bg-img{position:relative;background-size:cover;background-position:center}
+.has-bg-img::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(90deg,var(--surface) 0%,rgba(255,255,255,0) 100%);opacity:.9}
+[data-theme=dark] .has-bg-img::before{background:linear-gradient(90deg,var(--surface) 0%,rgba(19,36,59,0) 100%)}
+.has-bg-img>*{position:relative}
+.account__card.has-bg{border-color:transparent}
+.is-dark-bg,.is-dark-bg h1,.is-dark-bg h3,.is-dark-bg .account__email,.is-dark-bg .account__presence,.is-dark-bg .bgpick__title,.is-dark-bg .pf__hi h3,.is-dark-bg .pf__status{color:#fff}
+.is-dark-bg .form-note-status{color:#fff!important}
+.pf__head.has-bg{padding:18px;border-radius:18px}

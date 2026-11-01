@@ -60,6 +60,36 @@
 	function dot(on) { var d = el('span', 'online-dot' + (on ? ' is-on' : '')); d.setAttribute('aria-hidden', 'true'); return d }
 
 	/* ================= own cabinet ================= */
+	var cardEl = $('.account__card')
+	var bgBox = $('[data-bgpick]')
+	if (bgBox && cardEl) {
+		var sw = $('[data-bg-swatches]')
+		var bgs = $('[data-bg-status]')
+		Object.keys(A.BG_PRESETS).forEach(function (id) {
+			var b = el('button', 'bgpick__sw')
+			b.type = 'button'
+			b.style.background = A.BG_PRESETS[id].css
+			b.setAttribute('aria-label', t('Фон') + ' ' + id.replace('p', ''))
+			b.addEventListener('click', function () {
+				A.setBackground(id).then(function () { bgs.textContent = '' }, function (e) { say(bgs, e.message) })
+			})
+			sw.appendChild(b)
+		})
+		var bgFile = $('#bgFile')
+		$('[data-bg-pick]').addEventListener('click', function () { bgFile.click() })
+		bgFile.addEventListener('change', function () {
+			var f = bgFile.files && bgFile.files[0]
+			if (!f) return
+			say(bgs, t('Збереження...'), true)
+			A.fileToCover(f).then(function (d) { return A.setBackground(d) })
+				.then(function () { say(bgs, t('Фон оновлено.'), true) }, function (e) { say(bgs, e.message) })
+			bgFile.value = ''
+		})
+		$('[data-bg-reset]').addEventListener('click', function () {
+			A.setBackground('').then(function () { say(bgs, t('Фон прибрано.'), true) }, function (e) { say(bgs, e.message) })
+		})
+		A.onChange(function (u) { A.applyBackground(cardEl, u && u.bg) })
+	}
 	var extraForm = $('[data-extra-form]')
 	var verifyBox = $('[data-verify-banner]')
 	var myRatingBox = $('[data-my-rating]')
@@ -271,6 +301,7 @@
 		var s = stat(rev)
 		hi.appendChild(ratingEl(s.avg, s.count))
 		head.appendChild(hi)
+		A.applyBackground(head, p.bg)
 		profBox.appendChild(head)
 
 		var dl = el('dl', 'pf__facts')

@@ -1903,5 +1903,12 @@ window.I18N_EN = {
  "Немає доступу. Увійдіть і підтвердіть пошту.": "No access. Sign in and confirm your email.",
  "Підтвердьте пошту, щоб писати в чаті: ми надіслали вам лист із посиланням. Після підтвердження оновіть сторінку.": "Confirm your email to write in the chat: we have sent you an email with a link. After confirming, refresh the page.",
  "Щоб писати в чаті, потрібно увійти й підтвердити пошту.": "To write in the chat, you need to sign in and confirm your email.",
- "Завантажуємо...": "Loading..."
+ "Завантажуємо...": "Loading...",
+ "Фон профілю": "Profile background",
+ "Своє зображення": "Custom image",
+ "Без фону": "No background",
+ "Фон": "Background",
+ "Фон оновлено.": "Background updated.",
+ "Фон прибрано.": "Background removed.",
+ "Сервер не прийняв зміни. Вийдіть і увійдіть знову або спробуйте пізніше.": "The server did not accept the changes. Sign out and sign in again, or try later."
 };

@@ -81,7 +81,16 @@
 <button type="button" class="btn btn-secondary" data-signout>Вийти</button>
 </div>
 <p class="form-note-status" data-account-status role="status"></p>
-<p class="account__hint">Фото відображається біля ваших повідомлень у студентському чаті. Воно стискається до невеликого квадрата й зберігається разом з профілем.</p>
+<div class="bgpick" data-bgpick>
+<span class="bgpick__title">Фон профілю</span>
+<div class="bgpick__swatches" data-bg-swatches></div>
+<div class="account__upload" style="margin-top:10px">
+<input type="file" id="bgFile" accept="image/*" hidden>
+<button type="button" class="btn btn-secondary" data-bg-pick>Своє зображення</button>
+<button type="button" class="btn btn-secondary" data-bg-reset>Без фону</button>
+</div>
+<p class="form-note-status" data-bg-status role="status"></p>
+</div>
 </div>
 </div>
 <div class="account__grid">

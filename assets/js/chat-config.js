@@ -35,7 +35,7 @@
  *       ".read": "auth != null",
  *       "$uid": {
  *         ".write": "auth != null && auth.uid === $uid",
- *         ".validate": "(!newData.child('g').exists() || newData.child('g').val() === '' || newData.child('g').val() === 'm' || newData.child('g').val() === 'f') && (!newData.child('age').exists() || (newData.child('age').isNumber() && newData.child('age').val() >= 10 && newData.child('age').val() <= 99)) && (!newData.child('c').exists() || (newData.child('c').isString() && newData.child('c').val().length <= 20)) && (!newData.child('f').exists() || (newData.child('f').isString() && newData.child('f').val().length <= 120))"
+ *         ".validate": "(!newData.child('g').exists() || newData.child('g').val() === '' || newData.child('g').val() === 'm' || newData.child('g').val() === 'f') && (!newData.child('age').exists() || (newData.child('age').isNumber() && newData.child('age').val() >= 10 && newData.child('age').val() <= 99)) && (!newData.child('c').exists() || (newData.child('c').isString() && newData.child('c').val().length <= 20)) && (!newData.child('f').exists() || (newData.child('f').isString() && newData.child('f').val().length <= 120)) && (!newData.child('bg').exists() || (newData.child('bg').isString() && newData.child('bg').val().length <= 120000))"
  *       }
  *     },
  *     "reviews": {

@@ -40,7 +40,7 @@
 		OPERATION_NOT_ALLOWED: 'Вхід за поштою ще не ввімкнено в налаштуваннях проєкту.',
 		NETWORK: 'Немає зв’язку з сервером. Перевірте інтернет і спробуйте ще раз.',
 		TOO_MANY_ATTEMPTS: 'Забагато спроб. Спробуйте трохи пізніше.',
-		PERMISSION: 'Немає доступу. Увійдіть і підтвердіть пошту.'
+		PERMISSION: 'Сервер не прийняв зміни. Вийдіть і увійдіть знову або спробуйте пізніше.'
 	}
 	function fail(code) {
 		var key = String(code || '').split(' ')[0].split(':')[0]
@@ -108,7 +108,10 @@
 	function loadRemoteUser() {
 		return profileGet(session.uid).then(function (p) {
 			p = p || {}
-			state.user = { uid: session.uid, email: session.email, name: p.n || (session.email || '').split('@')[0], avatar: p.a || '', verified: !!jwtPayload(session.idToken).email_verified }
+			state.user = { uid: session.uid, email: session.email, name: p.n || (session.email || '').split('@')[0], avatar: p.a || '', bg: '', verified: !!jwtPayload(session.idToken).email_verified }
+			return dbCall('GET', 'profiles/' + encodeURIComponent(session.uid), undefined, true).then(function (x) {
+				if (x && x.bg) state.user.bg = x.bg
+			}).catch(function () {})
 		})
 	}
 
@@ -176,7 +179,7 @@
 			return hash(pass).then(function (h) {
 				if (!rec || rec.pass !== h) throw fail('INVALID_LOGIN_CREDENTIALS')
 				lsSet(LS_SESSION, JSON.stringify({ local: true, email: email }))
-				state.user = { uid: rec.uid, email: email, name: rec.name, avatar: rec.avatar || '', verified: true }
+				state.user = { uid: rec.uid, email: email, name: rec.name, avatar: rec.avatar || '', bg: rec.bg || '', verified: true }
 				emit()
 			})
 		},
@@ -209,7 +212,21 @@
 		getExtra: function (uid) { return REMOTE ? dbCall('GET', 'profiles/' + encodeURIComponent(uid), undefined, true) : Promise.resolve(null) },
 		saveExtra: function (data) {
 			if (!REMOTE || !state.user) return Promise.reject(fail('ERR'))
-			return dbCall('PUT', 'profiles/' + encodeURIComponent(state.user.uid), data, true)
+			return dbCall('PATCH', 'profiles/' + encodeURIComponent(state.user.uid), data, true)
+		},
+		setBackground: function (value) {
+			if (!state.user) return Promise.reject(new Error('no user'))
+			if (REMOTE) {
+				return dbCall('PATCH', 'profiles/' + encodeURIComponent(state.user.uid), { bg: value || '' }, true).then(function () {
+					state.user.bg = value || ''
+					emit()
+				})
+			}
+			var u = users()
+			if (u[state.user.email]) { u[state.user.email].bg = value || ''; saveUsers(u) }
+			state.user.bg = value || ''
+			emit()
+			return Promise.resolve()
 		},
 		setAvatar: function (dataUrl) {
 			if (!state.user) return Promise.reject(new Error('no user'))
@@ -247,6 +264,68 @@
 			img.src = url
 		})
 	}
+
+
+	/* ---------- profile background ---------- */
+	api.BG_PRESETS = {
+		p1: { css: 'linear-gradient(120deg,#1a6fc4,#4fc3f7)', dark: true },
+		p2: { css: 'linear-gradient(120deg,#0b2545,#1a6fc4)', dark: true },
+		p3: { css: 'linear-gradient(120deg,#7c3aed,#ec4899)', dark: true },
+		p4: { css: 'linear-gradient(120deg,#047857,#34d399)', dark: true },
+		p5: { css: 'linear-gradient(120deg,#f59e0b,#ef4444)', dark: true },
+		p6: { css: 'linear-gradient(120deg,#e0f2fe,#fef9c3)', dark: false },
+		p7: { css: 'linear-gradient(120deg,#fce7f3,#ede9fe)', dark: false },
+		p8: { css: 'linear-gradient(120deg,#dcfce7,#e0f2fe)', dark: false }
+	}
+	api.applyBackground = function (node, bg) {
+		if (!node) return
+		node.classList.remove('has-bg', 'is-dark-bg', 'has-bg-img')
+		node.style.background = ''
+		node.style.backgroundImage = ''
+		if (!bg) return
+		var pr = api.BG_PRESETS[bg]
+		if (pr) {
+			node.style.background = pr.css
+			node.classList.add('has-bg')
+			if (pr.dark) node.classList.add('is-dark-bg')
+		} else if (/^data:image\/(jpeg|png|webp);base64,/.test(bg)) {
+			node.style.backgroundImage = 'url("' + bg + '")'
+			node.classList.add('has-bg', 'has-bg-img')
+		}
+	}
+	api.fileToCover = function (file) {
+		return new Promise(function (res, rej) {
+			if (!file || !/^image\//.test(file.type)) return rej(new Error(t('Оберіть файл зображення (JPG, PNG або WebP).')))
+			if (file.size > 12 * 1024 * 1024) return rej(new Error(t('Файл завеликий (максимум 8 МБ).')))
+			var url = URL.createObjectURL(file)
+			var img = new Image()
+			img.onload = function () {
+				var W = 960, H = 320, c = document.createElement('canvas')
+				c.width = W; c.height = H
+				var k = Math.max(W / img.width, H / img.height)
+				var w = W / k, h = H / k
+				c.getContext('2d').drawImage(img, (img.width - w) / 2, (img.height - h) / 2, w, h, 0, 0, W, H)
+				URL.revokeObjectURL(url)
+				var q = 0.72, out = c.toDataURL('image/jpeg', q)
+				while (out.length > 110000 && q > 0.3) { q -= 0.1; out = c.toDataURL('image/jpeg', q) }
+				res(out)
+			}
+			img.onerror = function () { URL.revokeObjectURL(url); rej(new Error(t('Не вдалося прочитати зображення.'))) }
+			img.src = url
+		})
+	}
+
+	/* ---------- keep "verified" fresh after the user clicks the link in the mail ---------- */
+	var verifyTries = 0
+	function watchVerified() {
+		if (!REMOTE || !state.user || state.user.verified !== false) return
+		var iv = setInterval(function () {
+			if (!state.user || state.user.verified !== false || ++verifyTries > 40) return clearInterval(iv)
+			api.refreshVerified().catch(function () {})
+		}, 20000)
+		api.refreshVerified().catch(function () {})
+	}
+	api.onChange(function () { if (!api._watching && state.user && state.user.verified === false && REMOTE) { api._watching = true; watchVerified() } })
 
 	/* ---------- presence (online status) ---------- */
 	var presenceTimer = null
@@ -302,7 +381,7 @@
 		}
 		if (!REMOTE && s.local) {
 			var rec = users()[s.email]
-			if (rec) state.user = { uid: rec.uid, email: s.email, name: rec.name, avatar: rec.avatar || '', verified: true }
+			if (rec) state.user = { uid: rec.uid, email: s.email, name: rec.name, avatar: rec.avatar || '', bg: rec.bg || '', verified: true }
 		}
 		emit()
 	}
