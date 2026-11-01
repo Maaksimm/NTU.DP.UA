@@ -650,7 +650,7 @@ function applyLang(lang) {
 }
 function setTheme(t) {
 	document.documentElement.setAttribute('data-theme', t)
-	try { localStorage.setItem('ntu-theme', t) } catch (e) {}
+	try { sessionStorage.setItem('ntu-theme', t); localStorage.removeItem('ntu-theme') } catch (e) {}
 }
 document.addEventListener('DOMContentLoaded', () => {
 	document.querySelectorAll('[data-theme-toggle]').forEach(b =>
@@ -983,3 +983,17 @@ function initMediaFilter() {
 		items.forEach(i => { i.hidden = !(f === 'all' || i.dataset.cat === f) })
 	}))
 }
+
+/* ===== YouTube click-to-play thumbnails ===== */
+document.addEventListener('click', e => {
+	const b = e.target.closest && e.target.closest('.vid[data-yt]')
+	if (!b) return
+	const f = document.createElement('iframe')
+	f.src = 'https://www.youtube-nocookie.com/embed/' + b.dataset.yt + '?autoplay=1&rel=0'
+	f.title = b.getAttribute('aria-label') || ''
+	f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'
+	f.allowFullscreen = true
+	b.replaceChildren(f)
+	b.removeAttribute('data-yt')
+	b.style.cursor = 'default'
+})

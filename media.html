@@ -14,7 +14,7 @@
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="assets/img/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
-<script>try{var d=document.documentElement,t=localStorage.getItem('ntu-theme')||'light';d.setAttribute('data-theme',t);d.lang=localStorage.getItem('ntu-lang')||'uk'}catch(e){}</script>
+<script>try{var d=document.documentElement,t=sessionStorage.getItem('ntu-theme')||'light';d.setAttribute('data-theme',t);d.lang=localStorage.getItem('ntu-lang')||'uk'}catch(e){}</script>
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
@@ -94,10 +94,24 @@
 <div class="section-head reveal">
 <div class="label">Відео</div>
 <h2>Останні відео університету</h2>
-<p>Відтворюється добірка з офіційного YouTube-каналу НТУ «Дніпровська політехніка».</p>
+<p>Події, спеціальності, лекції та студентське життя: останні відео з офіційного YouTube-каналу НТУ «Дніпровська політехніка». Натисніть, щоб відтворити тут же.</p>
 </div>
-<div class="video-embed reveal">
-<iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=UUxGd3_ed1r0HSPDcN3BsRqA" title="Відео НТУ «Дніпровська політехніка»" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="vid-grid">
+<button type="button" class="vid reveal" data-yt="LrmQY5xKgXE" aria-label="Всеукраїнський радіодиктант 2026"><img src="https://i.ytimg.com/vi/LrmQY5xKgXE/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">Всеукраїнський радіодиктант 2026</span></button>
+<button type="button" class="vid reveal" data-yt="b-RCh0TqG6w" aria-label="Кава з dniprotech"><img src="https://i.ytimg.com/vi/b-RCh0TqG6w/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">Кава з dniprotech</span></button>
+<button type="button" class="vid reveal" data-yt="emQSYLFBUiY" aria-label="Спеціальність - Журналістика"><img src="https://i.ytimg.com/vi/emQSYLFBUiY/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">Спеціальність - Журналістика</span></button>
+<button type="button" class="vid reveal" data-yt="zb-bzcH3RAw" aria-label="День Автомобіліста"><img src="https://i.ytimg.com/vi/zb-bzcH3RAw/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">День Автомобіліста</span></button>
+<button type="button" class="vid reveal" data-yt="n2C7UeLqACo" aria-label="Лекція Уїдед Бушамауї"><img src="https://i.ytimg.com/vi/n2C7UeLqACo/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">Лекція Уїдед Бушамауї</span></button>
+<button type="button" class="vid reveal" data-yt="x94vXxw4dx8" aria-label="Форум"><img src="https://i.ytimg.com/vi/x94vXxw4dx8/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">Форум</span></button>
+<button type="button" class="vid reveal" data-yt="5YHUa_t2Kp0" aria-label="Спеціальність матеріалознавство"><img src="https://i.ytimg.com/vi/5YHUa_t2Kp0/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">Спеціальність матеріалознавство</span></button>
+<button type="button" class="vid reveal" data-yt="38SjQQpWJIc" aria-label="Аспіранти dniprotech"><img src="https://i.ytimg.com/vi/38SjQQpWJIc/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">Аспіранти dniprotech</span></button>
+<button type="button" class="vid reveal" data-yt="qDhtwufYnHE" aria-label="Танцювальний МК"><img src="https://i.ytimg.com/vi/qDhtwufYnHE/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">Танцювальний МК</span></button>
+<button type="button" class="vid reveal" data-yt="07oW7WCnpfw" aria-label="Кава з dniprotech"><img src="https://i.ytimg.com/vi/07oW7WCnpfw/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">Кава з dniprotech</span></button>
+<button type="button" class="vid reveal" data-yt="EBw7sEXmyXg" aria-label="Конкурс від EDS"><img src="https://i.ytimg.com/vi/EBw7sEXmyXg/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">Конкурс від EDS</span></button>
+<button type="button" class="vid reveal" data-yt="_leupw6soD8" aria-label="Кубок ректора з футболу"><img src="https://i.ytimg.com/vi/_leupw6soD8/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">Кубок ректора з футболу</span></button>
+<button type="button" class="vid reveal" data-yt="fI4y0QXzAYk" aria-label="8 березня"><img src="https://i.ytimg.com/vi/fI4y0QXzAYk/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">8 березня</span></button>
+<button type="button" class="vid reveal" data-yt="a0dptRQQIbY" aria-label="Відкриття нової аудиторії"><img src="https://i.ytimg.com/vi/a0dptRQQIbY/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">Відкриття нової аудиторії</span></button>
+<button type="button" class="vid reveal" data-yt="rs9mrOZF_Jg" aria-label="Спеціальність - Комп&#x27;ютерна інженерія"><img src="https://i.ytimg.com/vi/rs9mrOZF_Jg/hqdefault.jpg" alt="" loading="lazy"><span class="vid__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="vid__title">Спеціальність - Комп&#x27;ютерна інженерія</span></button>
 </div>
 <div class="video-list" style="margin-top:28px">
 <div class="card reveal">

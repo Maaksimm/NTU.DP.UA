@@ -1403,5 +1403,20 @@ window.I18N_EN = {
  "локальний режим · лише на цьому пристрої": "local mode · on this device only",
  "Вкажіть ім'я": "Please enter your name",
  "Не так швидко - зачекайте секунду": "Not so fast, wait a second",
- "Не вдалося надіслати. Перевірте з’єднання й спробуйте ще раз.": "Could not send. Check your connection and try again."
+ "Не вдалося надіслати. Перевірте з’єднання й спробуйте ще раз.": "Could not send. Check your connection and try again.",
+ "Всеукраїнський радіодиктант 2026": "All-Ukrainian Radio Dictation 2026",
+ "Кава з dniprotech": "Coffee with dniprotech",
+ "Спеціальність - Журналістика": "Specialty: Journalism",
+ "День Автомобіліста": "Motorist's Day",
+ "Лекція Уїдед Бушамауї": "Lecture by Ouided Bouchamaoui",
+ "Форум": "Forum",
+ "Спеціальність матеріалознавство": "Specialty: Materials Science",
+ "Аспіранти dniprotech": "dniprotech postgraduates",
+ "Танцювальний МК": "Dance workshop",
+ "Конкурс від EDS": "Contest from EDS",
+ "Кубок ректора з футболу": "Rector's Football Cup",
+ "8 березня": "March 8",
+ "Відкриття нової аудиторії": "Opening of a new classroom",
+ "Спеціальність - Комп'ютерна інженерія": "Specialty: Computer Engineering",
+ "Події, спеціальності, лекції та студентське життя: останні відео з офіційного YouTube-каналу НТУ «Дніпровська політехніка». Натисніть, щоб відтворити тут же.": "Events, specialties, lectures and student life: the latest videos from the official YouTube channel of Dnipro Polytechnic. Click to play right here."
 };
