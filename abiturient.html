@@ -187,7 +187,50 @@
           <div class="card reveal"><div class="icon-number">&gt;100</div><h3>Контракт</h3><p>Мінімальний конкурсний бал для контракту визначає заклад освіти, але він має бути вищим за 100.</p></div>
           <div class="card reveal"><div class="icon-number">✕</div><h3>Без мотиваційних листів</h3><p>У 2026 році мотиваційний лист не потрібен: його скасовано як складову подання заяви.</p></div>
         </div>
-        <p class="info-note reveal">Прохідні бали, обсяги державного замовлення й вартість навчання за контрактом затверджуються окремо для кожної спеціальності. Актуальні значення дивіться у документах на сторінці <a href="https://nmu.org.ua/main/admission/" target="_blank" rel="noopener">«Вступ 2026» на nmu.org.ua</a> та в рейтингових списках ЄДЕБО.</p>
+        <p class="info-note reveal">Прохідні бали, обсяги державного замовлення й вартість навчання за контрактом затверджуються окремо для кожної спеціальності: докладну таблицю див. нижче. Офіційні документи дивіться у документах на сторінці <a href="https://nmu.org.ua/main/admission/" target="_blank" rel="noopener">«Вступ 2026» на nmu.org.ua</a> та в рейтингових списках ЄДЕБО.</p>
+      </div>
+    </section>
+
+    <section class="section" id="programs">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="label">Спеціальності, місця й вартість</div>
+          <h2>Освітні програми 2026: бюджет, контракт, ціни</h2>
+          <p>Дані з рейтингу вступників vstup.osvita.ua (станом на 1 листопада 2026 року, за інформацією з ЄДЕБО): обсяги держзамовлення, місця на контракт і вартість навчання за рік. Для частини програм наведено середній конкурсний бал минулого, 2025 року.</p>
+        </div>
+        <div class="stat-row reveal" id="admStats" hidden>
+          <div class="card"><h3 id="admStatOffers">-</h3><p>конкурсних пропозицій</p></div>
+          <div class="card"><h3 id="admStatLicence">-</h3><p>ліцензійний обсяг, місць</p></div>
+          <div class="card"><h3 id="admStatApps">-</h3><p>заяв подано у 2026 році</p></div>
+        </div>
+        <div class="res-toolbar reveal">
+          <input type="search" class="res-search" id="admSearch" placeholder="Пошук за програмою чи спеціальністю" aria-label="Пошук освітньої програми">
+          <div class="res-filters" role="group" aria-label="Рівень освіти">
+            <button type="button" class="res-chip is-active" data-adm-level="bachelor">Бакалавр (після 11 класу)</button>
+            <button type="button" class="res-chip" data-adm-level="master">Магістр (на базі бакалавра)</button>
+          </div>
+          <div class="res-filters" role="group" aria-label="Форма навчання">
+            <button type="button" class="res-chip is-active" data-adm-form="Денна">Денна</button>
+            <button type="button" class="res-chip" data-adm-form="Заочна">Заочна</button>
+          </div>
+          <select class="res-select" id="admSort" aria-label="Сортування">
+            <option value="name">За назвою</option>
+            <option value="budget">Більше місць на бюджет</option>
+            <option value="priceAsc">Дешевші спершу</option>
+            <option value="priceDesc">Дорожчі спершу</option>
+            <option value="apps">Більше заяв</option>
+          </select>
+        </div>
+        <div class="table-wrap reveal" style="overflow-x:auto">
+          <table class="table adm-table">
+            <thead>
+              <tr><th>Освітня програма</th><th>Спеціальність</th><th>Бюджет, місць (до)</th><th>Контракт, місць</th><th>Вартість за рік, грн</th><th>Середній бал 2025 (бюджет / контракт)</th></tr>
+            </thead>
+            <tbody id="admBody"></tbody>
+          </table>
+        </div>
+        <p class="res-empty" id="admEmpty" hidden>Нічого не знайдено. Спробуйте інший запит.</p>
+        <p class="info-note reveal">«Бюджет, місць (до)» - максимальний обсяг державного замовлення, який може бути виділено на програму; фактична кількість залежить від результатів вступу. Середній бал 2025 року - орієнтир, а не прохідний бал 2026 року. Вартість - за рік навчання за контрактом (за кількома пропозиціями показано найнижчу). Остаточні умови дивіться на <a href="https://vstup.osvita.ua/r5/36/" target="_blank" rel="noopener">vstup.osvita.ua</a> та в ЄДЕБО.</p>
       </div>
     </section>
 
@@ -294,7 +337,7 @@
         <div class="content reveal">
           <div class="label">Офіційні джерела</div>
           <h2>Де перевіряти точну інформацію</h2>
-          <p>Вартість навчання за контрактом, обсяги державного замовлення й повні правила прийому оприлюднені в PDF-документах приймальної комісії. Ми не дублюємо ці цифри, щоб не ввести тебе в оману застарілими даними - перевіряй їх на офіційних ресурсах:</p>
+          <p>Таблиця вище зібрана з відкритих даних про вступ 2026 року. Остаточні правила прийому, офіційні накази й актуальні рейтингові списки перевіряй на офіційних ресурсах:</p>
           <ul style="margin-left:18px;color:var(--muted);font-size:14.5px;display:grid;gap:10px;margin-top:14px">
             <li><a href="https://vstup.edbo.gov.ua/" target="_blank" rel="noopener">vstup.edbo.gov.ua</a> - офіційний
               сайт вступної кампанії</li>

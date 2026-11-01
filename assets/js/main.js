@@ -84,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	initAuthorsPage()
 	initGalleryLightbox()
 	initResourceFilter()
+	initAdmissionTable()
 	initMediaFilter()
 	document.querySelectorAll('.mobile-nav a').forEach(a => {
 		a.addEventListener('click', () => {
@@ -1028,3 +1029,89 @@ document.addEventListener('click', e => {
 		document.querySelectorAll('.modal:not([hidden])').forEach(closeModal)
 	})
 })()
+
+
+/* ===== Admission 2026: programs table (data from assets/data/admission-2026.json) ===== */
+function initAdmissionTable() {
+	const body = document.getElementById('admBody')
+	if (!body) return
+	const search = document.getElementById('admSearch')
+	const sortSel = document.getElementById('admSort')
+	const empty = document.getElementById('admEmpty')
+	let data = null
+	let level = 'bachelor'
+	let form = 'Денна'
+	const fmt = n => (n == null ? '-' : Number(n).toLocaleString('uk-UA').replace(/\u00a0/g, ' '))
+	const cell = (tr, text, cls) => {
+		const td = document.createElement('td')
+		if (cls) td.className = cls
+		td.textContent = text
+		tr.appendChild(td)
+		return td
+	}
+	function render() {
+		if (!data) return
+		const q = search.value.trim().toLowerCase()
+		let rows = data.rows.filter(r => r.l === level && r.f === form && (!q || (r.p + ' ' + r.s + ' ' + r.c + ' ' + (r.fac || '')).toLowerCase().includes(q)))
+		const by = sortSel.value
+		rows = rows.slice().sort((a, b) => {
+			if (by === 'budget') return b.b - a.b || a.p.localeCompare(b.p, 'uk')
+			if (by === 'priceAsc') return (a.pr ?? 1e9) - (b.pr ?? 1e9)
+			if (by === 'priceDesc') return (b.pr ?? -1) - (a.pr ?? -1)
+			if (by === 'apps') return b.apps - a.apps
+			return a.p.localeCompare(b.p, 'uk')
+		})
+		body.textContent = ''
+		rows.forEach(r => {
+			const tr = document.createElement('tr')
+			const td1 = cell(tr, r.p)
+			if (r.fac) {
+				const f = document.createElement('span')
+				f.className = 'adm-fac'
+				f.textContent = r.fac
+				td1.appendChild(f)
+			}
+			const td2 = document.createElement('td')
+			const code = document.createElement('span')
+			code.className = 'adm-code'
+			code.textContent = r.c
+			td2.appendChild(code)
+			td2.appendChild(document.createTextNode(r.s))
+			tr.appendChild(td2)
+			cell(tr, r.b > 0 ? 'до ' + r.b : T('немає'))
+			cell(tr, r.k > 0 ? String(r.k) : '-')
+			cell(tr, fmt(r.pr))
+			cell(tr, r.ab || r.ac ? (r.ab ? r.ab.toFixed(1) : '-') + ' / ' + (r.ac ? r.ac.toFixed(1) : '-') : '-')
+			body.appendChild(tr)
+		})
+		empty.hidden = rows.length > 0
+	}
+	document.querySelectorAll('[data-adm-level]').forEach(b => b.addEventListener('click', () => {
+		document.querySelectorAll('[data-adm-level]').forEach(x => x.classList.toggle('is-active', x === b))
+		level = b.dataset.admLevel
+		render()
+	}))
+	document.querySelectorAll('[data-adm-form]').forEach(b => b.addEventListener('click', () => {
+		document.querySelectorAll('[data-adm-form]').forEach(x => x.classList.toggle('is-active', x === b))
+		form = b.dataset.admForm
+		render()
+	}))
+	search.addEventListener('input', render)
+	sortSel.addEventListener('change', render)
+	fetch('assets/data/admission-2026.json')
+		.then(r => r.json())
+		.then(d => {
+			data = d
+			const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = Number(v).toLocaleString('uk-UA').replace(/\u00a0/g, ' ') }
+			set('admStatOffers', d.totalOffers)
+			set('admStatLicence', d.licence)
+			set('admStatApps', d.applications)
+			const st = document.getElementById('admStats')
+			if (st) st.hidden = false
+			render()
+		})
+		.catch(() => {
+			empty.hidden = false
+			empty.textContent = T('Не вдалося завантажити дані. Відкрийте сторінку vstup.osvita.ua.')
+		})
+}
