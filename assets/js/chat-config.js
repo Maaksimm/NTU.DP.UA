@@ -27,5 +27,5 @@
  * лише в браузері цього пристрою (і синхронізуються між вкладками).
  */
 window.NTU_CHAT = {
-	databaseURL: ''
+	databaseURL: 'https://ntu-chat-default-rtdb.europe-west1.firebasedatabase.app'
 }
