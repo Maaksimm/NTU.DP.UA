@@ -1500,5 +1500,8 @@ window.I18N_EN = {
  "Відкрити чат і попросити допомогу": "Open the chat and ask for help",
  "Потрібна допомога з предметом: ": "I need help with the subject: ",
  "Нецензурна лексика заборонена. Будь ласка, спілкуйтеся ввічливо.": "Profanity is not allowed. Please keep the conversation polite.",
- "Повідомлення приховано: нецензурна лексика": "Message hidden: profanity"
+ "Повідомлення приховано: нецензурна лексика": "Message hidden: profanity",
+ "Понад 125 років від гірничого училища до сучасного технічного університету: ключові дати, легенди та традиції, які живуть у Політехніці й сьогодні.": "Over 125 years from a mining school to a modern technical university: key dates, legends and traditions that live on at the Polytechnic today.",
+ "Корпуси Дніпровської політехніки з прапором України": "Dnipro Polytechnic campus with the flag of Ukraine",
+ "Дніпровська політехніка сьогодні: університет, заснований 1899 року.": "Dnipro Polytechnic today: a university founded in 1899."
 };
