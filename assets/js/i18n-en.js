@@ -1926,5 +1926,15 @@ window.I18N_EN = {
  "Збережено.": "Saved.",
  "Видалити ваш відгук?": "Delete your review?",
  "Сервер не прийняв зміни. Вийдіть і увійдіть знову або спробуйте пізніше.": "The server did not accept the changes. Sign out and sign in again, or try later.",
- "Фото профілю": "Profile photo"
+ "Фото профілю": "Profile photo",
+ "Telegram (необов'язково)": "Telegram (optional)",
+ "Щоб інші студенти могли написати вам. Побачать лише зареєстровані користувачі.": "So other students can message you. Only registered users will see it.",
+ "Зв'язок": "Contact",
+ "Зв'язок: будь-який": "Contact: any",
+ "Можна зв'язатися (є Telegram)": "Can be contacted (has Telegram)",
+ "Без Telegram": "No Telegram",
+ "Telegram: від 5 до 32 символів — латинські літери, цифри та підкреслення.": "Telegram: 5 to 32 characters — Latin letters, digits and underscores.",
+ "Можна зв’язатися в Telegram": "Can be contacted on Telegram",
+ "Зв’язатися в Telegram": "Contact on Telegram",
+ "Користувач не вказав Telegram, тому зв’язатися з ним тут не можна.": "The user has not provided a Telegram, so they cannot be contacted here."
 };

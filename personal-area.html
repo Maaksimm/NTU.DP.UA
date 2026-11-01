@@ -99,6 +99,7 @@
 <div class="field"><label for="ex-course">Курс</label><select id="ex-course" name="course"><option value="">Не вказувати</option></select></div>
 <div class="field"><label for="ex-faculty">Факультет</label><select id="ex-faculty" name="faculty"><option value="">Не вказувати</option></select></div>
 </div>
+<div class="field"><label for="ex-tg">Telegram (необов'язково)</label><input id="ex-tg" name="tg" type="text" maxlength="40" autocomplete="off" placeholder="@username"><span class="field-hint">Щоб інші студенти могли написати вам. Побачать лише зареєстровані користувачі.</span></div>
 <button type="submit" class="btn btn-primary">Зберегти</button>
 <p class="form-note-status" data-extra-status role="status"></p>
 </form>
@@ -153,6 +154,7 @@
 <span class="users__age"><input type="number" data-f="ageMin" min="10" max="99" placeholder="Вік від" aria-label="Вік від"><input type="number" data-f="ageMax" min="10" max="99" placeholder="до" aria-label="Вік до"></span>
 <select data-f="course" aria-label="Курс"><option value="">Будь-який курс</option></select>
 <select data-f="faculty" aria-label="Факультет"><option value="">Будь-який факультет</option></select>
+<select data-f="contact" aria-label="Зв'язок"><option value="">Зв'язок: будь-який</option><option value="yes">Можна зв'язатися (є Telegram)</option><option value="no">Без Telegram</option></select>
 <select data-f="rating" aria-label="Мінімальний рейтинг"><option value="">Будь-який рейтинг</option><option value="3">Від 3 зірок</option><option value="4">Від 4 зірок</option><option value="4.5">Від 4,5 зірки</option></select>
 <select data-f="sort" aria-label="Сортування"><option value="name">За ім'ям</option><option value="rating">За рейтингом</option><option value="reviews">За кількістю відгуків</option><option value="online">Спершу в мережі</option></select>
 <button type="button" class="btn btn-secondary" data-f-reset>Скинути</button>

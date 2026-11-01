@@ -116,6 +116,7 @@
 			f.age.value = x.age || ''
 			f.course.value = x.c || ''
 			f.faculty.value = x.f || ''
+			f.tg.value = x.tg ? '@' + x.tg : ''
 		}).catch(function () {})
 		A.db('GET', 'reviews/' + encodeURIComponent(u.uid), undefined, true).then(function (rev) { renderOwnReviews(rev || {}) }).catch(function () {})
 	}
@@ -165,8 +166,10 @@
 			var f = extraForm.elements
 			var age = f.age.value ? parseInt(f.age.value, 10) : null
 			if (age != null && (isNaN(age) || age < 10 || age > 99)) return say(xs, t('Вік має бути від 10 до 99.'))
-			var data = { g: f.gender.value || '', c: f.course.value || '', f: f.faculty.value || '' }
-			if (age != null) data.age = age
+			var tg = f.tg.value.trim().replace(/^(https?:\/\/)?(t\.me|telegram\.me)\//i, '').replace(/^@/, '').replace(/[/?#].*$/, '')
+			if (tg && !/^[A-Za-z0-9_]{5,32}$/.test(tg)) return say(xs, t('Telegram: від 5 до 32 символів — латинські літери, цифри та підкреслення.'))
+			var data = { g: f.gender.value || '', c: f.course.value || '', f: f.faculty.value || '', tg: tg || null, age: age != null ? age : null }
+			f.tg.value = tg ? '@' + tg : ''
 			say(xs, t('Збереження...'), true)
 			A.saveExtra(data).then(function () { say(xs, t('Дані збережено.'), true) }, function (er) { say(xs, er.message) })
 		})
@@ -220,7 +223,7 @@
 	var F = {
 		q: $('[data-f=q]', modal), status: $('[data-f=status]', modal), gender: $('[data-f=gender]', modal),
 		ageMin: $('[data-f=ageMin]', modal), ageMax: $('[data-f=ageMax]', modal), course: $('[data-f=course]', modal),
-		faculty: $('[data-f=faculty]', modal), rating: $('[data-f=rating]', modal), sort: $('[data-f=sort]', modal)
+		faculty: $('[data-f=faculty]', modal), contact: $('[data-f=contact]', modal), rating: $('[data-f=rating]', modal), sort: $('[data-f=sort]', modal)
 	}
 	fillSelect(F.course, COURSES, courseText)
 	fillSelect(F.faculty, FACULTIES)
@@ -234,7 +237,7 @@
 			var users = r[0] || {}, profs = r[1] || {}, revs = r[2] || {}
 			all = Object.keys(users).map(function (uid) {
 				var u = users[uid] || {}, p = profs[uid] || {}, st = stat(revs[uid])
-				return { uid: uid, n: u.n || t('Гість'), a: u.a || '', s: u.s || 0, g: p.g || '', age: p.age || null, c: p.c || '', f: p.f || '', avg: st.avg, count: st.count }
+				return { uid: uid, n: u.n || t('Гість'), a: u.a || '', s: u.s || 0, g: p.g || '', age: p.age || null, c: p.c || '', f: p.f || '', tg: p.tg || '', avg: st.avg, count: st.count }
 			})
 			loaded = true
 			render()
@@ -254,6 +257,8 @@
 		if (!isNaN(mx) && !(u.age && u.age <= mx)) return false
 		if (F.course.value && u.c !== F.course.value) return false
 		if (F.faculty.value && u.f !== F.faculty.value) return false
+		if (F.contact.value === 'yes' && !u.tg) return false
+		if (F.contact.value === 'no' && u.tg) return false
 		var rt = parseFloat(F.rating.value)
 		if (rt && !(u.count && u.avg >= rt)) return false
 		return true
@@ -288,6 +293,7 @@
 			info.appendChild(el('span', 'ucard__meta', meta.join(' · ') || t('Профіль не заповнено')))
 			b.appendChild(av)
 			b.appendChild(info)
+			if (u.tg) { var tb = el('span', 'tgbadge', 'Telegram'); tb.title = t('Можна зв’язатися в Telegram'); b.appendChild(tb) }
 			b.appendChild(ratingEl(u.avg, u.count))
 			b.addEventListener('click', function () { openProfile(u.uid) })
 			resultsBox.appendChild(b)
@@ -343,6 +349,21 @@
 		fact('Стать', p.g ? t(GENDER[p.g]) : '')
 		if (!dl.children.length) dl.appendChild(el('dd', 'pf__empty', t('Користувач ще не заповнив профіль.')))
 		profBox.appendChild(dl)
+
+		// contact via Telegram
+		if (!self) {
+			var cbox = el('div', 'pf__contact')
+			if (p.tg && /^[A-Za-z0-9_]{5,32}$/.test(p.tg)) {
+				var a = el('a', 'btn tgbtn', t('Зв’язатися в Telegram'))
+				a.href = 'https://t.me/' + p.tg
+				a.target = '_blank'
+				a.rel = 'noopener noreferrer'
+				cbox.appendChild(a)
+			} else {
+				cbox.appendChild(el('p', 'pf__hint', t('Користувач не вказав Telegram, тому зв’язатися з ним тут не можна.')))
+			}
+			profBox.appendChild(cbox)
+		}
 
 		// review form
 		var box = el('div', 'pf__review')
