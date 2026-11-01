@@ -356,8 +356,10 @@
 		var hasTg = p.tg && /^[A-Za-z0-9_]{5,32}$/.test(p.tg)
 		if (self) {
 			if (hasTg) {
-				var prev = el('span', 'btn tgbtn is-preview', t('Зв’язатися в Telegram'))
-				prev.setAttribute('aria-disabled', 'true')
+				var prev = el('a', 'btn tgbtn', t('Зв’язатися в Telegram'))
+				prev.href = 'https://t.me/' + p.tg
+				prev.target = '_blank'
+				prev.rel = 'noopener noreferrer'
 				cbox.appendChild(prev)
 				cbox.appendChild(el('p', 'pf__hint', t('Так вашу кнопку бачать інші користувачі. Ваш Telegram') + ': @' + p.tg))
 			} else {
