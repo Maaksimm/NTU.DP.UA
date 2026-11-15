@@ -1,0 +1,26 @@
+/* ===== Особиста зона: компактна картка, дії в один рядок, фон - за кнопкою ===== */
+.account__card{gap:24px;margin:12px 0 22px;padding:22px 26px;align-items:center}
+.account__avatar{width:112px;height:112px}
+.account__avatar--ph{font-size:36px}
+.account__info{flex:1;min-width:0;padding-right:100px}
+.account__name{font-size:clamp(24px,3vw,32px);margin:0 0 6px;line-height:1.15}
+.account__presence{margin:0 0 8px}
+.account__role{display:inline-flex;align-items:center;margin:0 0 14px;padding:3px 12px;border-radius:99px;background:var(--blue-soft);color:var(--blue);font-size:13px}
+.account__role:empty{display:none}
+.is-dark-bg .account__role{background:rgba(255,255,255,.22);color:#fff}
+.has-bg-img:not(.is-dark-bg) .account__role{background:var(--surface)}
+.account__actions{margin:0;gap:8px}
+.account__actions .btn{min-height:42px;padding:9px 16px;font-size:14px}
+.account__actions [data-bg-toggle].is-active{background:var(--blue);border-color:var(--blue);color:#fff}
+.account__card .bgpick{margin-top:14px;padding:14px 16px;border-radius:16px;background:var(--section);border:1px solid var(--line);animation:setsecIn .22s ease-out}
+.account__card .bgpick[hidden]{display:none}
+.account__card.has-bg .bgpick{background:rgba(255,255,255,.88);border-color:transparent;color:var(--text)}
+[data-theme=dark] .account__card.has-bg .bgpick{background:rgba(19,36,59,.9)}
+.account__card.has-bg .bgpick .bgpick__title,.account__card.has-bg .bgpick .bgpick__hint{color:var(--muted)}
+.account__card.has-bg .bgpick .bgpick__mode{background:var(--tint)}
+.account__card.has-bg .bgpick .bgpick__mode button{color:var(--muted)}
+.account__card.has-bg .bgpick .bgpick__mode button[aria-pressed=true]{color:var(--blue)}
+.account__card .bgpick .account__upload{margin-top:12px!important}
+.account__grid{gap:18px;margin-bottom:22px}
+.account__panel h2{margin-bottom:4px}
+@media(max-width:640px){.account__info{padding-right:0}.account__actions{justify-content:center}.account__actions .btn{flex:1 1 100%}}

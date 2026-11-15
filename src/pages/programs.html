@@ -1,0 +1,44 @@
+<!--
+{
+	"title": "Освітні програми - НТУ «Дніпровська політехніка»",
+	"description": "Каталог 114 освітніх програм НТУ «Дніпровська політехніка»: бакалаврат і магістратура. Пошук за спеціальністю, рівнем освіти, галуззю та кафедрою.",
+	"page": "programs",
+	"image": "assets/img/nmu-students-team.jpg",
+	"scripts": ["admission-data.js", "admission.js"],
+	"breadcrumbs": [
+		["Головна", "index.html"],
+		["Абітурієнтам", "abiturient.html"],
+		["Освітні програми", "programs.html"]
+	],
+	"sitemap": { "changefreq": "weekly", "priority": "0.9" }
+}
+-->
+<main id="main">
+<section class="page-hero">
+<div class="container reveal">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Головна</a><span class="crumb-sep">›</span><a href="abiturient.html">Абітурієнтам</a><span class="crumb-sep">›</span><span aria-current="page">Освітні програми</span></nav>
+<h1>Освітні програми</h1>
+<p class="lead">114 програм бакалаврату й магістратури за спеціальностями нового переліку. Шукайте за назвою, кодом, галуззю чи кафедрою.</p>
+<div class="actions"><a class="btn btn-primary" href="calculator.html">Калькулятор конкурсного бала</a></div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="catalog" data-catalog>
+<div class="catalog__bar reveal">
+<input type="search" class="res-search" data-cat-q maxlength="80" placeholder="Пошук за назвою, спеціальністю, кодом або кафедрою" aria-label="Пошук за назвою, спеціальністю, кодом або кафедрою">
+<select class="res-select" data-cat-level aria-label="Рівень освіти"><option value="">Усі рівні</option><option>Бакалавр</option><option>Магістр</option></select>
+<select class="res-select" data-cat-field aria-label="Галузь знань"><option value="">Усі галузі</option></select>
+<button type="button" class="btn btn-secondary" data-cat-reset>Скинути фільтри</button>
+</div>
+<p class="catalog__count" data-cat-count aria-live="polite"></p>
+<div class="catalog__grid" data-cat-grid></div>
+</div>
+</div>
+</section><section class="section section-soft">
+<div class="container">
+
+<div class="info-note reveal">Повні описи програм (мета, компоненти, гарант, результати навчання, акредитація) публікуються на сайті університету. Каталог оновлено за даними сайту університету.</div>
+</div>
+</section>
+</main>

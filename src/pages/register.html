@@ -1,0 +1,47 @@
+<!--
+{
+	"title": "Реєстрація - НТУ «ДП»",
+	"description": "Реєстрація на студентській платформі World Students: чат, профіль і відгуки.",
+	"page": "register",
+	"robots": "noindex, follow",
+	"scripts": ["google-signin.js"],
+	"breadcrumbs": [
+		["Головна", "index.html"],
+		["Платформа", "platform.html"],
+		["Реєстрація", "register.html"]
+	]
+}
+-->
+<main id="main" class="auth-shell">
+<div class="auth-grid reveal">
+<div class="auth-side"><img src="assets/img/logo.svg" style="width:150px;background:white;border-radius:12px;padding:8px" alt="">
+<h2>Реєстрація у World Students</h2>
+<p>Створіть акаунт, щоб писати в студентському чаті, мати власне фото профілю та особистий кабінет.</p>
+</div>
+<form class="auth-form" data-auth-form="register" novalidate>
+<div class="label">Створення акаунта</div>
+<h1 style="font-size:34px;margin-bottom:8px">Реєстрація</h1>
+<fieldset class="role-pick">
+<legend>Хто ви?</legend>
+<label class="role-pick__opt"><input type="radio" name="role" value="s" checked><span><b>Учень</b><small>Навчаюсь, шукаю матеріали та допомогу</small></span></label>
+<label class="role-pick__opt"><input type="radio" name="role" value="t"><span><b>Викладач</b><small>Веду уроки та публікую записи й матеріали</small></span></label>
+</fieldset>
+<div class="field" data-subj-wrap hidden><label for="rg-subj">Предмет, який ви викладаєте</label><select id="rg-subj" name="subj" data-subj-select><option value="">Оберіть предмет</option></select></div>
+<div class="field"><label for="rg-name">Ім'я</label><input id="rg-name" name="name" type="text" required minlength="2" maxlength="40" autocomplete="name" placeholder="Як вас бачитимуть у чаті"></div>
+<div class="field"><label for="rg-email">Email</label><input id="rg-email" name="email" type="email" required maxlength="254" autocomplete="email" placeholder="student@example.com"></div>
+<div class="field"><label for="rg-pass">Пароль</label><input id="rg-pass" name="password" type="password" required minlength="6" maxlength="128" autocomplete="new-password" placeholder="Щонайменше 6 символів, літери й цифри"></div>
+<div class="consent-field">
+<input type="checkbox" id="rg-consent" name="consent" required>
+<label for="rg-consent">Погоджуюсь дотримуватися правил чату: ввічливе спілкування, без нецензурної лексики</label>
+</div>
+<p style="margin:0 0 14px;color:var(--muted);font-size:13.5px">Після реєстрації ми надішлемо лист для підтвердження пошти: без цього писати в чаті й залишати відгуки не можна.</p>
+<button class="btn btn-primary" style="width:100%" type="submit">Зареєструватися</button>
+<div class="auth-google" data-google-signin hidden>
+<div class="auth-or"><span>або</span></div>
+<div class="auth-google__btn" data-google-btn></div>
+</div>
+<p data-form-status class="form-note-status" role="status"></p>
+<p style="margin-top:16px">Вже є акаунт? <a href="login.html">Увійти</a></p>
+</form>
+</div>
+</main>

@@ -1,0 +1,103 @@
+{
+  "rules": {
+    "chat": {
+      ".read": true,
+      "messages": {
+        "$id": {
+          ".write": "auth != null && auth.token.email_verified === true && !data.exists()",
+          ".validate": "newData.hasChildren(['n','t','ts','u']) && newData.child('u').val() === auth.uid && newData.child('t').isString() && newData.child('t').val().length <= 500 && newData.child('n').isString() && newData.child('n').val().length <= 40"
+        }
+      },
+      "reactions": {
+        "$mid": {
+          "$uid": {
+            ".write": "auth != null && auth.token.email_verified === true && auth.uid === $uid && root.child('chat/messages/' + $mid).exists()",
+            ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 40"
+          }
+        }
+      },
+      "typing": {
+        "$uid": {
+          ".write": "auth != null && auth.token.email_verified === true && auth.uid === $uid",
+          ".validate": "!newData.exists() || (newData.hasChildren(['n','c']) && newData.child('n').isString() && newData.child('n').val().length <= 40 && newData.child('c').isString() && newData.child('c').val().length <= 16)"
+        }
+      },
+      "seen": {
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid",
+          ".validate": "newData.isNumber()"
+        }
+      }
+    },
+    "users": {
+      ".read": "auth != null",
+      "$uid": {
+        ".read": true,
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "newData.hasChildren(['n']) && newData.child('n').isString() && newData.child('n').val().length <= 40 && (!newData.child('a').exists() || newData.child('a').val().length <= 30000) && (!newData.child('r').exists() || newData.child('r').val() === 's' || newData.child('r').val() === 't')"
+      },
+      ".indexOn": [
+        "s"
+      ]
+    },
+    "profiles": {
+      ".read": "auth != null",
+      "$uid": {
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "(!newData.child('g').exists() || newData.child('g').val() === '' || newData.child('g').val() === 'm' || newData.child('g').val() === 'f') && (!newData.child('age').exists() || (newData.child('age').isNumber() && newData.child('age').val() >= 10 && newData.child('age').val() <= 99)) && (!newData.child('c').exists() || (newData.child('c').isString() && newData.child('c').val().length <= 20)) && (!newData.child('f').exists() || (newData.child('f').isString() && newData.child('f').val().length <= 120)) && (!newData.child('bg').exists() || (newData.child('bg').isString() && newData.child('bg').val().length <= 120000)) && (!newData.child('tg').exists() || (newData.child('tg').isString() && newData.child('tg').val().matches(/^[A-Za-z0-9_]{5,32}$/))) && (!newData.child('role').exists() || newData.child('role').val() === 's' || newData.child('role').val() === 't') && (!newData.child('subj').exists() || (newData.child('subj').isString() && newData.child('subj').val().length <= 80)) && (!newData.child('bgd').exists() || (newData.child('bgd').isString() && newData.child('bgd').val().length <= 120000))"
+      }
+    },
+    "reviews": {
+      ".read": "auth != null",
+      "$target": {
+        "$author": {
+          ".write": "auth != null && auth.token.email_verified === true && auth.uid === $author && $target !== auth.uid",
+          ".validate": "newData.hasChildren(['r','t','n','ts']) && newData.child('r').isNumber() && newData.child('r').val() >= 1 && newData.child('r').val() <= 5 && newData.child('t').isString() && newData.child('t').val().length <= 300 && newData.child('n').isString() && newData.child('n').val().length <= 40"
+        }
+      }
+    },
+    "dm": {
+      "$cid": {
+        ".read": "auth != null && ($cid.beginsWith(auth.uid + '_') || $cid.endsWith('_' + auth.uid))",
+        "msgs": {
+          "$mid": {
+            ".write": "auth != null && auth.token.email_verified === true && !data.exists() && ($cid.beginsWith(auth.uid + '_') || $cid.endsWith('_' + auth.uid))",
+            ".validate": "newData.hasChildren(['u','ts']) && newData.child('u').val() === auth.uid && newData.child('ts').isNumber() && (!newData.child('t').exists() || (newData.child('t').isString() && newData.child('t').val().length <= 2000)) && (!newData.child('f').exists() || (newData.child('f').hasChildren(['url','name']) && newData.child('f/url').isString() && newData.child('f/url').val().beginsWith('https://ntu.dp.ua/uploads/') && newData.child('f/url').val().length <= 300 && newData.child('f/name').isString() && newData.child('f/name').val().length <= 160)) && (newData.child('t').exists() || newData.child('f').exists())"
+          }
+        },
+        "st": {
+          "$uid": {
+            ".write": "auth != null && auth.uid === $uid && ($cid.beginsWith(auth.uid + '_') || $cid.endsWith('_' + auth.uid))",
+            ".validate": "(!newData.child('d').exists() || newData.child('d').isNumber()) && (!newData.child('r').exists() || newData.child('r').isNumber()) && (!newData.child('c').exists() || (newData.child('c').isString() && newData.child('c').val().length <= 16))"
+          }
+        },
+        "rx": {
+          "$mid": {
+            "$uid": {
+              ".write": "auth != null && auth.token.email_verified === true && auth.uid === $uid && ($cid.beginsWith(auth.uid + '_') || $cid.endsWith('_' + auth.uid)) && root.child('dm/' + $cid + '/msgs/' + $mid).exists()",
+              ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 40"
+            }
+          }
+        }
+      }
+    },
+    "inbox": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$cid": {
+          ".write": "auth != null && auth.token.email_verified === true && ($cid.beginsWith(auth.uid + '_') || $cid.endsWith('_' + auth.uid)) && ($cid.beginsWith($uid + '_') || $cid.endsWith('_' + $uid))",
+          ".validate": "newData.hasChildren(['w','ts']) && newData.child('w').isString() && newData.child('ts').isNumber() && (!newData.child('l').exists() || (newData.child('l').isString() && newData.child('l').val().length <= 120))"
+        }
+      }
+    },
+    "lessons": {
+      ".read": "auth != null",
+      "$tid": {
+        ".write": "auth != null && auth.uid === $tid && root.child('profiles/' + $tid + '/role').val() === 't'",
+        "$lid": {
+          ".validate": "newData.hasChildren(['title','ts']) && newData.child('title').isString() && newData.child('title').val().length <= 150 && newData.child('ts').isNumber() && (!newData.child('d').exists() || (newData.child('d').isString() && newData.child('d').val().length <= 2000)) && (!newData.child('v').exists() || (newData.child('v').isString() && newData.child('v').val().matches(/^https:\\/\\//) && newData.child('v').val().length <= 500))"
+        }
+      }
+    }
+  }
+}

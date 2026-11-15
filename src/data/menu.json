@@ -1,0 +1,414 @@
+{
+  "groups": [
+    {
+      "key": "admission",
+      "label": "Абітурієнтам",
+      "href": "abiturient.html",
+      "intro": "Усе для вступу 2026: від вибору програми до наказу про зарахування.",
+      "items": [
+        {
+          "nav": "abiturient",
+          "href": "abiturient.html",
+          "label": "Вступ 2026",
+          "desc": "Строки, правила та маршрут вступника"
+        },
+        {
+          "nav": "calculator",
+          "href": "calculator.html",
+          "label": "Калькулятор конкурсного бала",
+          "desc": "Розрахунок бала за результатами НМТ"
+        },
+        {
+          "nav": "programs",
+          "href": "programs.html",
+          "label": "Освітні програми",
+          "desc": "114 програм бакалаврату й магістратури"
+        },
+        {
+          "nav": "applicant-guide",
+          "href": "applicant-guide.html",
+          "label": "Матеріали вступника",
+          "desc": "Електронний кабінет і чек-лист перед поданням"
+        },
+        {
+          "nav": "special-conditions",
+          "href": "special-conditions.html",
+          "label": "Спеціальні умови",
+          "desc": "Пільги, ветерани, вступ із ТОТ"
+        },
+        {
+          "nav": "funding",
+          "href": "funding.html",
+          "label": "Гранти та ваучери",
+          "desc": "Бюджет, державний грант, ваучер, контракт"
+        },
+        {
+          "nav": "pre-university",
+          "href": "pre-university.html",
+          "label": "Довузівська підготовка",
+          "desc": "Курси підготовки до НМТ"
+        },
+        {
+          "nav": "admission-office",
+          "href": "admission-office.html",
+          "label": "Приймальна комісія",
+          "desc": "Консультації, документи, накази"
+        },
+        {
+          "nav": "foreign-applicants",
+          "href": "foreign-applicants.html",
+          "label": "Іноземним вступникам",
+          "desc": "Визнання документів і мовна підготовка"
+        }
+      ]
+    },
+    {
+      "key": "education",
+      "label": "Освіта",
+      "href": "education.html",
+      "intro": "Освітні програми, організація навчання та сервіси для щоденної підготовки.",
+      "items": [
+        {
+          "nav": "education",
+          "href": "education.html",
+          "label": "Навчання",
+          "desc": "Форми навчання та освітні ресурси"
+        },
+        {
+          "nav": "education-process",
+          "href": "education-process.html",
+          "label": "Освітній процес",
+          "desc": "Хто за що відповідає в навчанні"
+        },
+        {
+          "nav": "programs",
+          "href": "programs.html",
+          "label": "Освітні програми",
+          "desc": "Пошук за спеціальністю, рівнем і кафедрою"
+        },
+        {
+          "nav": "institutes",
+          "href": "institutes.html",
+          "label": "Інститути і кафедри",
+          "desc": "9 інститутів і факультетів, 47 кафедр"
+        },
+        {
+          "nav": "education-quality",
+          "href": "education-quality.html",
+          "label": "Якість освіти",
+          "desc": "Моніторинг, доброчесність, акредитація"
+        },
+        {
+          "nav": "assignments",
+          "href": "assignments.html",
+          "label": "Домашні завдання",
+          "desc": "Розв’язки й поради від студентів"
+        },
+        {
+          "nav": "exam-prep",
+          "href": "exam-prep.html",
+          "label": "Підготовка до екзаменів",
+          "desc": "Плани підготовки та корисні матеріали"
+        },
+        {
+          "nav": "materials",
+          "href": "materials.html",
+          "label": "Навчальні матеріали",
+          "desc": "Бібліотека матеріалів від студентів"
+        },
+        {
+          "nav": "homework",
+          "href": "homework-help.html",
+          "label": "Допомога з ДЗ",
+          "desc": "Попросіть допомоги в спільноти"
+        }
+      ]
+    },
+    {
+      "key": "students",
+      "label": "Студентам",
+      "href": "student-life.html",
+      "intro": "Розклад, стипендії, бібліотека, гуртожитки та студентське життя.",
+      "items": [
+        {
+          "nav": "life",
+          "href": "student-life.html",
+          "label": "Студентське життя",
+          "desc": "Спільноти, традиції, дозвілля"
+        },
+        {
+          "nav": "schedule",
+          "href": "schedule.html",
+          "label": "Розклад і календар",
+          "desc": "Графік освітнього процесу 2026–2027"
+        },
+        {
+          "nav": "student-resources",
+          "href": "student-resources.html",
+          "label": "Освітні ресурси",
+          "desc": "Microsoft 365, дистанційна освіта, репозиторій"
+        },
+        {
+          "nav": "scholarships",
+          "href": "scholarships.html",
+          "label": "Стипендії",
+          "desc": "Академічні, соціальні, іменні"
+        },
+        {
+          "nav": "library",
+          "href": "library.html",
+          "label": "Бібліотека",
+          "desc": "Каталог, репозиторій, читальні зали"
+        },
+        {
+          "nav": "campus",
+          "href": "campus.html",
+          "label": "Студентське містечко",
+          "desc": "Гуртожитки та кампус"
+        },
+        {
+          "nav": "student-info",
+          "href": "student-info.html",
+          "label": "Інформація для студентів",
+          "desc": "Довідки, оголошення, вибіркові дисципліни"
+        },
+        {
+          "nav": "news",
+          "href": "news.html",
+          "label": "Новини",
+          "desc": "Головне з життя університету"
+        },
+        {
+          "nav": "events",
+          "href": "events.html",
+          "label": "Знайомства та події",
+          "desc": "Що відбувається в університеті"
+        },
+        {
+          "nav": "media",
+          "href": "media.html",
+          "label": "Фото і відео",
+          "desc": "Галерея студентського життя"
+        }
+      ]
+    },
+    {
+      "key": "science",
+      "label": "Наука",
+      "href": "science.html",
+      "intro": "Наукові школи, лабораторії, проєкти, конференції та фахові видання.",
+      "items": [
+        {
+          "nav": "science",
+          "href": "science.html",
+          "label": "Наука в університеті",
+          "desc": "Наукові школи й досягнення"
+        },
+        {
+          "nav": "research-office",
+          "href": "research-office.html",
+          "label": "Науково-дослідна частина",
+          "desc": "Координація досліджень і договорів"
+        },
+        {
+          "nav": "research-labs",
+          "href": "research-labs.html",
+          "label": "Лабораторії та обладнання",
+          "desc": "4 центри, 19 лабораторій"
+        },
+        {
+          "nav": "research-projects",
+          "href": "research-projects.html",
+          "label": "Наукові проєкти",
+          "desc": "61 міжнародний і прикладний проєкт"
+        },
+        {
+          "nav": "conferences",
+          "href": "conferences.html",
+          "label": "Конференції",
+          "desc": "Наукові заходи університету"
+        },
+        {
+          "nav": "journals",
+          "href": "journals.html",
+          "label": "Наукові видання",
+          "desc": "9 фахових видань категорій «А» і «Б»"
+        },
+        {
+          "nav": "young-science",
+          "href": "young-science.html",
+          "label": "Молодіжна наука",
+          "desc": "Гуртки, конкурси, СНТ"
+        }
+      ]
+    },
+    {
+      "key": "international",
+      "label": "Міжнародне",
+      "href": "international.html",
+      "intro": "Академічна мобільність, подвійні дипломи, гранти й партнери в Європі.",
+      "items": [
+        {
+          "nav": "international",
+          "href": "international.html",
+          "label": "Міжнародна діяльність",
+          "desc": "Можливості та заходи"
+        },
+        {
+          "nav": "international",
+          "href": "international.html#mobility",
+          "label": "Академічна мобільність",
+          "desc": "Семестр за кордоном крок за кроком"
+        },
+        {
+          "nav": "international",
+          "href": "international.html#double-degree",
+          "label": "Подвійні дипломи",
+          "desc": "5 магістерських програм"
+        },
+        {
+          "nav": "international",
+          "href": "international.html#grants",
+          "label": "Грантові програми",
+          "desc": "Erasmus+, Horizon Europe, DAAD"
+        },
+        {
+          "nav": "partners",
+          "href": "partners.html",
+          "label": "Міжнародні партнери",
+          "desc": "17 університетів із 10 країн"
+        },
+        {
+          "nav": "international",
+          "href": "international.html#centres",
+          "label": "Культурно-освітні центри",
+          "desc": "Мовні та культурні центри в кампусі"
+        },
+        {
+          "nav": "foreign-applicants",
+          "href": "foreign-applicants.html",
+          "label": "Іноземним вступникам",
+          "desc": "Вступ для іноземних громадян"
+        },
+        {
+          "nav": "study-abroad",
+          "href": "study-abroad.html",
+          "label": "Навчатися закордоном",
+          "desc": "Мобільність, школи, подвійні дипломи"
+        },
+        {
+          "nav": "student-stories",
+          "href": "student-stories.html",
+          "label": "Історії наших студентів",
+          "desc": "Досвід студентів Політехніки"
+        }
+      ]
+    },
+    {
+      "key": "university",
+      "label": "Університет",
+      "href": "about.html",
+      "intro": "Історія з 1899 року, структура, керівництво та офіційні документи.",
+      "items": [
+        {
+          "nav": "about",
+          "href": "about.html",
+          "label": "Про університет",
+          "desc": "Місія, факти та цифри"
+        },
+        {
+          "nav": "history",
+          "href": "history.html",
+          "label": "Історія",
+          "desc": "Ключові етапи з 1899 року"
+        },
+        {
+          "nav": "structure",
+          "href": "structure.html",
+          "label": "Структура",
+          "desc": "Інститути, факультети, підрозділи"
+        },
+        {
+          "nav": "rectorate",
+          "href": "rectorate.html",
+          "label": "Ректорат",
+          "desc": "Керівництво університету"
+        },
+        {
+          "nav": "academic-council",
+          "href": "academic-council.html",
+          "label": "Вчена рада",
+          "desc": "Колегіальний орган управління"
+        },
+        {
+          "nav": "documents",
+          "href": "documents.html",
+          "label": "Документи",
+          "desc": "Каталог офіційних документів"
+        },
+        {
+          "nav": "public-information",
+          "href": "public-information.html",
+          "label": "Публічна інформація",
+          "desc": "Статут, ліцензії, положення"
+        },
+        {
+          "nav": "campus-dream",
+          "href": "campus-dream.html",
+          "label": "Наш універ мрії",
+          "desc": "Візія кампусу очима студентів"
+        }
+      ]
+    },
+    {
+      "key": "platform",
+      "label": "Платформа",
+      "href": "platform.html",
+      "intro": "World Students: студентська платформа, створена студентами для студентів.",
+      "items": [
+        {
+          "nav": "platform",
+          "href": "platform.html",
+          "label": "Про платформу",
+          "desc": "Що таке World Students"
+        },
+        {
+          "nav": "rating",
+          "href": "rating.html",
+          "label": "Рейтинг",
+          "desc": "Топ викладачів і студентів наживо"
+        },
+        {
+          "nav": "authors",
+          "href": "authors.html",
+          "label": "Автори",
+          "desc": "Команда платформи"
+        },
+        {
+          "nav": "sections",
+          "href": "sections.html",
+          "label": "Усі розділи сайту",
+          "desc": "Повна карта платформи"
+        },
+        {
+          "nav": "sources",
+          "href": "sources.html",
+          "label": "Джерела",
+          "desc": "Звідки ми беремо інформацію"
+        },
+        {
+          "nav": "contact",
+          "href": "contact.html",
+          "label": "Контакти",
+          "desc": "Зв’язок з університетом і командою"
+        },
+        {
+          "nav": "account",
+          "href": "personal-area.html",
+          "label": "Особистий кабінет",
+          "desc": "Профіль, відгуки, налаштування"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+<!--
+{
+	"title": "Контакти - НТУ «ДП»",
+	"description": "Контакти НТУ «Дніпровська політехніка» та студентської платформи World Students: адреса, приймальна комісія, ректорат, форма зв’язку й онлайн-чат.",
+	"page": "contact",
+	"breadcrumbs": [
+		["Головна", "index.html"],
+		["Платформа", "platform.html"],
+		["Контакти", "contact.html"]
+	]
+}
+-->
+<main id="main">
+<section class="page-hero">
+<div class="container reveal">
+<div class="breadcrumb"><a href="index.html">Головна</a>› Контакти</div>
+<h1>Контакти</h1>
+<p class="lead">Офіційні контакти університету та форма зв'язку з командою студентської платформи. Форма приймає лише питання про сайт.</p>
+</div>
+</section>
+
+<section class="section">
+<div class="container two-col">
+<div class="reveal">
+<div class="label">Офіційні контакти</div>
+<h2>НТУ «Дніпровська політехніка»</h2>
+
+<div class="contact-info-grid">
+<div class="contact-card">
+<div>
+<h3>Адреса</h3>
+<p>49005, м. Дніпро, пр. Дмитра Яворницького, 19</p>
+</div>
+</div>
+
+<div class="contact-card">
+<div>
+<h3>Приймальна комісія</h3>
+<p>+380 56 796-55-66, додатковий 1<br><a href="mailto:pk@nmu.one">pk@nmu.one</a><br><a href="abiturient.html">Вступ 2026</a></p>
+</div>
+</div>
+
+<div class="contact-card">
+<div>
+<h3>Ректорат / загальні питання</h3>
+<p>+380 56 796-55-66<br><a href="mailto:rector@nmu.org.ua">rector@nmu.org.ua</a></p>
+</div>
+</div>
+
+<div class="contact-card">
+<div>
+<h3>Новини університету</h3>
+<p><a href="news.html">Новини та анонси подій</a></p>
+</div>
+</div>
+</div>
+
+<p class="lead" style="margin-top:24px;font-size:15px">Питання щодо вступу, навчання, гуртожитків і документів ми не розглядаємо: звертайтеся до приймальної комісії та ректорату, контакти вказані вище.</p>
+</div>
+
+<form class="form-card reveal" id="contactForm" action="https://formspree.io/f/mwvgvlay" method="POST" novalidate>
+<div class="form-head">
+<h3>Питання про сайт</h3>
+<p>Помилка на сторінці, неточність, пропозиція чи проблема зі входом: напишіть, і ми відповімо на вказану пошту.</p>
+</div>
+
+<input type="text" name="_gotcha" class="honeypot-field" tabindex="-1" autocomplete="off">
+<input type="hidden" name="_subject" value="Питання про сайт: студентська платформа НТУ «ДП»">
+
+<div class="field">
+<label for="cf-name">Ім'я<span class="required">*</span></label>
+<input id="cf-name" name="name" type="text" required minlength="2" maxlength="50" autocomplete="name" placeholder="Як до вас звертатися">
+<span class="field-error"></span>
+</div>
+
+<div class="field">
+<label for="cf-email">Email<span class="required">*</span></label>
+<input id="cf-email" name="email" type="email" required maxlength="254" autocomplete="email" placeholder="student@example.com">
+<span class="field-error"></span>
+</div>
+
+<div class="field">
+<label for="cf-message">Ваше питання про сайт<span class="required">*</span></label>
+<textarea id="cf-message" name="message" rows="4" required minlength="10" maxlength="2000" placeholder="Наприклад: на сторінці кампусу не відкривається карта"></textarea>
+<span class="field-error"></span>
+</div>
+
+<div class="consent-field">
+<input type="checkbox" id="cf-consent" name="consent" required>
+<label for="cf-consent">Погоджуюсь на обробку персональних даних для розгляду цього звернення<span class="required">*</span></label>
+</div>
+
+<button class="btn btn-primary btn-primary--full" type="submit" data-submit>Надіслати</button>
+<p data-form-status class="form-note-status"></p>
+</form>
+</div>
+
+<div class="container">
+<div class="map-frame-wrap reveal">
+<iframe
+ src="https://www.google.com/maps?q=%D0%9D%D0%A2%D0%A3%20%D0%94%D0%BD%D1%96%D0%BF%D1%80%D0%BE%D0%B2%D1%81%D1%8C%D0%BA%D0%B0%20%D0%BF%D0%BE%D0%BB%D1%96%D1%82%D0%B5%D1%85%D0%BD%D1%96%D0%BA%D0%B0%2C%20%D0%BF%D1%80.%20%D0%94%D0%BC%D0%B8%D1%82%D1%80%D0%B0%20%D0%AF%D0%B2%D0%BE%D1%80%D0%BD%D0%B8%D1%86%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE%2019%2C%20%D0%94%D0%BD%D1%96%D0%BF%D1%80%D0%BE&z=17&output=embed"
+ loading="lazy" allowfullscreen title="Карта - НТУ «Дніпровська політехніка»"></iframe>
+</div>
+</div>
+</section>
+<!-- chat-demo -->
+<section class="section section-soft" id="live-chat">
+<div class="container cdemo-wrap"><div class="cdemo-copy reveal"><div class="label">На зв’язку 24/7</div><h2>Студентський чат платформи</h2><p class="lead">Напишіть нам у чат на будь-якій сторінці: студенти та команда платформи підкажуть, де знайти розклад, як порахувати конкурсний бал чи куди звернутися з документами.</p><div class="actions"><button type="button" class="btn btn-primary" data-open-chat>Відкрити чат</button><a class="btn btn-secondary" href="#contactForm">Написати на пошту</a></div></div><div class="cdemo reveal" data-chat-demo aria-label="Студентський чат платформи"><div class="cdemo__head"><span class="cdemo__av" aria-hidden="true">WS</span><div><strong>Підтримка World Students</strong><span>онлайн</span></div></div><div class="cdemo__list"><p class="cdemo__msg cdemo__msg--out">Привіт! Підкажіть, де знайти розклад моєї групи?</p><p class="cdemo__msg cdemo__msg--in">Привіт! 👋 Розклад за факультетами - у розділі «Студентам → Розклад і календар».</p><p class="cdemo__msg cdemo__msg--out">Дякую! А калькулятор бала для вступу у вас є?</p><p class="cdemo__msg cdemo__msg--in">Так, у меню «Абітурієнтам» - калькулятор з коефіцієнтами всіх спеціальностей 🎓</p><p class="cdemo__msg cdemo__msg--out">Супер, ви найкращі 💙</p><p class="cdemo__msg cdemo__msg--in">Звертайтеся! Чат платформи працює цілодобово.</p><span class="cdemo__typing" aria-label="Пише відповідь"><i></i><i></i><i></i></span></div></div></div>
+</section>
+<!-- /chat-demo -->
+</main>

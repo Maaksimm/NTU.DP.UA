@@ -1,0 +1,137 @@
+/* ===== Фон профілю окремо для світлої і темної теми ===== */
+.bgpick__mode{margin-bottom:8px}
+.bgpick__hint{margin:0 0 10px;font-size:12.5px;line-height:1.45;color:var(--muted)}
+.is-dark-bg .bgpick__hint{color:rgba(255,255,255,.85)}
+.is-dark-bg .bgpick__mode{background:rgba(255,255,255,.18)}
+.is-dark-bg .bgpick__mode button{color:rgba(255,255,255,.85)}
+.is-dark-bg .bgpick__mode button[aria-pressed=true]{color:var(--blue)}
+.bgpick__sw.is-active{box-shadow:0 0 0 3px var(--blue);transform:scale(1.08)}
+
+/* ===== Налаштування: поточне значення + «Змінити ...», форма розгортається ===== */
+.setsec--fold .setsec__head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.setsec__info{display:flex;flex-direction:column;gap:3px;min-width:0}
+.setsec--fold .setsec__title{margin:0}
+.setsec__cur{font-weight:700;color:var(--text);overflow-wrap:anywhere}
+.setsec__cur--ava{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--muted);font-size:14px}
+.setsec__cur--ava .uavatar{width:40px;height:40px;font-size:14px}
+.setsec__toggle{flex:none}
+.setsec__body{margin-top:12px;animation:setsecIn .22s ease-out}
+.setsec__body[hidden]{display:none}
+@keyframes setsecIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.setsec.is-open .setsec__head{padding-bottom:2px}
+.setform .btn[data-fold-close]{width:100%}
+@media(max-width:480px){.setsec__toggle{width:100%}}
+
+/* ===== Загальний чат: учасники, «в мережі», «друкує», перегляди ===== */
+.chat-head__status.is-stats::before,.chat-head__status.is-typing::before{display:none}
+.chat-head__status.is-stats{display:flex;flex-wrap:wrap;gap:4px 12px;opacity:1}
+.chat-stat{display:inline-flex;align-items:center;gap:5px;font-weight:600;opacity:.92}
+.chat-stat--on::before{content:"";width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.7);animation:chatPulse 2s infinite}
+@keyframes chatPulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.6)}70%{box-shadow:0 0 0 6px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+.chat-head__status.is-typing{display:flex;align-items:center;gap:6px;opacity:1;color:#fff;font-weight:700}
+.chat-dots{display:inline-flex;gap:3px}
+.chat-dots::before,.chat-dots::after,.chat-dots{position:relative}
+.chat-dots::before,.chat-dots::after{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;animation:chatDot 1.2s infinite}
+.chat-dots::after{animation-delay:.2s}
+@keyframes chatDot{0%,60%,100%{opacity:.35;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.chat-typing{display:flex;align-items:center;gap:8px;padding:2px 0 2px 2px;animation:setsecIn .2s ease-out}
+.chat-typing__bubble{display:inline-flex;gap:4px;padding:10px 13px;border-radius:16px 16px 16px 4px;background:var(--surface);border:1px solid var(--blue);box-shadow:0 0 0 3px rgba(26,111,196,.12)}
+.chat-typing__bubble i{width:7px;height:7px;border-radius:50%;background:var(--blue);animation:chatDot 1.2s infinite}
+.chat-typing__bubble i:nth-child(2){animation-delay:.15s}
+.chat-typing__bubble i:nth-child(3){animation-delay:.3s}
+.chat-typing__who{font-size:12.5px;font-weight:700;color:var(--blue)}
+.chat-msg__meta{display:flex;align-items:center;justify-content:flex-end;gap:5px;margin-top:3px}
+.chat-msg__meta .chat-msg__time{margin:0}
+.chat-tick{font-size:11px;font-weight:800;letter-spacing:-2px;opacity:.75}
+.chat-tick.is-read{color:#7dd3fc;opacity:1}
+.chat-msg:not(.is-mine) .chat-tick{color:var(--blue)}
+.chat-avatar.is-clickable,.chat-msg__who.is-clickable{cursor:pointer}
+.chat-avatar.is-clickable{transition:transform .15s,box-shadow .15s}
+.chat-avatar.is-clickable:hover,.chat-avatar.is-clickable:focus-visible{transform:scale(1.08);box-shadow:0 0 0 2px var(--blue);outline:none}
+.chat-msg__who.is-clickable:hover,.chat-msg__who.is-clickable:focus-visible{text-decoration:underline;outline:none}
+
+/* ===== Особисті повідомлення: статуси, «друкує», клік по співрозмовнику ===== */
+.dm__peer.is-clickable{cursor:pointer;border-radius:12px;padding:4px 8px 4px 4px;margin:-4px 0 -4px -4px;transition:background .15s}
+.dm__peer.is-clickable:hover,.dm__peer.is-clickable:focus-visible{background:var(--blue-pale);outline:none}
+.dm__peer-status.is-typing{display:inline-flex;align-items:center;gap:6px;color:var(--blue);font-weight:700}
+.dm-msg__meta{display:flex;align-items:center;justify-content:flex-end;gap:5px;margin-top:3px}
+.dm-msg__meta .dm-msg__time{margin:0}
+.dm-tick{font-size:11px;font-weight:800;letter-spacing:-2px;opacity:.7}
+.dm-tick.is-pending{letter-spacing:0;font-size:10px}
+.dm-tick.is-delivered{opacity:.85}
+.dm-tick.is-read{color:#7dd3fc;opacity:1}
+.dm-msg:not(.is-mine) .dm-tick.is-read{color:var(--blue)}
+.dm-typing{padding:4px 0}
+
+/* ===== Картка профілю ===== */
+.uprof-overlay{position:fixed;inset:0;z-index:2100;display:grid;place-items:center;padding:16px;background:rgba(11,37,69,.45);backdrop-filter:blur(3px);animation:uprofFade .18s ease-out}
+.uprof-overlay[hidden]{display:none}
+@keyframes uprofFade{from{opacity:0}to{opacity:1}}
+.uprof{position:relative;width:min(400px,100%);max-height:calc(100vh - 32px);overflow:auto;border-radius:24px;background:var(--surface);border:1px solid var(--line);box-shadow:0 30px 70px rgba(11,37,69,.35);animation:uprofIn .25s cubic-bezier(.2,.8,.2,1)}
+@keyframes uprofIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+.uprof__close{position:absolute;top:12px;right:12px;z-index:2;width:34px;height:34px;border:0;border-radius:50%;background:rgba(255,255,255,.85);color:#0b2545;font-size:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.uprof__close:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.uprof__head{display:flex;align-items:center;gap:16px;padding:26px 22px 20px;background:linear-gradient(135deg,var(--blue-pale),var(--surface));background-size:cover;background-position:center}
+.uprof__av{position:relative;flex:none}
+.uprof__av .uavatar{border:3px solid var(--surface);box-shadow:0 6px 18px rgba(11,37,69,.18)}
+.uprof__av .online-dot{position:absolute;right:4px;bottom:4px;width:16px;height:16px;border:3px solid var(--surface)}
+.uprof__hi{min-width:0}
+.uprof__name{margin:0 0 4px;font-size:21px;line-height:1.2;overflow-wrap:anywhere}
+.uprof__status{margin:0 0 6px;font-size:13px;color:var(--muted)}
+.uprof__status.is-on{color:#16a34a;font-weight:700}
+.uprof__role{margin:0;font-size:13px;color:var(--muted)}
+.uprof__role .role-badge{margin-left:0}
+.uprof__head.is-dark-bg .uprof__name,.uprof__head.is-dark-bg .uprof__status,.uprof__head.is-dark-bg .uprof__role{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.25)}
+.uprof__head.has-bg-img{position:relative}
+.uprof__head.has-bg-img::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.45))}
+.uprof__head.has-bg-img>*{position:relative}
+.uprof__head.has-bg-img .uprof__name,.uprof__head.has-bg-img .uprof__status,.uprof__head.has-bg-img .uprof__role{color:#fff}
+.uprof__body{padding:18px 22px 22px}
+.uprof__rating{display:flex;align-items:center;gap:8px;margin-bottom:14px;font-size:13.5px;font-weight:700;color:var(--text)}
+.uprof__facts{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin:0 0 16px;padding:14px;border-radius:16px;background:var(--section);font-size:14px}
+.uprof__facts dt{color:var(--muted)}
+.uprof__facts dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.uprof__muted,.uprof__hint{margin:0 0 14px;color:var(--muted);font-size:14px}
+.uprof__actions{display:flex;flex-wrap:wrap;gap:10px}
+.uprof__actions .btn{flex:1 1 140px;justify-content:center}
+.uprof__loading{padding:40px 22px;text-align:center;color:var(--muted)}
+@media(prefers-reduced-motion:reduce){.uprof,.uprof-overlay,.chat-typing,.setsec__body{animation:none}.chat-dots::before,.chat-dots::after,.chat-typing__bubble i,.chat-stat--on::before{animation:none}}
+
+/* ===== Ілюстрація в шапці сторінки (матеріали, документи) ===== */
+.page-hero--art .container{position:relative}
+.page-hero--art .container>:not(.hero-art){max-width:calc(100% - 260px)}
+.hero-art{position:absolute;right:20px;top:50%;width:200px;transform:translateY(-50%);pointer-events:none;filter:drop-shadow(0 18px 30px rgba(0,0,0,.25));animation:heroArtFloat 4.5s ease-in-out infinite}
+.hero-art img{display:block;width:100%;height:auto}
+@keyframes heroArtFloat{0%,100%{transform:translateY(-50%)}50%{transform:translateY(calc(-50% - 10px))}}
+@media(max-width:900px){.hero-art{display:none}.page-hero--art .container>:not(.hero-art){max-width:none}}
+@media(prefers-reduced-motion:reduce){.hero-art{animation:none}}
+
+/* ===== Власні емодзі-картинки (assets/emoji) ===== */
+.cemoji{display:inline-block;width:1.45em;height:1.45em;vertical-align:-.35em;object-fit:contain}
+.chat-emoji--img{display:grid;place-items:center}
+.chat-emoji--img .cemoji{width:26px;height:26px}
+.chat-react__e .cemoji,.dm-react__e .cemoji{width:18px;height:18px;vertical-align:-4px}
+.chat-rpick__e .cemoji{width:24px;height:24px}
+
+/* ===== Реакції в особистих повідомленнях ===== */
+.dm-msg__bubble{position:relative}
+.dm-reacts{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.dm-react{display:inline-flex;align-items:center;gap:4px;padding:2px 8px 2px 6px;border:1px solid var(--line);border-radius:99px;background:var(--blue-pale);color:var(--text);font:700 12px/20px Onest,sans-serif;cursor:pointer;transition:transform .15s;animation:chatReactIn .25s cubic-bezier(.34,1.56,.64,1)}
+.dm-react:hover{transform:translateY(-1px)}
+.dm-react__e{font-size:15px}
+.dm-react.is-mine{border-color:var(--blue);background:rgba(26,111,196,.14);color:var(--blue)}
+.dm-msg.is-mine .dm-react{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3);color:#fff}
+.dm-msg.is-mine .dm-react.is-mine{background:#fff;border-color:#fff;color:var(--blue)}
+.dm-react:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.dm-msg__add{position:absolute;top:50%;right:-36px;display:grid;place-items:center;width:28px;height:28px;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--muted);cursor:pointer;opacity:0;transform:translateY(-50%) scale(.8);transition:opacity .15s,transform .15s,color .15s}
+.dm-msg__add svg{width:16px;height:16px}
+.dm-msg.is-mine .dm-msg__add{right:auto;left:-36px}
+.dm-msg__bubble:hover .dm-msg__add,.dm-msg__add:focus-visible{opacity:1;transform:translateY(-50%) scale(1)}
+.dm-msg__add:hover{color:var(--blue)}
+@media(hover:none){.dm-msg__add{opacity:.55;transform:translateY(-50%) scale(.9)}}
+.dm-msg__bubble{-webkit-tap-highlight-color:transparent}
+.dm__conv{position:relative}
+.dm-rpick{position:absolute;z-index:8;max-width:calc(100% - 16px);padding:6px;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:0 14px 34px rgba(11,37,69,.22);animation:chatPickIn .18s ease-out}
+.dm-rpick[hidden]{display:none}
+.dm-rpick .chat-rpick__more{width:320px}
+.is-emoji-only .cemoji{width:48px;height:48px;vertical-align:middle;margin:2px 1px}

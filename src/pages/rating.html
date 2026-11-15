@@ -1,0 +1,55 @@
+<!--
+{
+	"title": "Рейтинг викладачів і студентів - World Students",
+	"description": "Топ найкращих викладачів і студентів платформи World Students. Рейтинг оновлюється автоматично в реальному часі за ролями та відгуками користувачів.",
+	"page": "rating",
+	"scripts": ["rating.js"],
+	"sitemap": { "changefreq": "daily", "priority": "0.6" },
+	"breadcrumbs": [
+		["Головна", "index.html"],
+		["Платформа", "platform.html"],
+		["Рейтинг", "rating.html"]
+	]
+}
+-->
+<main id="main" class="rank-main">
+<section class="page-hero">
+<div class="container reveal">
+<div class="breadcrumb"><a href="index.html">Головна</a>› <a href="platform.html">Платформа</a>› <a href="rating.html">Рейтинг</a></div>
+<h1>Рейтинг</h1>
+<p class="lead">Топ найкращих викладачів і студентів World Students. Місця оновлюються автоматично в реальному часі: залежно від ролі користувача та відгуків, які йому залишають інші.</p>
+</div>
+</section>
+<section class="section rank" data-rank>
+<div class="container">
+<div class="rank__bar">
+<div class="users__tabs rank__tabs" role="tablist" aria-label="Кого показати"><button type="button" role="tab" class="users__tab is-active" data-rank-tab="t" aria-selected="true">Викладачі</button><button type="button" role="tab" class="users__tab" data-rank-tab="s" aria-selected="false">Студенти</button></div>
+<p class="rank__live" data-rank-live><span class="rank__pulse" aria-hidden="true"></span><span data-rank-live-text>Підключаємося…</span></p>
+</div>
+<div class="rank__stats" data-rank-stats></div>
+<div class="rank__filters" data-rank-filters hidden>
+<input type="search" data-rank-q maxlength="60" placeholder="Пошук за ім'ям або предметом" aria-label="Пошук за ім'ям або предметом">
+<select data-rank-subj aria-label="Предмет"><option value="">Усі предмети</option></select>
+<select data-rank-course aria-label="Курс" hidden><option value="">Усі курси</option></select>
+</div>
+<div class="rank__guest card" data-rank-guest hidden>
+<h2>Рейтинг бачать зареєстровані користувачі</h2>
+<p>Профілі та відгуки доступні лише учасникам платформи. Увійдіть або створіть акаунт - це безкоштовно.</p>
+<div class="actions"><a class="btn btn-primary" href="login.html">Увійти</a><a class="btn btn-secondary" href="register.html">Зареєструватися</a></div>
+</div>
+<div class="rank__podium" data-rank-podium aria-label="Трійка лідерів"></div>
+<ol class="rank__list" data-rank-list aria-live="polite"></ol>
+<p class="rank__empty" data-rank-empty hidden></p>
+<details class="rank__how card">
+<summary>Як рахується рейтинг</summary>
+<ul>
+<li>У рейтингу беруть участь користувачі, яким залишили хоча б один відгук. Вкладка залежить від ролі в профілі: «Викладач» або «Учень».</li>
+<li>Бал - середня оцінка (1-5 ★) з поправкою на кількість відгуків: до оцінок користувача додаються три «середні» оцінки платформи. Тож одна п'ятірка не обганяє десяток чесних оцінок, а з кожним новим відгуком бал наближається до справжньої середньої.</li>
+<li>За однакового бала вище той, у кого більше відгуків. Стрілки ▲▼ показують, як змінилося місце після останнього оновлення.</li>
+<li>Дані оновлюються автоматично кожні кілька секунд, перезавантажувати сторінку не потрібно.</li>
+<li>Щоб потрапити в рейтинг, оберіть роль у налаштуваннях особистого кабінету й отримайте відгуки. Залишити відгук можна в профілі будь-якого користувача.</li>
+</ul>
+</details>
+</div>
+</section>
+</main>

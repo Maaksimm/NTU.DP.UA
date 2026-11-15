@@ -1,0 +1,65 @@
+.footer {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	background: var(--page-bg);
+	color: var(--muted);
+	border-top: 1px solid var(--line);
+	padding: 54px 0 24px;
+}
+/* soft colour blobs behind the glass panels */
+.footer::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background:
+		radial-gradient(38% 60% at 10% 0%, rgba(26, 111, 196, 0.14), transparent 70%),
+		radial-gradient(30% 50% at 92% 20%, rgba(240, 165, 0, 0.12), transparent 70%),
+		radial-gradient(40% 60% at 60% 100%, rgba(79, 195, 247, 0.12), transparent 70%);
+}
+.footer-grid {
+	display: grid;
+	grid-template-columns: 1.6fr repeat(4, 1fr);
+	gap: 32px;
+	margin-bottom: 28px;
+}
+.footer h4 {
+	color: var(--text);
+	margin-bottom: 12px;
+}
+.footer a {
+	display: block;
+	width: fit-content;
+	margin: 7px 0;
+	color: var(--muted);
+	text-decoration: none;
+	background-image: linear-gradient(currentColor, currentColor);
+	background-position: 0 100%;
+	background-repeat: no-repeat;
+	background-size: 0% 1px;
+	transition: background-size 0.25s ease, color 0.2s ease;
+}
+.footer a:hover {
+	color: var(--blue);
+	background-size: 100% 1px;
+}
+.footer-bottom {
+	border-top: 1px solid var(--line);
+	padding-top: 18px;
+	font-size: 13px;
+}
+.reveal {
+	opacity: 0;
+	transform: translateY(20px);
+	transition: 0.65s ease;
+}
+.reveal.visible {
+	opacity: 1;
+	transform: none;
+}
+.reveal-block {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}

@@ -1,0 +1,36 @@
+<!--
+{
+	"title": "Вхід - НТУ «ДП»",
+	"description": "Вхід до акаунта студентської платформи World Students.",
+	"page": "login",
+	"robots": "noindex, follow",
+	"scripts": ["google-signin.js"],
+	"breadcrumbs": [
+		["Головна", "index.html"],
+		["Платформа", "platform.html"],
+		["Вхід", "login.html"]
+	]
+}
+-->
+<main id="main" class="auth-shell">
+<div class="auth-grid reveal">
+<div class="auth-side"><img src="assets/img/logo.svg" style="width:150px;background:white;border-radius:12px;padding:8px" alt="">
+<h2>Вхід до особистого кабінету</h2>
+<p>Увійдіть, щоб писати в студентському чаті та користуватися особистим кабінетом World Students.</p>
+</div>
+<form class="auth-form" data-auth-form="login" novalidate>
+<div class="label">Студентська платформа</div>
+<h1 style="font-size:34px;margin-bottom:8px">Вхід</h1>
+<p style="color:var(--muted);margin-bottom:24px">Немає акаунта? <a href="register.html">Зареєструйтесь</a> - це безкоштовно.</p>
+<div class="field"><label for="au-email">Email</label><input id="au-email" name="email" type="email" required maxlength="254" autocomplete="email" placeholder="student@example.com"></div>
+<div class="field"><label for="au-pass">Пароль</label><input id="au-pass" name="password" type="password" required autocomplete="current-password" placeholder="••••••••"></div>
+<button class="btn btn-primary" style="width:100%" type="submit">Увійти</button>
+<div class="auth-google" data-google-signin hidden>
+<div class="auth-or"><span>або</span></div>
+<div class="auth-google__btn" data-google-btn></div>
+</div>
+<p data-form-status class="form-note-status" role="status"></p>
+<p style="margin-top:16px"><a href="forgot-password.html">Забули пароль?</a> · <a href="register.html">Реєстрація</a></p>
+</form>
+</div>
+</main>

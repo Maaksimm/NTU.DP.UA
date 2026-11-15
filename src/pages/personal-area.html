@@ -1,0 +1,242 @@
+<!--
+{
+	"title": "Особистий кабінет - World Students",
+	"description": "Особистий кабінет користувача студентської платформи World Students.",
+	"page": "account",
+	"robots": "noindex, follow",
+	"scripts": ["community.js", "dm.js"],
+	"breadcrumbs": [
+		["Головна", "index.html"],
+		["Платформа", "platform.html"],
+		["Особистий кабінет", "personal-area.html"]
+	]
+}
+-->
+<main id="main" class="personal-main account">
+<div class="bg-video bg-video--page" aria-hidden="true"><video muted loop playsinline preload="none" poster="assets/video/account-bg.webp" data-bg-video="assets/video/account-bg.mp4"></video></div>
+<div class="account__guest" data-account-guest hidden>
+<div class="label">Персональна зона</div>
+<h1>Особистий кабінет</h1>
+<p class="lead">Щоб побачити кабінет, увійдіть до свого акаунта.</p>
+<div class="actions"><a class="btn btn-primary" href="login.html">Увійти</a><a class="btn btn-secondary" href="register.html">Зареєструватися</a></div>
+</div>
+<div class="account__user" data-account-user hidden>
+<div class="label">Персональна зона</div>
+<div class="info-note account__verify" data-verify-banner hidden>
+<strong>Підтвердіть пошту.</strong> Ми надіслали лист на <span data-verify-email></span>. Перейдіть за посиланням у листі, щоб писати в чаті й залишати відгуки.
+<div class="account__upload" style="margin-top:12px">
+<button type="button" class="btn btn-primary" data-verify-check>Я підтвердив(ла) пошту</button>
+<button type="button" class="btn btn-secondary" data-verify-resend>Надіслати лист ще раз</button>
+</div>
+<p class="form-note-status" data-verify-status role="status"></p>
+</div>
+<div class="fill-alert" data-fill-alert role="alert" hidden>
+<span class="warn-badge fill-alert__ic" aria-hidden="true">!</span>
+<div class="fill-alert__txt"><strong>Заповніть персональні дані</strong><span data-fill-list></span></div>
+<button type="button" class="btn btn-primary fill-alert__btn" data-fill-go>Заповнити</button>
+</div>
+<div class="account__card">
+<span class="warn-badge account__gear-warn" data-fill-dot hidden aria-hidden="true">!</span>
+<button type="button" class="account__gear" data-open-modal="settingsModal" aria-label="Налаштування"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button>
+<button type="button" class="account__logout" data-signout aria-label="Вийти" title="Вийти"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg></button>
+<div class="account__avatar-wrap">
+<img class="account__avatar" data-account-avatar alt="Ваше фото профілю" hidden>
+<span class="account__avatar account__avatar--ph" data-account-initials></span>
+</div>
+<div class="account__info">
+<h2 class="account__name" data-account-name></h2>
+<p class="account__presence" data-account-presence></p>
+<p class="account__role" data-account-role></p>
+<div class="account__actions">
+<button type="button" class="btn btn-primary dm-open" data-dm-open>Повідомлення <span class="dm-badge" data-dm-badge hidden></span></button>
+<button type="button" class="btn btn-secondary" data-open-modal="usersModal" data-users-open>Список користувачів</button>
+<a class="btn btn-secondary" href="rating.html">Рейтинг</a>
+<button type="button" class="btn btn-secondary" data-bg-toggle aria-expanded="false" aria-controls="bgPanel">Фон профілю</button>
+</div>
+<div class="bgpick" id="bgPanel" data-bgpick hidden>
+<span class="bgpick__title">Фон профілю</span>
+<div class="prefs__seg bgpick__mode" role="group" aria-label="Тема, для якої налаштовуєте фон"><button type="button" data-bg-mode="light" aria-pressed="true">☀️ Світла тема</button><button type="button" data-bg-mode="dark" aria-pressed="false">🌙 Темна тема</button></div>
+<p class="bgpick__hint">Фон зберігається окремо для кожної теми. Інші користувачі бачать той фон, який відповідає їхній темі сайту.</p>
+<div class="bgpick__swatches" data-bg-swatches></div>
+<div class="account__upload" style="margin-top:10px">
+<input type="file" id="bgFile" accept="image/*" hidden>
+<button type="button" class="btn btn-secondary" data-bg-pick>Своє зображення</button>
+<button type="button" class="btn btn-secondary" data-bg-reset>Без фону</button>
+</div>
+<p class="form-note-status" data-bg-status role="status"></p>
+</div>
+</div>
+</div>
+<div class="card account__panel teacher-panel" data-teacher-panel hidden>
+<div class="teacher-panel__head"><div><h2 style="font-size:20px">Мої записи уроків</h2>
+<p class="account__hint" style="margin-top:6px">Додайте запис уроку (посилання на відео) і PDF-матеріали до нього. Записи бачать зареєстровані користувачі у вашому профілі за кнопкою «Переглянути записи».</p></div></div>
+<form class="lesson-form" data-lesson-form novalidate>
+<div class="field"><label for="ls-title">Тема уроку<span class="required">*</span></label><input id="ls-title" name="title" type="text" required minlength="3" maxlength="150" placeholder="Наприклад: Похідна функції, лекція 5"></div>
+<div class="field"><label for="ls-video">Посилання на запис уроку</label><input id="ls-video" name="video" type="url" maxlength="500" placeholder="https://youtu.be/… або Google Drive"><span class="field-hint">YouTube, Google Drive або інше посилання, що починається з https://</span></div>
+<div class="field"><label for="ls-desc">Опис</label><textarea id="ls-desc" name="desc" rows="3" maxlength="2000" placeholder="Що розглядали на уроці, домашнє завдання"></textarea></div>
+<div class="field"><label for="ls-files">PDF-файли до уроку</label><input id="ls-files" name="files" type="file" accept="application/pdf,.pdf" multiple><span class="field-hint">Лише PDF, до 20 МБ кожен, до 5 файлів.</span></div>
+<button type="submit" class="btn btn-primary">Опублікувати запис</button>
+<p class="form-note-status" data-lesson-status role="status"></p>
+</form>
+<div class="lesson-list" data-my-lessons></div>
+</div>
+<div class="account__grid">
+<div class="card account__panel" data-extra-panel>
+<h2 style="font-size:20px">Про мене <span class="warn-badge" data-fill-dot hidden aria-hidden="true">!</span></h2>
+<p class="account__hint" style="margin-top:6px" data-extra-hint>Ці дані бачать зареєстровані користувачі платформи. Вкажіть стать, вік, курс і факультет, Telegram - за бажанням.</p>
+<form data-extra-form novalidate style="margin-top:14px">
+<div class="two-field-row">
+<div class="field"><label for="ex-gender">Стать</label><select id="ex-gender" name="gender"><option value="">Не вказувати</option><option value="m">Чоловік</option><option value="f">Жінка</option></select></div>
+<div class="field"><label for="ex-age">Вік</label><input id="ex-age" name="age" type="number" min="10" max="99" inputmode="numeric" placeholder="Наприклад, 19"></div>
+</div>
+<div class="two-field-row">
+<div class="field"><label for="ex-course">Курс</label><select id="ex-course" name="course"><option value="">Не вказувати</option></select></div>
+<div class="field"><label for="ex-faculty">Факультет</label><select id="ex-faculty" name="faculty"><option value="">Не вказувати</option></select></div>
+</div>
+<div class="field"><label for="ex-tg">Telegram (необов'язково)</label><input id="ex-tg" name="tg" type="text" maxlength="40" autocomplete="off" placeholder="@username"><span class="field-hint">Щоб інші студенти могли написати вам. Побачать лише зареєстровані користувачі.</span></div>
+<button type="submit" class="btn btn-primary">Зберегти</button>
+<p class="form-note-status" data-extra-status role="status"></p>
+</form>
+</div>
+<div class="card account__panel">
+<h2 style="font-size:20px">Мій рейтинг і відгуки</h2>
+<div data-my-rating style="margin:10px 0"></div>
+<div class="reviews" data-my-reviews></div>
+<p class="account__hint" data-community-demo hidden>Профіль, відгуки та список користувачів працюють лише після підключення сервера.</p>
+</div>
+</div>
+</div>
+</main>
+<div class="modal" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
+<div class="modal__box modal__box--sm">
+<button type="button" class="modal__close" data-close-modal aria-label="Закрити">✕</button>
+<h3 id="settingsTitle" class="dslider__title">Налаштування</h3>
+<div class="setsec setsec--fold" data-fold>
+<div class="setsec__head"><div class="setsec__info"><span class="setsec__title">Фото профілю</span><span class="setsec__cur setsec__cur--ava" data-cur-avatar></span></div>
+<button type="button" class="btn btn-secondary setsec__toggle" data-fold-open aria-expanded="false" aria-controls="foldPhoto">Змінити фото</button></div>
+<div class="setsec__body" id="foldPhoto" hidden>
+<div class="account__upload">
+<input type="file" id="avatarFile" accept="image/*" hidden>
+<button type="button" class="btn btn-primary" data-avatar-pick>Завантажити фото профілю</button>
+<button type="button" class="btn btn-secondary" data-avatar-remove hidden>Видалити фото</button>
+<button type="button" class="btn btn-secondary" data-fold-close>Скасувати</button>
+</div>
+</div>
+<p class="form-note-status" data-account-status role="status"></p>
+</div>
+<section class="setgroup" data-setgroup>
+<button type="button" class="setgroup__head" aria-expanded="false" aria-controls="grpPersonal"><span class="setgroup__ic" aria-hidden="true">👤</span><span class="setgroup__t"><strong>Персональні дані <span class="warn-badge" data-fill-dot hidden aria-hidden="true">!</span></strong><small>Нікнейм, пошта, роль і дані «Про мене»</small></span></button>
+<div class="setgroup__body" id="grpPersonal" hidden>
+<div class="setsec setsec--fold" data-fold>
+<div class="setsec__head"><div class="setsec__info"><span class="setsec__title">Нікнейм</span><span class="setsec__cur" data-cur-name></span></div>
+<button type="button" class="btn btn-secondary setsec__toggle" data-fold-open aria-expanded="false" aria-controls="foldName">Змінити нікнейм</button></div>
+<div class="setsec__body" id="foldName" hidden>
+<form class="setform" data-name-form novalidate>
+<div class="field"><label for="set-name">Новий нікнейм</label><input id="set-name" name="name" type="text" required minlength="2" maxlength="40" autocomplete="nickname" placeholder="Як вас бачитимуть у чаті"></div>
+<button type="submit" class="btn btn-primary">Зберегти нікнейм</button>
+<button type="button" class="btn btn-secondary" data-fold-close>Скасувати</button>
+</form>
+</div>
+<p class="form-note-status" data-name-status role="status"></p>
+</div>
+<div class="setsec setsec--fold" data-fold>
+<div class="setsec__head"><div class="setsec__info"><span class="setsec__title">Пошта</span><span class="setsec__cur" data-cur-email></span></div>
+<button type="button" class="btn btn-secondary setsec__toggle" data-fold-open aria-expanded="false" aria-controls="foldEmail">Змінити пошту</button></div>
+<div class="setsec__body" id="foldEmail" hidden>
+<form class="setform" data-email-form novalidate>
+<div class="field"><label for="set-email">Нова пошта</label><input id="set-email" name="email" type="email" required maxlength="254" autocomplete="email" placeholder="student@example.com"></div>
+<div class="field"><label for="set-pass">Поточний пароль</label><input id="set-pass" name="password" type="password" required maxlength="128" autocomplete="current-password" placeholder="Для підтвердження зміни"></div>
+<button type="submit" class="btn btn-primary">Зберегти нову пошту</button>
+<button type="button" class="btn btn-secondary" data-fold-close>Скасувати</button>
+</form>
+<p class="account__hint" style="margin-top:8px">Ми надішлемо лист на нову адресу. Пошта зміниться після переходу за посиланням, а потім потрібно буде увійти з новою адресою.</p>
+</div>
+<p class="form-note-status" data-email-status role="status"></p>
+</div>
+<div class="setsec setsec--fold" data-fold>
+<div class="setsec__head"><div class="setsec__info"><span class="setsec__title">Роль</span><span class="setsec__cur" data-cur-role></span></div>
+<button type="button" class="btn btn-secondary setsec__toggle" data-fold-open aria-expanded="false" aria-controls="foldRole">Змінити роль</button></div>
+<div class="setsec__body" id="foldRole" hidden>
+<form class="setform" data-role-form novalidate>
+<div class="prefs__seg role-seg" role="radiogroup" aria-label="Роль"><label><input type="radio" name="role" value="s"> Учень</label><label><input type="radio" name="role" value="t"> Викладач</label></div>
+<div class="field" data-role-subj-wrap hidden><label for="set-subj">Предмет</label><select id="set-subj" name="subj" data-role-subj><option value="">Оберіть предмет</option></select></div>
+<button type="submit" class="btn btn-primary">Зберегти роль</button>
+<button type="button" class="btn btn-secondary" data-fold-close>Скасувати</button>
+</form>
+</div>
+<p class="form-note-status" data-role-status role="status"></p>
+</div>
+<div class="setsec" data-personal-sec hidden>
+<span class="setsec__title">Про мене</span>
+<div class="personal-slot" id="personalSlot" data-personal-slot></div>
+</div>
+</div>
+</section>
+<section class="setgroup" data-setgroup>
+<button type="button" class="setgroup__head" aria-expanded="false" aria-controls="grpPrivacy"><span class="setgroup__ic" aria-hidden="true">🔔</span><span class="setgroup__t"><strong>Приватність і сповіщення</strong><small>Статус «в мережі», «друкує», звук повідомлень</small></span></button>
+<div class="setgroup__body" id="grpPrivacy" hidden>
+<label class="setrow setrow--check"><input type="checkbox" id="setOnline"><span>Показувати іншим, що я в мережі<small>Якщо вимкнути, інші бачитимуть вас як «не в мережі».</small></span></label>
+<label class="setrow setrow--check"><input type="checkbox" data-pref="typing"><span>Показувати, що я друкую<small>Співрозмовники бачать «друкує…» в чаті та особистих повідомленнях.</small></span></label>
+<label class="setrow setrow--check"><input type="checkbox" data-pref="sound"><span>Звук нових повідомлень<small>Короткий сигнал, коли приходить нове повідомлення, а вкладка не активна або чат закритий.</small></span></label>
+<label class="setrow setrow--check"><input type="checkbox" data-pref="notify"><span>Сповіщення браузера<small>Спливаюче сповіщення про нові особисті повідомлення, коли сайт відкрито у фоні.</small></span></label>
+<p class="form-note-status" data-set-status role="status"></p>
+</div>
+</section>
+<section class="setgroup" data-setgroup>
+<button type="button" class="setgroup__head" aria-expanded="false" aria-controls="grpSecurity"><span class="setgroup__ic" aria-hidden="true">🔒</span><span class="setgroup__t"><strong>Безпека</strong><small>Пароль і підтвердження пошти</small></span></button>
+<div class="setgroup__body" id="grpSecurity" hidden>
+<div class="setrow"><span class="setrow__k">Статус пошти</span><span class="setrow__v" data-set-verified></span></div>
+<div class="setrow setrow--act"><span class="setrow__k">Пароль<small>Надішлемо на вашу пошту лист із посиланням для зміни пароля.</small></span><button type="button" class="btn btn-secondary" data-pass-reset>Змінити пароль</button></div>
+<p class="form-note-status" data-sec-status role="status"></p>
+</div>
+</section>
+<div class="setsec setsec--end"><button type="button" class="btn btn-secondary" data-signout>Вийти</button></div>
+</div>
+</div>
+<div class="modal" id="usersModal" role="dialog" aria-modal="true" aria-labelledby="usersModalTitle" hidden>
+<div class="modal__box modal__box--wide users">
+<button type="button" class="modal__close" data-close-modal aria-label="Закрити">✕</button>
+<div data-users-list-view>
+<h3 id="usersModalTitle" class="dslider__title">Список користувачів</h3>
+<div class="users__tabs" role="tablist" aria-label="Роль"><button type="button" role="tab" class="users__tab is-active" data-role-tab="s" aria-selected="true">Учні</button><button type="button" role="tab" class="users__tab" data-role-tab="t" aria-selected="false">Викладачі</button></div>
+<div class="users__filters">
+<input type="search" data-f="q" maxlength="60" placeholder="Пошук за ім'ям" aria-label="Пошук за ім'ям">
+<select data-f="status" aria-label="Статус"><option value="">Будь-який статус</option><option value="on">В мережі</option><option value="off">Не в мережі</option></select>
+<select data-f="gender" aria-label="Стать"><option value="">Будь-яка стать</option><option value="m">Чоловік</option><option value="f">Жінка</option></select>
+<span class="users__age"><input type="number" data-f="ageMin" min="10" max="99" placeholder="Вік від" aria-label="Вік від"><input type="number" data-f="ageMax" min="10" max="99" placeholder="до" aria-label="Вік до"></span>
+<select data-f="subj" aria-label="Предмет" hidden><option value="">Будь-який предмет</option></select>
+<select data-f="course" aria-label="Курс"><option value="">Будь-який курс</option></select>
+<select data-f="faculty" aria-label="Факультет"><option value="">Будь-який факультет</option></select>
+<select data-f="contact" aria-label="Зв'язок"><option value="">Зв'язок: будь-який</option><option value="yes">Можна зв'язатися (є Telegram)</option><option value="no">Без Telegram</option></select>
+<select data-f="rating" aria-label="Мінімальний рейтинг"><option value="">Будь-який рейтинг</option><option value="3">Від 3 зірок</option><option value="4">Від 4 зірок</option><option value="4.5">Від 4,5 зірки</option></select>
+<select data-f="sort" aria-label="Сортування"><option value="name">За ім'ям</option><option value="rating">За рейтингом</option><option value="reviews">За кількістю відгуків</option><option value="online">Спершу в мережі</option></select>
+<button type="button" class="btn btn-secondary" data-f-reset>Скинути</button>
+</div>
+<p class="users__count" data-users-count aria-live="polite"></p>
+<div class="users__results" data-users-results></div>
+</div>
+<div data-users-profile-view hidden>
+<button type="button" class="btn btn-secondary" data-profile-back>← До списку</button>
+<div data-profile-box></div>
+</div>
+</div>
+</div>
+
+<div class="modal" id="dmModal" role="dialog" aria-modal="true" aria-labelledby="dmTitle" hidden>
+<div class="modal__box modal__box--wide dm">
+<button type="button" class="modal__close" data-close-modal aria-label="Закрити">✕</button>
+<div class="dm__layout">
+<aside class="dm__inbox" data-dm-inbox-pane>
+<h3 id="dmTitle" class="dslider__title">Повідомлення</h3>
+<input type="search" class="dm__search" data-dm-search maxlength="60" placeholder="Пошук розмов" aria-label="Пошук розмов">
+<div class="dm__list" data-dm-list></div>
+</aside>
+<section class="dm__conv" data-dm-conv hidden>
+<header class="dm__head"><button type="button" class="dm__back" data-dm-back aria-label="До списку розмов">←</button><span class="dm__peer" data-dm-peer></span></header>
+<div class="dm__msgs" data-dm-msgs aria-live="polite"></div>
+<form class="dm__form" data-dm-form autocomplete="off"></form>
+</section>
+<div class="dm__empty" data-dm-placeholder><p>Оберіть розмову зліва або натисніть «Написати тут» у профілі користувача.</p></div>
+</div>
+</div>
+</div>

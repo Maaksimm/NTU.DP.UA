@@ -1,0 +1,726 @@
+{
+	"_about": "База відповідей AI Student. q - ключові слова й фрази (українською та англійською), a - відповідь українською, en - англійською, l - посилання [назва, адреса]. Посилання на сторінки сайту - відносні, на сайт університету - https://nmu.org.ua/. Після змін: npm run build.",
+	"entries": [
+		{
+			"id": "hello",
+			"q": [
+				"привіт",
+				"вітаю",
+				"добрий день",
+				"добрий вечір",
+				"доброго ранку",
+				"хай",
+				"hello",
+				"hi",
+				"hey"
+			],
+			"a": "Привіт! Я AI Student - помічник студентської платформи World Students. Питайте про розділи сайту, вступ, навчання, чат, акаунт чи будову самої платформи.",
+			"en": "Hi! I am AI Student, the assistant of the World Students platform. Ask me about the site sections, admission, studies, the chat, your account or how the platform is built."
+		},
+		{
+			"id": "thanks",
+			"q": [
+				"дякую",
+				"спасибі",
+				"дяки",
+				"thanks",
+				"thank you"
+			],
+			"a": "Будь ласка! Якщо буде ще питання - пишіть.",
+			"en": "You are welcome! Ask me anything else."
+		},
+		{
+			"id": "who",
+			"q": [
+				"хто ти",
+				"що ти вмієш",
+				"що ти можеш",
+				"ти бот",
+				"штучний інтелект",
+				"ntu ai",
+				"who are you",
+				"what can you do",
+				"ai student",
+				"ai студент"
+			],
+			"a": "Я AI Student - простий безкоштовний помічник, що працює прямо в браузері. Я шукаю відповіді в базі знань і на сторінках цього сайту, даю посилання на потрібний розділ, а за точними даними відсилаю на сайт університету. Я не зберігаю ваші питання і не передаю їх стороннім сервісам.",
+			"en": "I am AI Student, a simple free assistant that runs right in your browser. I search the knowledge base and the pages of this site, link you to the right section and, for exact data, point you to the university website. I do not store your questions or send them to third-party services.",
+			"l": [
+				[
+					"Мапа сайту",
+					"sections.html"
+				]
+			]
+		},
+		{
+			"id": "platform",
+			"q": [
+				"world students",
+				"що це за сайт",
+				"про платформу",
+				"студентська платформа",
+				"для чого сайт",
+				"про сайт",
+				"about the site",
+				"platform"
+			],
+			"a": "World Students - студентська платформа НТУ «Дніпровська політехніка», створена студентами для студентів. Тут зібрано вступ, навчання, розклад, стипендії, гуртожитки, науку, міжнародні можливості, а ще спільний чат, особисті повідомлення, профілі, відгуки та рейтинг. Платформа не ухвалює рішень від імені університету.",
+			"en": "World Students is a student platform of Dnipro University of Technology, made by students for students. It gathers admission, studies, timetable, scholarships, dormitories, research and international opportunities, plus a shared chat, direct messages, profiles, reviews and a rating. The platform does not make decisions on behalf of the university.",
+			"l": [
+				[
+					"Про платформу",
+					"platform.html"
+				],
+				[
+					"Автори",
+					"authors.html"
+				]
+			]
+		},
+		{
+			"id": "authors",
+			"q": [
+				"автори",
+				"хто зробив",
+				"хто створив",
+				"розробники",
+				"команда",
+				"автор сайту",
+				"печерський",
+				"ксенчук",
+				"authors",
+				"developers",
+				"who made"
+			],
+			"a": "Платформу створила команда студентів: автор ідеї й розробник Леонід Ксенчук, розробник Максим Печерський, QA-інженер Борис Філатов та інші учасники. Усіх авторів і їхній внесок показано на сторінці «Автори». У чатах і профілях Леонід має позначку ★ Автор, а Максим - позначку </> Розробник.",
+			"en": "The platform was created by a team of students: idea author and developer Leonid Ksenchuk, developer Maksym Pecherskyi, QA engineer Borys Filatov and others. All authors and their contributions are on the Authors page. In chats and profiles Leonid has the ★ Author badge and Maksym has the </> Developer badge.",
+			"l": [
+				[
+					"Автори",
+					"authors.html"
+				]
+			]
+		},
+		{
+			"id": "arch",
+			"q": [
+				"архітектура",
+				"як влаштований сайт",
+				"як зроблено сайт",
+				"на чому написано",
+				"технології",
+				"стек",
+				"будова сайту",
+				"структура проєкту",
+				"architecture",
+				"tech stack",
+				"how is it built"
+			],
+			"a": "Архітектура World Students: статичний сайт без фреймворків. Джерела лежать у src/ (сторінки з JSON-описом, спільні частини, дані меню, модулі CSS і JavaScript), статичні файли - у public/. Невеликий скрипт збирання на Node.js (tools/build.mjs) генерує готові сторінки в dist/: шапку з мегаменю, підвал, мета-теги для SEO, карту сайту й версії файлів для кешу. Бекенд: Firebase Authentication (акаунти) і Firebase Realtime Database (чат, профілі, повідомлення, відгуки) через REST, а також PHP-скрипти на сервері для завантаження файлів і листів акаунта. Хостинг - CyberPanel.",
+			"en": "World Students architecture: a static site without frameworks. Sources live in src/ (pages with JSON front matter, shared partials, menu data, CSS and JavaScript modules), static files in public/. A small Node.js build script (tools/build.mjs) generates the final pages in dist/: header with mega menu, footer, SEO meta tags, sitemap and cache-busting file versions. Backend: Firebase Authentication (accounts) and Firebase Realtime Database (chat, profiles, messages, reviews) over REST, plus PHP scripts on the server for file uploads and account emails. Hosting: CyberPanel.",
+			"l": [
+				[
+					"Про платформу",
+					"platform.html"
+				]
+			]
+		},
+		{
+			"id": "arch-build",
+			"q": [
+				"збирання",
+				"build",
+				"npm run build",
+				"npm",
+				"dist",
+				"як запустити",
+				"як зібрати",
+				"deploy",
+				"деплой",
+				"розгортання"
+			],
+			"a": "Збирання: npm run build (src/ + public/ → dist/), npm run check (перевірка заголовків, описів, посилань і перекладів), npm run serve (перегляд на localhost:8080), npm run package (архів для сервера). Розгортання: архів завантажується в CyberPanel → File Manager → public_html і розпаковується. Потрібен лише Node.js 18+, сторонніх залежностей немає.",
+			"en": "Build: npm run build (src/ + public/ → dist/), npm run check (titles, descriptions, links and translations), npm run serve (preview at localhost:8080), npm run package (archive for the server). Deploy: the archive is uploaded to CyberPanel → File Manager → public_html and extracted. Only Node.js 18+ is needed, no third-party dependencies."
+		},
+		{
+			"id": "arch-data",
+			"q": [
+				"база даних",
+				"де зберігаються дані",
+				"firebase",
+				"сервер",
+				"бекенд",
+				"backend",
+				"database",
+				"безпека даних",
+				"правила бази"
+			],
+			"a": "Дані зберігаються у Firebase Realtime Database: users (ім'я, фото, остання активність), profiles (роль, курс, факультет, фон), chat (спільний чат, реакції, «друкує»), dm та inbox (особисті повідомлення), reviews (відгуки), lessons (записи уроків викладачів). Доступ обмежують правила бази: писати може лише власник запису, у чат і відгуки - лише користувачі з підтвердженою поштою. Файли зберігаються на сервері сайту.",
+			"en": "Data is stored in Firebase Realtime Database: users (name, photo, last activity), profiles (role, course, faculty, background), chat (shared chat, reactions, typing), dm and inbox (direct messages), reviews, lessons (teachers' lesson records). Database rules restrict access: only the owner can write their records, and only verified accounts can post in the chat or leave reviews. Files are stored on the site server."
+		},
+		{
+			"id": "arch-i18n",
+			"q": [
+				"переклад",
+				"англійська",
+				"мова сайту",
+				"english",
+				"language",
+				"translation",
+				"змінити мову"
+			],
+			"a": "Сайт має українську та англійську версії. Мову, тему (світла/темна), чорно-білий режим і розмір тексту можна змінити кнопкою з оком у шапці сайту. Переклад працює через словник: текст сторінки замінюється на англійський без перезавантаження.",
+			"en": "The site is available in Ukrainian and English. Language, theme (light/dark), black-and-white mode and text size are changed with the eye button in the header. Translation works through a dictionary: the page text is replaced with English without reloading."
+		},
+		{
+			"id": "account",
+			"q": [
+				"реєстрація",
+				"зареєструватися",
+				"акаунт",
+				"обліковий запис",
+				"увійти",
+				"вхід",
+				"логін",
+				"register",
+				"sign up",
+				"login",
+				"account"
+			],
+			"a": "Зареєструйтеся на сторінці «Реєстрація», підтвердьте пошту за посиланням у листі (перевірте також «Спам») і увійдіть. Після цього можна писати в чаті, надсилати особисті повідомлення, залишати відгуки та потрапити в рейтинг.",
+			"en": "Register on the Sign up page, confirm your email via the link in the letter (check Spam too) and sign in. Then you can post in the chat, send direct messages, leave reviews and appear in the rating.",
+			"l": [
+				[
+					"Реєстрація",
+					"register.html"
+				],
+				[
+					"Вхід",
+					"login.html"
+				]
+			]
+		},
+		{
+			"id": "password",
+			"q": [
+				"пароль",
+				"забув пароль",
+				"змінити пароль",
+				"відновити пароль",
+				"скинути пароль",
+				"password",
+				"forgot password",
+				"reset password"
+			],
+			"a": "Забули пароль - на сторінці входу натисніть «Забули пароль?» і введіть пошту. Якщо ви вже увійшли: особистий кабінет → шестерня (Налаштування) → «Безпека» → «Змінити пароль». Лист із посиланням прийде на вашу пошту.",
+			"en": "Forgot your password? On the sign-in page click “Forgot password?” and enter your email. If you are signed in: personal area → gear (Settings) → “Security” → “Change password”. A letter with a link will arrive in your inbox.",
+			"l": [
+				[
+					"Відновлення пароля",
+					"forgot-password.html"
+				]
+			]
+		},
+		{
+			"id": "verify",
+			"q": [
+				"підтвердити пошту",
+				"підтвердження пошти",
+				"лист не прийшов",
+				"не приходить лист",
+				"спам",
+				"verify email",
+				"confirmation email"
+			],
+			"a": "Лист підтвердження надсилається з noreply@ntu.dp.ua. Якщо його немає у «Вхідних», перевірте «Спам» і «Промоакції» та позначте лист як «Не спам». У кабінеті є кнопка «Надіслати лист ще раз», а після переходу за посиланням натисніть «Я підтвердив(ла) пошту».",
+			"en": "The confirmation letter comes from noreply@ntu.dp.ua. If it is not in your Inbox, check Spam and Promotions and mark it as “Not spam”. In the personal area there is a “Resend” button, and after following the link click “I have confirmed my email”.",
+			"l": [
+				[
+					"Особистий кабінет",
+					"personal-area.html"
+				]
+			]
+		},
+		{
+			"id": "settings",
+			"q": [
+				"налаштування",
+				"змінити нікнейм",
+				"змінити ім'я",
+				"змінити пошту",
+				"змінити роль",
+				"персональні дані",
+				"приватність",
+				"сповіщення",
+				"звук",
+				"settings",
+				"nickname",
+				"change email"
+			],
+			"a": "Налаштування відкриваються шестернею в особистому кабінеті. «Персональні дані»: нікнейм, пошта, роль (учень / викладач) і дані «Про мене». «Приватність і сповіщення»: показувати «в мережі» та «друкує», звук і сповіщення браузера про нові повідомлення. «Безпека»: статус пошти та зміна пароля.",
+			"en": "Settings open with the gear in the personal area. “Personal data”: nickname, email, role (student / teacher) and “About me”. “Privacy & notifications”: show online and typing status, sound and browser notifications for new messages. “Security”: email status and password change.",
+			"l": [
+				[
+					"Особистий кабінет",
+					"personal-area.html"
+				]
+			]
+		},
+		{
+			"id": "chat",
+			"q": [
+				"чат",
+				"спільний чат",
+				"студентський чат",
+				"написати в чат",
+				"реакції",
+				"емодзі",
+				"гіф",
+				"gif",
+				"chat",
+				"emoji",
+				"reactions"
+			],
+			"a": "Студентський чат відкривається синьою кнопкою в правому нижньому куті будь-якої сторінки. Можна надсилати текст, емодзі (зокрема Kawaii), GIF і файли, ставити реакції (подвійний клік - ❤️), тегати @нік, розгортати чат на весь екран і змінювати його розмір. Писати можуть користувачі з підтвердженою поштою.",
+			"en": "The student chat opens with the blue button in the bottom-right corner of every page. You can send text, emoji (including Kawaii), GIFs and files, react to messages (double-click for ❤️), tag @nick, expand the chat to full screen and resize it. Verified accounts can post."
+		},
+		{
+			"id": "dm",
+			"q": [
+				"особисті повідомлення",
+				"приватні повідомлення",
+				"написати користувачу",
+				"листування",
+				"direct message",
+				"dm",
+				"private message"
+			],
+			"a": "Особисті повідомлення: кабінет → «Повідомлення», або «Написати тут» у профілі користувача (клік по аватарці в чаті). Є статуси (🕓 надсилається, ✓ надіслано, ✓✓ доставлено, сині ✓✓ прочитано), «друкує…», реакції, емодзі, GIF і файли до 10 МБ.",
+			"en": "Direct messages: personal area → “Messages”, or “Write here” in a user's profile (click an avatar in the chat). There are statuses (🕓 sending, ✓ sent, ✓✓ delivered, blue ✓✓ read), typing indicator, reactions, emoji, GIFs and files up to 10 MB.",
+			"l": [
+				[
+					"Особистий кабінет",
+					"personal-area.html"
+				]
+			]
+		},
+		{
+			"id": "rating",
+			"q": [
+				"рейтинг",
+				"топ",
+				"найкращі викладачі",
+				"найкращі студенти",
+				"кращі вчителі",
+				"як потрапити в рейтинг",
+				"відгуки",
+				"оцінка",
+				"rating",
+				"top teachers",
+				"best students",
+				"leaderboard"
+			],
+			"a": "Сторінка «Рейтинг» показує топ викладачів і студентів платформи. Він оновлюється автоматично кожні кілька секунд і залежить від ролі користувача та відгуків: середня оцінка (1-5 ★) з поправкою на кількість відгуків, тож одна п'ятірка не обганяє десяток чесних оцінок. Щоб потрапити в рейтинг, оберіть роль у налаштуваннях і отримайте відгуки від інших користувачів.",
+			"en": "The Rating page shows the top teachers and students of the platform. It updates automatically every few seconds and depends on the user's role and reviews: the average score (1-5 ★) adjusted for the number of reviews, so a single five does not beat a dozen honest ratings. To get into the rating, choose your role in Settings and receive reviews from other users.",
+			"l": [
+				[
+					"Рейтинг",
+					"rating.html"
+				]
+			]
+		},
+		{
+			"id": "teacher",
+			"q": [
+				"викладач",
+				"я викладач",
+				"роль викладача",
+				"записи уроків",
+				"додати урок",
+				"teacher",
+				"lessons"
+			],
+			"a": "Оберіть роль «Викладач» і предмет у налаштуваннях (Персональні дані → Роль). Після цього в кабінеті з'явиться блок «Мої записи уроків»: посилання на відео та PDF-матеріали, які бачать зареєстровані користувачі. Викладачі мають окрему вкладку в списку користувачів і в рейтингу.",
+			"en": "Choose the “Teacher” role and subject in Settings (Personal data → Role). Then the personal area shows “My lesson records”: video links and PDF materials visible to registered users. Teachers have their own tab in the user list and in the rating.",
+			"l": [
+				[
+					"Особистий кабінет",
+					"personal-area.html"
+				]
+			]
+		},
+		{
+			"id": "admission",
+			"q": [
+				"вступ",
+				"вступити",
+				"вступна кампанія",
+				"як вступити",
+				"нмт",
+				"абітурієнт",
+				"вступник",
+				"admission",
+				"apply",
+				"applicant"
+			],
+			"a": "Усе для вступу зібрано в розділі «Абітурієнтам»: строки й маршрут вступника, калькулятор конкурсного бала, освітні програми, матеріали вступника, пільги та контакти приймальної комісії. Остаточні правила прийому та накази публікує університет на своєму сайті.",
+			"en": "Everything about admission is in the “Applicants” section: dates and the applicant route, the score calculator, programmes, applicant materials, special conditions and admission office contacts. The final admission rules and orders are published on the university website.",
+			"l": [
+				[
+					"Вступ 2026",
+					"abiturient.html"
+				],
+				[
+					"Калькулятор бала",
+					"calculator.html"
+				],
+				[
+					"Вступ на сайті університету",
+					"https://nmu.org.ua/main/admission/"
+				]
+			]
+		},
+		{
+			"id": "calc",
+			"q": [
+				"калькулятор",
+				"конкурсний бал",
+				"порахувати бал",
+				"прохідний бал",
+				"calculator",
+				"score"
+			],
+			"a": "Калькулятор конкурсного бала рахує ваш бал за результатами НМТ з урахуванням коефіцієнтів обраної спеціальності.",
+			"en": "The score calculator computes your competitive score from NMT results using the coefficients of the chosen speciality.",
+			"l": [
+				[
+					"Калькулятор конкурсного бала",
+					"calculator.html"
+				]
+			]
+		},
+		{
+			"id": "programs",
+			"q": [
+				"спеціальності",
+				"освітні програми",
+				"спеціальність",
+				"на кого вчитися",
+				"бакалавр",
+				"магістр",
+				"programs",
+				"majors",
+				"specialities"
+			],
+			"a": "У каталозі «Освітні програми» - 114 програм бакалаврату й магістратури з пошуком і фільтрами. Повні описи програм (компоненти, гарант, акредитація) - на сайті університету.",
+			"en": "The “Programmes” catalogue lists 114 bachelor's and master's programmes with search and filters. Full programme descriptions are on the university website.",
+			"l": [
+				[
+					"Освітні програми",
+					"programs.html"
+				],
+				[
+					"Інститути й факультети",
+					"institutes.html"
+				]
+			]
+		},
+		{
+			"id": "schedule",
+			"q": [
+				"розклад",
+				"розклад пар",
+				"графік навчання",
+				"канікули",
+				"сесія",
+				"навчальний рік",
+				"schedule",
+				"timetable",
+				"session"
+			],
+			"a": "Графік навчального року 2026-2027, сесії й канікули - на сторінці «Розклад і календар». Розклад пар конкретної групи публікує університет.",
+			"en": "The 2026-2027 academic year schedule, exam sessions and holidays are on the “Timetable & calendar” page. Group timetables are published by the university.",
+			"l": [
+				[
+					"Розклад і календар",
+					"schedule.html"
+				],
+				[
+					"Підготовка до екзаменів",
+					"exam-prep.html"
+				]
+			]
+		},
+		{
+			"id": "scholar",
+			"q": [
+				"стипендія",
+				"стипендії",
+				"соціальна стипендія",
+				"академічна стипендія",
+				"гранти",
+				"scholarship",
+				"grant"
+			],
+			"a": "Про стипендії (академічні, соціальні, іменні) - на сторінці «Стипендії»; про державні гранти, пільги й навчальний кредит - у розділі «Оплата та гранти».",
+			"en": "Scholarships (academic, social, named) are on the “Scholarships” page; state grants, benefits and student loans are in “Tuition & grants”.",
+			"l": [
+				[
+					"Стипендії",
+					"scholarships.html"
+				],
+				[
+					"Оплата та гранти",
+					"funding.html"
+				]
+			]
+		},
+		{
+			"id": "dorm",
+			"q": [
+				"гуртожиток",
+				"гуртожитки",
+				"поселення",
+				"житло",
+				"кампус",
+				"студмістечко",
+				"dormitory",
+				"housing",
+				"campus"
+			],
+			"a": "Про гуртожитки, поселення й студмістечко - у розділі «Студентське життя» та на сторінці «Студентське містечко» з картою корпусів.",
+			"en": "Dormitories, check-in and the student town are covered in “Student life” and on the “Campus” page with a map of buildings.",
+			"l": [
+				[
+					"Студентське життя",
+					"student-life.html"
+				],
+				[
+					"Студентське містечко",
+					"campus.html"
+				]
+			]
+		},
+		{
+			"id": "library",
+			"q": [
+				"бібліотека",
+				"книги",
+				"репозиторій",
+				"електронна бібліотека",
+				"library",
+				"books"
+			],
+			"a": "Наукова бібліотека: каталоги, репозиторій, електронні бази та сервіси - на сторінці «Бібліотека».",
+			"en": "The research library: catalogues, repository, e-resources and services are on the “Library” page.",
+			"l": [
+				[
+					"Бібліотека",
+					"library.html"
+				]
+			]
+		},
+		{
+			"id": "materials",
+			"q": [
+				"матеріали",
+				"конспекти",
+				"методички",
+				"навчальні матеріали",
+				"підручники",
+				"допомога з дз",
+				"домашнє завдання",
+				"materials",
+				"homework"
+			],
+			"a": "Навчальні матеріали за предметами - на сторінці «Навчальні матеріали» (можна запропонувати свої). Допомогу з домашнім завданням можна попросити через форму «Допомога з ДЗ» або в студентському чаті.",
+			"en": "Study materials by subject are on the “Study materials” page (you can suggest your own). For homework help use the “Homework help” form or the student chat.",
+			"l": [
+				[
+					"Навчальні матеріали",
+					"materials.html"
+				],
+				[
+					"Допомога з ДЗ",
+					"homework-help.html"
+				]
+			]
+		},
+		{
+			"id": "international",
+			"q": [
+				"міжнародна",
+				"erasmus",
+				"обмін",
+				"навчання за кордоном",
+				"подвійний диплом",
+				"іноземці",
+				"international",
+				"exchange",
+				"abroad"
+			],
+			"a": "Академічна мобільність, подвійні дипломи, гранти Erasmus+, Horizon Europe, DAAD і університети-партнери - у розділі «Міжнародна діяльність».",
+			"en": "Academic mobility, double degrees, Erasmus+, Horizon Europe and DAAD grants and partner universities are in the “International” section.",
+			"l": [
+				[
+					"Міжнародна діяльність",
+					"international.html"
+				],
+				[
+					"Партнери",
+					"partners.html"
+				]
+			]
+		},
+		{
+			"id": "science",
+			"q": [
+				"наука",
+				"дослідження",
+				"лабораторії",
+				"конференції",
+				"наукові журнали",
+				"молоді вчені",
+				"science",
+				"research"
+			],
+			"a": "Наукові напрями, лабораторії, проєкти, конференції, журнали й можливості для молодих науковців - у розділі «Наука».",
+			"en": "Research areas, labs, projects, conferences, journals and opportunities for young scientists are in the “Research” section.",
+			"l": [
+				[
+					"Наука та інновації",
+					"science.html"
+				]
+			]
+		},
+		{
+			"id": "university",
+			"q": [
+				"університет",
+				"дніпровська політехніка",
+				"нту дп",
+				"про університет",
+				"історія",
+				"коли заснований",
+				"1899",
+				"university",
+				"history"
+			],
+			"a": "НТУ «Дніпровська політехніка» - один із найстаріших технічних університетів України: веде історію з 1899 року, від Катеринославського вищого гірничого училища, першого вищого гірничого закладу країни. Сьогодні це багатопрофільний університет: 9 інститутів і факультетів, 47 кафедр.",
+			"en": "Dnipro University of Technology is one of the oldest technical universities in Ukraine: it dates back to 1899 and the Katerynoslav Higher Mining School, the country's first higher mining institution. Today it is a multidisciplinary university with 9 institutes and faculties and 47 departments.",
+			"l": [
+				[
+					"Про університет",
+					"about.html"
+				],
+				[
+					"Історія",
+					"history.html"
+				],
+				[
+					"Новини університету",
+					"news.html"
+				]
+			]
+		},
+		{
+			"id": "contacts",
+			"q": [
+				"контакти",
+				"адреса",
+				"телефон",
+				"приймальна комісія",
+				"де знаходиться",
+				"як зв'язатися",
+				"пошта університету",
+				"contacts",
+				"address",
+				"phone"
+			],
+			"a": "НТУ «Дніпровська політехніка»: 49005, м. Дніпро, пр. Дмитра Яворницького, 19. Приймальна комісія: +380 56 796-55-66 (додатковий 1), pk@nmu.one. Загальні питання: +380 56 796-55-66, rector@nmu.org.ua. Питання про сам сайт - через форму на сторінці «Контакти».",
+			"en": "Dnipro University of Technology: 19 Dmytra Yavornytskoho Ave, Dnipro, 49005. Admission office: +380 56 796-55-66 (ext. 1), pk@nmu.one. General questions: +380 56 796-55-66, rector@nmu.org.ua. Questions about this site - via the form on the Contacts page.",
+			"l": [
+				[
+					"Контакти",
+					"contact.html"
+				],
+				[
+					"Новини університету",
+					"news.html"
+				]
+			]
+		},
+		{
+			"id": "official",
+			"q": [
+				"офіційний сайт",
+				"сайт університету",
+				"nmu.org.ua",
+				"nmu",
+				"official website"
+			],
+			"a": "World Students - окрема студентська платформа. Накази, правила прийому, розклади й новини публікує університет на своєму сайті, а ми даємо на них посилання.",
+			"en": "World Students is a separate student platform. Orders, admission rules, timetables and news are published on the university website, and we link to them.",
+			"l": [
+				[
+					"Новини університету",
+					"news.html"
+				],
+				[
+					"Джерела",
+					"sources.html"
+				]
+			]
+		},
+		{
+			"id": "personal",
+			"q": [
+				"особистий кабінет",
+				"кабінет",
+				"профіль",
+				"фото профілю",
+				"фон профілю",
+				"аватар",
+				"personal area",
+				"profile",
+				"avatar"
+			],
+			"a": "В особистому кабінеті: фото та фон профілю (окремо для світлої й темної теми), «Про мене», повідомлення, список користувачів, ваш рейтинг і відгуки, а викладачам - записи уроків. Налаштування - за шестернею.",
+			"en": "In the personal area: profile photo and background (separately for light and dark theme), “About me”, messages, the user list, your rating and reviews, and lesson records for teachers. Settings are behind the gear.",
+			"l": [
+				[
+					"Особистий кабінет",
+					"personal-area.html"
+				]
+			]
+		},
+		{
+			"id": "theme",
+			"q": [
+				"темна тема",
+				"світла тема",
+				"тема",
+				"розмір шрифту",
+				"чорно-білий",
+				"доступність",
+				"dark mode",
+				"theme",
+				"accessibility"
+			],
+			"a": "Кнопка з оком у шапці відкриває налаштування відображення: світла або темна тема, чорно-білий режим, мова та розмір тексту.",
+			"en": "The eye button in the header opens display settings: light or dark theme, black-and-white mode, language and text size."
+		},
+		{
+			"id": "bye",
+			"q": [
+				"бувай",
+				"па-па",
+				"до побачення",
+				"bye",
+				"goodbye"
+			],
+			"a": "Гарного дня й успіхів у навчанні! 🎓",
+			"en": "Have a great day and good luck with your studies! 🎓"
+		}
+	]
+}

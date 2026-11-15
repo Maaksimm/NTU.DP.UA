@@ -1,0 +1,14 @@
+/* ===== Сторінка новин (news.html) і дрібні відступи нових сторінок ===== */
+.news-list{display:grid;gap:22px;max-width:980px}
+.news-item{display:grid;grid-template-columns:320px 1fr;gap:24px;align-items:start;padding:18px;border-radius:22px;background:var(--surface,#fff);border:1px solid var(--line);box-shadow:0 10px 28px rgba(26,111,196,.08);scroll-margin-top:110px}
+.news-item__img{display:block;border-radius:16px;overflow:hidden;aspect-ratio:16/10}
+.news-item__img img{width:100%;height:100%;object-fit:cover;display:block}
+.news-item__body{display:flex;flex-direction:column;gap:8px}
+.news-item__body time{font-size:13px;font-weight:700;color:var(--blue)}
+.news-item__body h2{font-size:22px;line-height:1.3;margin:0}
+.news-item__body p{margin:0;color:var(--muted)}
+.news-item__more{margin-top:6px;font-weight:700;text-decoration:none}
+.news-item:target{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,111,196,.18)}
+@media (max-width:760px){.news-item{grid-template-columns:1fr}}
+/* кнопки після сітки карток - відступ зверху */
+.grid-2 + .actions,.grid-3 + .actions,.grid-4 + .actions,.tl + .actions,.cc + .actions{margin-top:32px}

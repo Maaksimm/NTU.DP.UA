@@ -1,0 +1,12 @@
+/* ===== Background video: home hero (.hero--video) and personal area (.bg-video--page) ===== */
+.hero--video,.personal-main.account{position:relative;isolation:isolate}
+.bg-video{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.bg-video video{display:block;width:100%;height:100%;object-fit:cover}
+/* fade the bottom edge into the page background */
+.bg-video::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 72%,var(--page-bg))}
+/* personal area: the video stays in the viewport while the long page scrolls */
+.bg-video--page video{position:sticky;top:0;height:100vh;height:100dvh}
+.bg-video--page::after{background:linear-gradient(180deg,transparent 40%,color-mix(in srgb,var(--page-bg) 55%,transparent))}
+/* dark theme: one light video, inverted; black blends away into the page background */
+[data-theme=dark] .bg-video{background:var(--page-bg)}
+[data-theme=dark] .bg-video video{filter:invert(1) hue-rotate(180deg) saturate(1.4);mix-blend-mode:screen;opacity:.75}

@@ -1,0 +1,62 @@
+[
+ {
+  "id": "k-alien-a",
+  "src": "assets/emoji/k-alien-a.png",
+  "name": "Alien A"
+ },
+ {
+  "id": "k-alien-b",
+  "src": "assets/emoji/k-alien-b.png",
+  "name": "Alien B"
+ },
+ {
+  "id": "k-angry-face",
+  "src": "assets/emoji/k-angry-face.png",
+  "name": "Angry Face"
+ },
+ {
+  "id": "k-anxious-face-with-sweat",
+  "src": "assets/emoji/k-anxious-face-with-sweat.png",
+  "name": "Anxious Face With Sweat"
+ },
+ {
+  "id": "k-baby",
+  "src": "assets/emoji/k-baby.png",
+  "name": "Baby"
+ },
+ {
+  "id": "k-call-me-hand",
+  "src": "assets/emoji/k-call-me-hand.png",
+  "name": "Call Me Hand"
+ },
+ {
+  "id": "k-face-savoring-food",
+  "src": "assets/emoji/k-face-savoring-food.png",
+  "name": "Face Savoring Food"
+ },
+ {
+  "id": "k-face-with-monocle",
+  "src": "assets/emoji/k-face-with-monocle.png",
+  "name": "Face With Monocle"
+ },
+ {
+  "id": "k-face-with-raised-eyebrow",
+  "src": "assets/emoji/k-face-with-raised-eyebrow.png",
+  "name": "Face With Raised Eyebrow"
+ },
+ {
+  "id": "k-face-with-rolling-eyes",
+  "src": "assets/emoji/k-face-with-rolling-eyes.png",
+  "name": "Face With Rolling Eyes"
+ },
+ {
+  "id": "k-smiling-cat-with-heart-eyes",
+  "src": "assets/emoji/k-smiling-cat-with-heart-eyes.png",
+  "name": "Smiling Cat With Heart Eyes"
+ },
+ {
+  "id": "k-thinking-face-a",
+  "src": "assets/emoji/k-thinking-face-a.png",
+  "name": "Thinking Face A"
+ }
+]

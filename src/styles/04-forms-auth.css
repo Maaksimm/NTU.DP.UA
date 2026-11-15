@@ -1,0 +1,152 @@
+.form-card {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: 24px;
+	padding: 30px;
+	box-shadow: var(--shadow);
+}
+.field {
+	margin-bottom: 16px;
+}
+.field label {
+	display: block;
+	font-family: Manrope, sans-serif;
+	font-weight: 900;
+	font-size: 13px;
+	color: var(--ink);
+	margin-bottom: 7px;
+}
+.field input,
+.field select,
+.field textarea {
+	width: 100%;
+	border: 1.5px solid var(--line);
+	border-radius: 12px;
+	padding: 13px 15px;
+	outline: none;
+	color: var(--text);
+	background: var(--surface);
+}
+/* same look in Safari as in other browsers */
+.field select {
+	-webkit-appearance: none;
+	appearance: none;
+	padding-right: 42px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6b80' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 15px center;
+	background-size: 16px 16px;
+	cursor: pointer;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+	border-color: var(--blue);
+	box-shadow: 0 0 0 4px rgba(26, 111, 196, 0.1);
+}
+.faq-item {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: 16px;
+	margin-bottom: 12px;
+	overflow: hidden;
+}
+.faq-q {
+	padding: 18px 20px;
+	font-family: Manrope, sans-serif;
+	font-weight: 900;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 14px;
+	cursor: pointer;
+}
+.faq-q__chevron {
+	flex: none;
+	width: 20px;
+	height: 20px;
+	color: var(--blue);
+	transition: transform 0.25s ease;
+}
+.faq-item.open .faq-q__chevron {
+	transform: rotate(180deg);
+}
+.faq-a {
+	max-height: 0;
+	overflow: hidden;
+	padding: 0 20px;
+	color: var(--muted);
+	transition:
+		max-height 0.3s ease,
+		padding 0.3s ease;
+}
+.faq-item.open .faq-a {
+	max-height: 400px;
+	padding: 0 20px 20px;
+}
+.auth-shell {
+	min-height: calc(100vh - 124px);
+	display: grid;
+	place-items: center;
+	background: var(--section);
+	padding: 48px 0;
+}
+.auth-grid {
+	width: min(980px, calc(100% - 48px));
+	display: grid;
+	grid-template-columns: 0.85fr 1fr;
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: 28px;
+	overflow: hidden;
+	box-shadow: var(--shadow);
+}
+.auth-side {
+	background: linear-gradient(135deg, #155aa0, #1a6fc4);
+	color: #fff;
+	padding: 44px;
+}
+.auth-side h2 {
+	font-size: 30px;
+	margin: 22px 0 12px;
+	color: #fff;
+}
+.auth-side p {
+	color: rgba(255, 255, 255, 0.84);
+}
+.auth-form {
+	padding: 44px;
+}
+
+/* «Увійти через Google» (google-signin.js) */
+.auth-google {
+	margin-top: 14px;
+}
+.auth-or {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 14px;
+	color: var(--muted);
+	font-size: 13px;
+}
+.auth-or::before,
+.auth-or::after {
+	content: '';
+	flex: 1;
+	height: 1px;
+	background: var(--line);
+}
+.auth-google__btn {
+	display: flex;
+	justify-content: center;
+	min-height: 44px;
+}
+.auth-google.is-locked .auth-google__btn {
+	opacity: 0.45;
+	filter: grayscale(1);
+	pointer-events: none;
+}
+.auth-google.is-locked {
+	cursor: not-allowed;
+}

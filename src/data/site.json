@@ -1,0 +1,17 @@
+{
+	"url": "https://ntu.dp.ua/",
+	"name": "World Students · НТУ «ДП»",
+	"themeColor": "#1a6fc4",
+	"defaultImage": "assets/img/oldNTUDP.jpg",
+	"fonts": "https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap",
+	"scripts": [
+		"i18n-en.js",
+		"chat-config.js",
+		"auth.js",
+		"main.js",
+		"profanity.js",
+		"profile-card.js",
+		"chat.js",
+		"ai.js"
+	]
+}

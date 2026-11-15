@@ -1,0 +1,64 @@
+<!--
+{
+	"title": "Калькулятор конкурсного бала - НТУ «Дніпровська політехніка»",
+	"description": "Калькулятор конкурсного бала НМТ для вступу до НТУ «Дніпровська політехніка» 2026: коефіцієнти 47 спеціальностей і рекомендовані програми.",
+	"page": "calculator",
+	"image": "assets/img/nmu-classroom.jpg",
+	"scripts": ["admission-data.js", "admission.js"],
+	"breadcrumbs": [
+		["Головна", "index.html"],
+		["Абітурієнтам", "abiturient.html"],
+		["Калькулятор конкурсного бала", "calculator.html"]
+	],
+	"sitemap": { "changefreq": "weekly", "priority": "0.9" }
+}
+-->
+<main id="main">
+<section class="page-hero">
+<div class="container reveal">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Головна</a><span class="crumb-sep">›</span><a href="abiturient.html">Абітурієнтам</a><span class="crumb-sep">›</span><span aria-current="page">Калькулятор конкурсного бала</span></nav>
+<h1>Калькулятор конкурсного бала</h1>
+<p class="lead">Введіть результати НМТ, отримайте орієнтовний конкурсний бал і перейдіть до відповідних освітніх програм та випускових кафедр Дніпровської політехніки.</p>
+<div class="actions"><a class="btn btn-primary" href="programs.html">Освітні програми</a><a class="btn btn-secondary" href="applicant-guide.html">Матеріали вступника</a></div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="calc" data-calc>
+<form class="calc__form form-card reveal" novalidate>
+<div class="field"><label for="calc-spec">Спеціальність<span class="required">*</span></label><select id="calc-spec" name="spec" required><option value="">Оберіть спеціальність</option></select><span class="field-error"></span></div>
+<div class="two-field-row">
+<div class="field"><label for="calc-year">Рік складання НМТ</label><select id="calc-year" name="year"><option>2026</option><option>2025</option><option>2024</option><option>2023</option></select></div>
+<div class="field"><label for="calc-prio">Пріоритетність заяви</label><select id="calc-prio" name="prio"><option value="1">1 - найвища</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="none">Ще не визначено</option></select></div>
+</div>
+<p class="calc__hint">Бали НМТ - від 100 до 200</p>
+<div class="calc__scores">
+<div class="field"><label for="calc-ukr">Українська мова<span class="required">*</span></label><input id="calc-ukr" name="ukrainian" type="number" inputmode="numeric" min="100" max="200" step="1" required placeholder="100–200"><span class="field-error"></span></div>
+<div class="field"><label for="calc-math">Математика<span class="required">*</span></label><input id="calc-math" name="math" type="number" inputmode="numeric" min="100" max="200" step="1" required placeholder="100–200"><span class="field-error"></span></div>
+<div class="field"><label for="calc-hist">Історія України<span class="required">*</span></label><input id="calc-hist" name="history" type="number" inputmode="numeric" min="100" max="200" step="1" required placeholder="100–200"><span class="field-error"></span></div>
+</div>
+<div class="two-field-row" data-calc-fourth>
+<div class="field"><label for="calc-subj4">Четвертий предмет</label><select id="calc-subj4" name="subj4"><option value="english">Іноземна мова</option><option value="literature">Українська література</option><option value="physics">Фізика</option><option value="chemistry">Хімія</option><option value="biology">Біологія</option><option value="geography">Географія</option></select></div>
+<div class="field"><label for="calc-s4">Бал четвертого предмета<span class="required">*</span></label><input id="calc-s4" name="fourth" type="number" inputmode="numeric" min="100" max="200" step="1" required placeholder="100–200"><span class="field-error"></span></div>
+</div>
+<label class="consent-field"><input type="checkbox" name="courses"> <span>Успішне закінчення підготовчих курсів НТУ «ДП» (+10 балів для спеціальностей із галузевою підтримкою, НМТ 2026)</span></label>
+<div class="calc__btns"><button class="btn btn-primary" type="submit">Розрахувати конкурсний бал</button><button class="btn btn-secondary" type="reset">Скинути</button></div>
+<p class="form-note-status" data-calc-status role="status"></p>
+</form>
+<div class="calc__result reveal" aria-live="polite">
+<p class="calc__result-k">Ваш орієнтовний конкурсний бал</p>
+<div class="gauge" data-gauge><svg viewBox="0 0 200 120" aria-hidden="true"><path class="gauge__bg" d="M20 110a80 80 0 0 1 160 0"/><path class="gauge__fg" d="M20 110a80 80 0 0 1 160 0" pathLength="100"/></svg><strong class="gauge__num" data-calc-score>-</strong></div>
+<p class="calc__empty" data-calc-empty>Заповніть форму, щоб побачити результат</p>
+<div class="calc__explain" data-calc-explain hidden></div>
+<div class="calc__progs" data-calc-progs hidden><h3>Рекомендовані освітні програми</h3><ul></ul></div>
+</div>
+</div>
+<div class="info-note reveal">Розрахунок має інформаційний характер і не гарантує зарахування або бюджетне місце. Остаточні умови визначають Правила прийому 2026 та конкурсні пропозиції ЄДЕБО.</div>
+</div>
+</section><section class="section section-soft">
+<div class="container">
+<div class="section-head reveal"><div class="label">Як рахуємо</div><h2>Формула конкурсного бала 2026</h2></div>
+<div class="formula reveal"><code>КБ = (К1·П1 + К2·П2 + К3·П3 + К4·П4) / (К1 + К2 + К3 + (К4max + К4) / 2) × ГК</code></div><div class="info-note reveal">П1–П4 - бали НМТ з української мови, математики, історії України та четвертого предмета; К1–К4 - коефіцієнти спеціальності; К4max - найбільший коефіцієнт серед четвертих предметів; ГК - галузевий коефіцієнт 1,02 для спеціальностей із галузевою підтримкою при пріоритеті 1–2. Для НМТ 2024 знаменник - К1+К2+К3+К4, для НМТ 2023 - три предмети.</div>
+</div>
+</section>
+</main>

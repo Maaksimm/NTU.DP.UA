@@ -1,0 +1,91 @@
+<!--
+{
+	"title": "Підтвердження пошти - НТУ «ДП»",
+	"description": "Підтвердження пошти, зміна адреси та новий пароль для акаунта World Students.",
+	"page": "auth-action",
+	"robots": "noindex, follow",
+	"scripts": [
+		"auth-action.js"
+	],
+	"breadcrumbs": [
+		["Головна", "index.html"],
+		["Платформа", "platform.html"],
+		["Відновлення пароля", "auth-action.html"]
+	]
+}
+-->
+<main id="main" class="auth-shell">
+<div class="auth-grid reveal">
+<div class="auth-side act-side"><img src="assets/img/logo.svg" style="width:150px;background:white;border-radius:12px;padding:8px" alt="">
+<h2>Безпека акаунта</h2>
+<p>Тут обробляються посилання з листів World Students: підтвердження пошти, зміна адреси та встановлення нового пароля.</p>
+<ul class="act-side__list">
+<li>Посилання одноразове й діє обмежений час</li>
+<li>Ми ніколи не просимо пароль у листах</li>
+<li>Якщо лист надійшов випадково - просто проігноруйте його</li>
+</ul>
+</div>
+<div class="auth-form act" data-action-root aria-live="polite">
+<div class="act__state" data-state="loading">
+<div class="act__spin" aria-hidden="true"></div>
+<div class="label">Зачекайте</div>
+<h1 class="act__title">Перевіряємо посилання…</h1>
+<p class="act__text">Це займе лише кілька секунд.</p>
+</div>
+<div class="act__state" data-state="verified" hidden>
+<svg class="act__check" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-15"/></svg>
+<div class="label">Пошту підтверджено</div>
+<h2 class="act__title">Вітаємо у World Students!</h2>
+<p class="act__text">Адресу <b data-email></b> успішно підтверджено. Тепер вам доступні всі можливості платформи:</p>
+<ul class="act__perks">
+<li><span aria-hidden="true">💬</span>Студентський чат і реакції</li>
+<li><span aria-hidden="true">✉️</span>Особисті повідомлення</li>
+<li><span aria-hidden="true">⭐</span>Відгуки та рейтинг</li>
+<li><span aria-hidden="true">📎</span>Обмін файлами</li>
+</ul>
+<div class="act__btns"><a class="btn btn-primary" href="personal-area.html">До особистого кабінету</a><a class="btn btn-secondary" href="index.html">На головну</a></div>
+</div>
+<div class="act__state" data-state="email-changed" hidden>
+<svg class="act__check" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-15"/></svg>
+<div class="label">Пошту змінено</div>
+<h2 class="act__title">Нова адреса підтверджена</h2>
+<p class="act__text">Відтепер входьте з адресою <b data-email></b>. Із міркувань безпеки потрібно увійти ще раз.</p>
+<div class="act__btns"><a class="btn btn-primary" href="login.html">Увійти</a><a class="btn btn-secondary" href="index.html">На головну</a></div>
+</div>
+<div class="act__state" data-state="recovered" hidden>
+<svg class="act__check" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-15"/></svg>
+<div class="label">Адресу відновлено</div>
+<h2 class="act__title">Попередню пошту повернуто</h2>
+<p class="act__text">Акаунт знову прив’язано до <b data-email></b>. Якщо адресу змінили не ви, радимо одразу встановити новий пароль.</p>
+<div class="act__btns"><a class="btn btn-primary" href="forgot-password.html">Змінити пароль</a><a class="btn btn-secondary" href="login.html">Увійти</a></div>
+</div>
+<form class="act__state" data-state="reset" novalidate hidden>
+<div class="act__icon" aria-hidden="true">🔑</div>
+<div class="label">Новий пароль</div>
+<h2 class="act__title">Придумайте новий пароль</h2>
+<p class="act__text">Для акаунта <b data-email></b>. Щонайменше 6 символів; краще поєднати літери, цифри й знаки.</p>
+<div class="field"><label for="act-pass">Новий пароль</label><input id="act-pass" name="pass" type="password" required minlength="6" maxlength="128" autocomplete="new-password"></div>
+<div class="act__meter" aria-hidden="true"><i data-meter></i></div>
+<div class="field"><label for="act-pass2">Повторіть пароль</label><input id="act-pass2" name="pass2" type="password" required minlength="6" maxlength="128" autocomplete="new-password"></div>
+<label class="act__show"><input type="checkbox" data-show-pass> Показати пароль</label>
+<button class="btn btn-primary" style="width:100%" type="submit">Зберегти пароль</button>
+<p data-form-status class="form-note-status" role="status"></p>
+</form>
+<div class="act__state" data-state="reset-done" hidden>
+<svg class="act__check" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-15"/></svg>
+<div class="label">Готово</div>
+<h2 class="act__title">Пароль змінено</h2>
+<p class="act__text">Тепер увійдіть з новим паролем. Старий пароль більше не діє.</p>
+<div class="act__btns"><a class="btn btn-primary" href="login.html">Увійти</a></div>
+</div>
+<div class="act__state" data-state="error" hidden>
+<div class="act__icon act__icon--warn" aria-hidden="true">!</div>
+<div class="label">Щось пішло не так</div>
+<h2 class="act__title" data-err-title>Посилання недійсне</h2>
+<p class="act__text" data-err-text>Можливо, його вже використано або минув строк дії.</p>
+<div class="act__btns"><button type="button" class="btn btn-primary" data-resend hidden>Надіслати лист ще раз</button><a class="btn btn-primary" href="login.html" data-err-login>Увійти</a><a class="btn btn-secondary" href="index.html">На головну</a></div>
+<p class="form-note-status" data-resend-status role="status"></p>
+</div>
+</div>
+</div>
+</main>

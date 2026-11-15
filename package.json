@@ -1,0 +1,15 @@
+{
+  "name": "world-students-ntu",
+  "version": "2.0.0",
+  "private": true,
+  "description": "World Students - студентська платформа НТУ «Дніпровська політехніка» (https://ntu.dp.ua/)",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "check": "node tools/build.mjs && node tools/check.mjs",
+    "serve": "node tools/build.mjs && node tools/serve.mjs",
+    "package": "node tools/build.mjs && node tools/check.mjs --quiet && node tools/package.mjs",
+    "package:all": "node tools/build.mjs && node tools/check.mjs --quiet && node tools/package.mjs --all"
+  }
+}

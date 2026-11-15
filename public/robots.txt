@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /personal-area.html
+Disallow: /login.html
+Disallow: /register.html
+Disallow: /forgot-password.html
+Disallow: /auth-action.html
+
+Sitemap: https://ntu.dp.ua/sitemap.xml
