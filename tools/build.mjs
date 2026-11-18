@@ -208,6 +208,8 @@ for (const f of listDir(path.join(SRC, 'pages'), '.html')) {
 	const scripts = [...site.scripts, ...(fm.scripts || [])].map(s => `<script src="${asset('assets/js/' + s)}"></script>`)
 	const html = ['<!DOCTYPE html>', '<html lang="uk">', head(fm), '', `<body data-page="${esc(fm.page)}">`,
 		'<a class="skip-link" href="#main">Перейти до змісту</a>', partial('preloader'), header(fm.page), body, '', footer(), ...scripts, '</body>', '</html>', ''].join('\n')
+		// /index.html відповідає 301 на /, тому посилання на головну ведуть одразу на "./" (Search Console: «Сторінка з переадресацією»)
+		.replace(/href="index\.html(?=["#])/g, 'href="./')
 	write(path.join(OUT, f), html)
 	pages.push(fm)
 }

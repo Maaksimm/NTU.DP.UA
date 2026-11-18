@@ -98,6 +98,36 @@
           ".validate": "newData.hasChildren(['title','ts']) && newData.child('title').isString() && newData.child('title').val().length <= 150 && newData.child('ts').isNumber() && (!newData.child('d').exists() || (newData.child('d').isString() && newData.child('d').val().length <= 2000)) && (!newData.child('v').exists() || (newData.child('v').isString() && newData.child('v').val().matches(/^https:\\/\\//) && newData.child('v').val().length <= 500))"
         }
       }
+    },
+    "stories": {
+      ".read": true,
+      ".indexOn": [
+        "ts"
+      ],
+      "$id": {
+        ".write": "auth != null && auth.token.email_verified === true && ((!data.exists() && newData.child('u').val() === auth.uid) || (data.exists() && !newData.exists() && data.child('u').val() === auth.uid))",
+        ".validate": "newData.hasChildren(['u','n','ts']) && newData.child('ts').isNumber() && (newData.child('n').isString() && newData.child('n').val().length <= 40) && (newData.child('img').exists() || newData.child('v').exists()) && (!newData.child('img').exists() || (newData.child('img').isString() && newData.child('img').val().beginsWith('https://ntu.dp.ua/uploads/') && newData.child('img').val().length <= 300)) && (!newData.child('v').exists() || (newData.child('v').isString() && newData.child('v').val().beginsWith('https://ntu.dp.ua/uploads/') && newData.child('v').val().length <= 300)) && (!newData.child('c').exists() || (newData.child('c').isString() && newData.child('c').val().length <= 200)) && (!newData.child('m').exists() || (newData.child('m').isString() && newData.child('m').val().length <= 20)) && (!newData.child('mu').exists() || (newData.child('mu').isString() && newData.child('mu').val().beginsWith('https://ntu.dp.ua/uploads/') && newData.child('mu').val().length <= 300)) && (!newData.child('mt').exists() || (newData.child('mt').isString() && newData.child('mt').val().length <= 80))"
+      }
+    },
+    "tales": {
+      ".read": true,
+      ".indexOn": [
+        "ts"
+      ],
+      "$id": {
+        ".write": "auth != null && auth.token.email_verified === true && ((!data.exists() && newData.child('u').val() === auth.uid) || (data.exists() && !newData.exists() && data.child('u').val() === auth.uid))",
+        ".validate": "newData.hasChildren(['u','n','ti','b','ts']) && newData.child('ts').isNumber() && newData.child('n').isString() && newData.child('n').val().length <= 40 && newData.child('ti').isString() && newData.child('ti').val().length <= 120 && newData.child('ti').val().length >= 3 && newData.child('b').isString() && newData.child('b').val().length <= 4000 && newData.child('b').val().length >= 30 && (!newData.child('cat').exists() || (newData.child('cat').isString() && newData.child('cat').val().length <= 40)) && (!newData.child('img').exists() || (newData.child('img').isString() && newData.child('img').val().beginsWith('https://ntu.dp.ua/uploads/') && newData.child('img').val().length <= 300))"
+      }
+    },
+    "storyLikes": {
+      ".read": true,
+      "$sid": {
+        ".write": "auth != null && !newData.exists() && root.child('stories/' + $sid + '/u').val() === auth.uid",
+        "$uid": {
+          ".write": "auth != null && auth.token.email_verified === true && auth.uid === $uid && (!newData.exists() || root.child('stories/' + $sid).exists())",
+          ".validate": "newData.val() === true"
+        }
+      }
     }
   }
 }

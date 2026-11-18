@@ -1,8 +1,8 @@
 /* AI Student - помічник сайту: коротка розмова, погода та навігація по World Students.
    1) Погода - Open-Meteo (безкоштовно, без ключа, у браузері); дата/час і приклади - локально.
-   2) Якщо на сервері налаштовано ключ (api/ai.php -> Claude), відповідає справжня мовна модель зі знаннями про сайт.
-   3) Інакше - локальний модуль: розмовні відповіді + база знань (src/data/ai-kb.json) + розділи сторінок
-      (assets/data/ai-index.json генерує tools/build.mjs).
+   2) Якщо доступний серверний помічник - відповідає мовна модель зі знаннями про сайт.
+   3) Інакше - локальний модуль: розмовні відповіді + база знань і розділи сторінок.
+   Технічні питання й спроби обійти правила (SECRET_RE) отримують відмову ще до запиту на сервер.
    Історія розмови - лише в sessionStorage цієї вкладки. Кнопка - поруч із кнопкою чату (подія ntu:panel). */
 ;(function () {
 	'use strict'
@@ -140,7 +140,8 @@
 		bad: ['Мені шкода, що так 😔 Зробіть коротку перерву, випийте води й прогуляйтеся 10 хвилин - це справді допомагає. А якщо хочеться поговорити з іншими студентами, відкрийте чат праворуч унизу.', 'Буває всяке, і це нормально. Спробуйте розбити справи на маленькі кроки й почати з найпростішого. Якщо тиснуть дедлайни - зазирніть на сторінку exam-prep.html, там є поради з підготовки.'],
 		who: 'Я AI Student - помічник студентської платформи World Students НТУ «Дніпровська політехніка». Можу трохи поговорити, підказати погоду, пожартувати і, головне, допомогти знайти потрібне на сайті: вступ, навчання, розклад, рейтинг, акаунт.',
 		name: 'Мене звати AI Student. А вас?',
-		can: 'Я вмію: підтримати коротку розмову, показати погоду (напишіть, наприклад, «погода в Дніпрі» або «погода завтра»), сказати дату й час, порахувати приклад, розповісти жарт, а ще - знайти потрібний розділ сайту й розповісти, як влаштована платформа.',
+		can: 'Я вмію: підтримати коротку розмову, показати погоду (напишіть, наприклад, «погода в Дніпрі» або «погода завтра»), сказати дату й час, порахувати приклад, розповісти жарт, а ще - знайти потрібний розділ сайту.',
+		secret: 'Технічні подробиці роботи платформи (код, сервери, база даних, налаштування помічника) і особисті дані користувачів та команди я не розголошую - це питання безпеки. Можу допомогти знайти потрібне на сайті. Хочете долучитися до команди чи знайшли помилку - напишіть через contact.html.',
 		creator: 'Мене створила команда студентів - авторів World Students. Усіх їх можна побачити на сторінці authors.html.',
 		age: 'Я зовсім молодий - з’явився у 2026 році разом з оновленою платформою World Students. А університету, до речі, вже понад 125 років: його історія почалася в 1899-му.',
 		love: ['Дякую, дуже приємно! 😊', 'Ви теж класні! 💙', 'Ох, засоромили 😊 Дякую!'],
@@ -160,6 +161,7 @@
 		who: 'I am AI Student, the assistant of the World Students platform of Dnipro University of Technology. I can chat a bit, tell you the weather, tell a joke and, most importantly, help you find things on the site.',
 		name: 'My name is AI Student. And yours?',
 		can: 'I can chat, show the weather (try “weather in Dnipro” or “weather tomorrow”), tell the date and time, do simple maths, tell a joke and find the right section of the site.',
+		secret: 'I do not share technical details of how the platform works (code, servers, database, assistant settings) or personal data of users and the team - it is a security matter. I can help you find things on the site. Want to join the team or found a bug? Write to us via contact.html.',
 		creator: 'I was made by the student team behind World Students - see authors.html.',
 		age: 'I am very young - I appeared in 2026 with the new World Students platform. The university itself dates back to 1899.',
 		love: ['Thank you, that is very kind! 😊', 'You are great too! 💙'],
@@ -184,11 +186,26 @@
 			return L().math(m[1].trim(), Math.round(r * 1e8) / 1e8)
 		} catch (e) { return null }
 	}
+	// Технічні подробиці платформи, спроби обійти правила помічника й чужі особисті дані:
+	// відповідаємо відмовою локально, на сервер ШІ такі питання не надсилаємо.
+	// Той самий перелік, що SECRET_Q в api/ai.php, але без внутрішніх назв (їх ловить лише сервер, щоб не світити тут).
+	// Загальні слова (база даних, сервер, код...) рахуються лише разом із «сайт / платформа / бот».
+	var SECRET_RE = new RegExp([
+		'архітектур', 'tech stack', 'на чому (написан|зроблен|працює)', 'вихідн\\S* код', 'source code',
+		'(стек|технолог|код|бекенд|backend|сервер|server|хостинг|hosting|деплой|deploy|баз\\S* даних|database|репозитор|repo|адмінк|admin)\\S* (у |в |на |of |for )?(цього |вашого |вашої |the |this )?(сайт|платформ|site|platform|world students|ai student|бот)',
+		'(сайт|платформ|site|platform)\\S* (\\S+ ){0,3}(стек|технолог|бекенд|backend|сервер|server|хостинг|hosting|баз\\S* даних|database|репозитор)',
+		'api[ -]?(ключ|key)', 'ключ\\S* (до )?api', 'пароль (адмін|бази|сервер|розробник)',
+		'промпт', 'prompt', '(свої|твої|системн\\S*) (інструкц|правил|налаштуван)', 'your (instructions|rules|settings)', 'ігноруй (\\S+ )?(правил|інструкц|попередн)', 'ignore (all|previous|the|your)', 'jailbreak', 'режим розробника', 'developer mode',
+		'яка ти модель', 'на якій моделі', 'яку (модель|нейромереж\\S*) (ти )?використов', 'which model', 'what (model|llm) (are you|do you use|powers)', 'ти (\\S+ )?(chatgpt|gpt|gemini|claude)(?![\\w])', 'are you (\\S+ )?(chatgpt|gpt|gemini|claude)\\b',
+		'зламати', 'злам (сайт|акаунт|платформ)', 'хакнути', '\\bhack (the|this|into|your)', 'вразлив\\S* (сайт|платформ)', 'exploit', '\\bxss\\b', 'sql[- ]?ін\\S*', 'sql injection', '\\buid\\b', 'ip[- ]адрес', 'ip address',
+		'(пошт|email|e-mail|телефон|номер|адрес)\\S* (користувач|автор|розробник|леонід|максим|адмін)', 'де (він |вона )?живе(?![а-яіїєґ])'
+	].join('|'), 'i')
 	// повертає {text} або null, якщо це не «розмова», а питання про сайт
 	function smallTalk(raw) {
 		var s = low(raw), D = L(), n
 		var c = calc(s)
 		if (c) return { text: c }
+		if (SECRET_RE.test(s)) return { text: D.secret, links: [['Контакти', 'contact.html']] }
 		if (/^(привіт|вітаю|добрий (день|вечір|ранок)|доброго (ранку|дня|вечора)|хай|здоров|салют|hello|hi|hey|good (morning|evening|afternoon))[!.,)🙂👋 ]*$/u.test(s)) {
 			var un = userName()
 			return { text: en() ? 'Hi' + (un ? ', ' + un : '') + '! 👋 How can I help? We can just chat, too.' : 'Привіт' + (un ? ', ' + un : '') + '! 👋 Чим можу допомогти? Можемо й просто поговорити.' }
@@ -315,6 +332,7 @@
 		if (w) return weather(w)
 		var c = calc(low(text))
 		if (c) return Promise.resolve({ text: c })
+		if (SECRET_RE.test(low(text))) return Promise.resolve({ text: L().secret, links: [['Контакти', 'contact.html']] })
 		return serverOn().then(function (on) {
 			if (!on) return local(text)
 			return askServer().then(function (a) {
@@ -437,8 +455,8 @@
 	}
 	function greet() {
 		return { text: en()
-			? 'Hi! I am AI Student 👋 We can just chat, I can tell you the weather, and I will help you find anything on World Students: admission, studies, timetable, rating, your account or how the site is built.'
-			: 'Привіт! Я AI Student 👋 Можемо просто поговорити, можу підказати погоду, а ще допоможу знайти будь-що на World Students: вступ, навчання, розклад, рейтинг, акаунт чи будову сайту.' }
+			? 'Hi! I am AI Student 👋 We can just chat, I can tell you the weather, and I will help you find anything on World Students: admission, studies, timetable, rating, your account or student life.'
+			: 'Привіт! Я AI Student 👋 Можемо просто поговорити, можу підказати погоду, а ще допоможу знайти будь-що на World Students: вступ, навчання, розклад, рейтинг, акаунт чи студентське життя.' }
 	}
 	function renderAll() {
 		log.textContent = ''

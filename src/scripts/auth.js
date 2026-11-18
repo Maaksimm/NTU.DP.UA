@@ -518,7 +518,7 @@
 	}
 
 	/* Завантаження файлу на сервер сайту (api/upload.php) частинами по 1,5 МБ.
-	   kind: 'chat' (до 10 МБ: PDF, зображення, документи) або 'lesson' (PDF до 20 МБ). Повертає {url, name, size, type}. */
+	   kind: 'chat' (до 10 МБ: PDF, зображення, документи), 'lesson' (PDF до 20 МБ) або 'story' (фото, відео, аудіо до 25 МБ). Повертає {url, name, size, type}. */
 	var UP_ERR = {
 		TOO_LARGE: 'Файл завеликий.', TYPE: 'Такий тип файлу не підтримується.', NOT_VERIFIED: 'Підтвердьте пошту, щоб надсилати файли.',
 		TOKEN: 'Сесія застаріла. Оновіть сторінку або увійдіть знову.', EXPIRED: 'Сесія застаріла. Оновіть сторінку або увійдіть знову.'
@@ -531,7 +531,7 @@
 		var i = 0
 		function next(tk) {
 			var fd = new FormData()
-			fd.append('kind', kind === 'lesson' ? 'lesson' : 'chat')
+			fd.append('kind', kind === 'lesson' || kind === 'story' ? kind : 'chat')
 			fd.append('upload_id', id)
 			fd.append('index', String(i))
 			fd.append('total', String(total))
@@ -965,7 +965,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				A.confirm(t('Вийти з акаунта?'), t('Вийти')).then(function (ok) {
 					if (!ok) return
 					A.signOut()
-					location.href = 'index.html'
+					location.href = './'
 				})
 			})
 		})

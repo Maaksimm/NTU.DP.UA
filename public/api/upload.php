@@ -2,7 +2,7 @@
 /**
  * Завантаження файлів для особистих повідомлень і записів уроків (World Students).
  *
- * POST multipart частинами: file=<частина>, kind=chat|lesson, upload_id, index, total, size, name;
+ * POST multipart частинами: file=<частина>, kind=chat|lesson|story, upload_id, index, total, size, name;
  * заголовок Authorization: Bearer <Firebase ID token>.
  * Токен перевіряється за підписом (RS256, відкриті ключі Google securetoken), aud/iss проєкту, строком дії
  * та підтвердженою поштою. Дозволені лише перелічені типи файлів; ім'я на сервері випадкове.
@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 const PROJECT_ID = 'ntubd-93efc';
 const SITE = 'https://ntu.dp.ua';
-const MAX_BYTES = ['chat' => 10 * 1024 * 1024, 'lesson' => 20 * 1024 * 1024];
+const MAX_BYTES = ['chat' => 10 * 1024 * 1024, 'lesson' => 20 * 1024 * 1024, 'story' => 25 * 1024 * 1024];
 const TYPES = [
     'chat' => [
         'pdf' => ['application/pdf'],
@@ -24,6 +24,12 @@ const TYPES = [
         'zip' => ['application/zip', 'application/x-zip-compressed'],
     ],
     'lesson' => ['pdf' => ['application/pdf']],
+    // сторіз: фото, відео й власна музика
+    'story' => [
+        'jpg' => ['image/jpeg'], 'jpeg' => ['image/jpeg'], 'png' => ['image/png'], 'webp' => ['image/webp'],
+        'mp4' => ['video/mp4'], 'mov' => ['video/quicktime', 'video/mp4'], 'webm' => ['video/webm'],
+        'mp3' => ['audio/mpeg'], 'm4a' => ['audio/mp4', 'audio/x-m4a', 'video/mp4'], 'ogg' => ['audio/ogg', 'video/ogg'],
+    ],
 ];
 
 header('Content-Type: application/json; charset=utf-8');
@@ -112,7 +118,8 @@ if (!preg_match('/^Bearer\s+([A-Za-z0-9\-_.]+)$/', $auth, $m)) out(401, ['error'
 $user = verifyToken($m[1]);
 
 /* ---------- file (частинами по <=1.5 МБ, бо upload_max_filesize на сервері 2 МБ) ---------- */
-$kind = ($_POST['kind'] ?? 'chat') === 'lesson' ? 'lesson' : 'chat';
+$kind = (string)($_POST['kind'] ?? 'chat');
+if (!isset(TYPES[$kind])) $kind = 'chat';
 $uploadId = (string)($_POST['upload_id'] ?? '');
 $index = (int)($_POST['index'] ?? -1);
 $total = (int)($_POST['total'] ?? 0);

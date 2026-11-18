@@ -14,8 +14,8 @@
 				"hi",
 				"hey"
 			],
-			"a": "Привіт! Я AI Student - помічник студентської платформи World Students. Питайте про розділи сайту, вступ, навчання, чат, акаунт чи будову самої платформи.",
-			"en": "Hi! I am AI Student, the assistant of the World Students platform. Ask me about the site sections, admission, studies, the chat, your account or how the platform is built."
+			"a": "Привіт! Я AI Student - помічник студентської платформи World Students. Питайте про розділи сайту, вступ, навчання, чат, акаунт чи студентське життя.",
+			"en": "Hi! I am AI Student, the assistant of the World Students platform. Ask me about the site sections, admission, studies, the chat, your account or student life."
 		},
 		{
 			"id": "thanks",
@@ -43,8 +43,8 @@
 				"ai student",
 				"ai студент"
 			],
-			"a": "Я AI Student - простий безкоштовний помічник, що працює прямо в браузері. Я шукаю відповіді в базі знань і на сторінках цього сайту, даю посилання на потрібний розділ, а за точними даними відсилаю на сайт університету. Я не зберігаю ваші питання і не передаю їх стороннім сервісам.",
-			"en": "I am AI Student, a simple free assistant that runs right in your browser. I search the knowledge base and the pages of this site, link you to the right section and, for exact data, point you to the university website. I do not store your questions or send them to third-party services.",
+			"a": "Я AI Student - помічник студентської платформи World Students. Я шукаю відповіді в базі знань і на сторінках цього сайту, даю посилання на потрібний розділ, а за точними даними відсилаю на сайт університету. Не пишіть мені паролі, номери документів чи інші особисті дані - вони мені не потрібні.",
+			"en": "I am AI Student, the assistant of the World Students platform. I search the knowledge base and the pages of this site, link you to the right section and, for exact data, point you to the university website. Please do not send me passwords, document numbers or other personal data - I do not need them.",
 			"l": [
 				[
 					"Мапа сайту",
@@ -102,23 +102,33 @@
 			]
 		},
 		{
-			"id": "arch",
+			"id": "tech",
 			"q": [
-				"архітектура",
+				"архітектура сайту",
 				"як влаштований сайт",
 				"як зроблено сайт",
-				"на чому написано",
-				"технології",
-				"стек",
-				"будова сайту",
-				"структура проєкту",
-				"architecture",
+				"на чому написано сайт",
+				"технології сайту",
+				"стек сайту",
+				"вихідний код сайту",
+				"база даних сайту",
+				"сервер сайту",
+				"хостинг сайту",
+				"промпт",
+				"яка ти модель",
+				"architecture of the site",
 				"tech stack",
-				"how is it built"
+				"how is the site built",
+				"source code",
+				"which model are you"
 			],
-			"a": "Архітектура World Students: статичний сайт без фреймворків. Джерела лежать у src/ (сторінки з JSON-описом, спільні частини, дані меню, модулі CSS і JavaScript), статичні файли - у public/. Невеликий скрипт збирання на Node.js (tools/build.mjs) генерує готові сторінки в dist/: шапку з мегаменю, підвал, мета-теги для SEO, карту сайту й версії файлів для кешу. Бекенд: Firebase Authentication (акаунти) і Firebase Realtime Database (чат, профілі, повідомлення, відгуки) через REST, а також PHP-скрипти на сервері для завантаження файлів і листів акаунта. Хостинг - CyberPanel.",
-			"en": "World Students architecture: a static site without frameworks. Sources live in src/ (pages with JSON front matter, shared partials, menu data, CSS and JavaScript modules), static files in public/. A small Node.js build script (tools/build.mjs) generates the final pages in dist/: header with mega menu, footer, SEO meta tags, sitemap and cache-busting file versions. Backend: Firebase Authentication (accounts) and Firebase Realtime Database (chat, profiles, messages, reviews) over REST, plus PHP scripts on the server for file uploads and account emails. Hosting: CyberPanel.",
+			"a": "Технічні подробиці роботи платформи (код, сервери, база даних, налаштування помічника) я не розголошую - це питання безпеки. Можу підказати, де що знайти на сайті: вступ, навчання, чат, акаунт. Хочете долучитися до команди чи знайшли помилку - напишіть через сторінку «Контакти».",
+			"en": "I do not share technical details of how the platform works (code, servers, database, assistant settings) - it is a security matter. I can help you find things on the site: admission, studies, the chat, your account. Want to join the team or found a bug? Write to us via the Contacts page.",
 			"l": [
+				[
+					"Контакти",
+					"contact.html"
+				],
 				[
 					"Про платформу",
 					"platform.html"
@@ -126,40 +136,7 @@
 			]
 		},
 		{
-			"id": "arch-build",
-			"q": [
-				"збирання",
-				"build",
-				"npm run build",
-				"npm",
-				"dist",
-				"як запустити",
-				"як зібрати",
-				"deploy",
-				"деплой",
-				"розгортання"
-			],
-			"a": "Збирання: npm run build (src/ + public/ → dist/), npm run check (перевірка заголовків, описів, посилань і перекладів), npm run serve (перегляд на localhost:8080), npm run package (архів для сервера). Розгортання: архів завантажується в CyberPanel → File Manager → public_html і розпаковується. Потрібен лише Node.js 18+, сторонніх залежностей немає.",
-			"en": "Build: npm run build (src/ + public/ → dist/), npm run check (titles, descriptions, links and translations), npm run serve (preview at localhost:8080), npm run package (archive for the server). Deploy: the archive is uploaded to CyberPanel → File Manager → public_html and extracted. Only Node.js 18+ is needed, no third-party dependencies."
-		},
-		{
-			"id": "arch-data",
-			"q": [
-				"база даних",
-				"де зберігаються дані",
-				"firebase",
-				"сервер",
-				"бекенд",
-				"backend",
-				"database",
-				"безпека даних",
-				"правила бази"
-			],
-			"a": "Дані зберігаються у Firebase Realtime Database: users (ім'я, фото, остання активність), profiles (роль, курс, факультет, фон), chat (спільний чат, реакції, «друкує»), dm та inbox (особисті повідомлення), reviews (відгуки), lessons (записи уроків викладачів). Доступ обмежують правила бази: писати може лише власник запису, у чат і відгуки - лише користувачі з підтвердженою поштою. Файли зберігаються на сервері сайту.",
-			"en": "Data is stored in Firebase Realtime Database: users (name, photo, last activity), profiles (role, course, faculty, background), chat (shared chat, reactions, typing), dm and inbox (direct messages), reviews, lessons (teachers' lesson records). Database rules restrict access: only the owner can write their records, and only verified accounts can post in the chat or leave reviews. Files are stored on the site server."
-		},
-		{
-			"id": "arch-i18n",
+			"id": "lang",
 			"q": [
 				"переклад",
 				"англійська",
@@ -169,8 +146,8 @@
 				"translation",
 				"змінити мову"
 			],
-			"a": "Сайт має українську та англійську версії. Мову, тему (світла/темна), чорно-білий режим і розмір тексту можна змінити кнопкою з оком у шапці сайту. Переклад працює через словник: текст сторінки замінюється на англійський без перезавантаження.",
-			"en": "The site is available in Ukrainian and English. Language, theme (light/dark), black-and-white mode and text size are changed with the eye button in the header. Translation works through a dictionary: the page text is replaced with English without reloading."
+			"a": "Сайт має українську та англійську версії. Мову, тему (світла/темна), чорно-білий режим і розмір тексту можна змінити кнопкою з оком у шапці сайту.",
+			"en": "The site is available in Ukrainian and English. Language, theme (light/dark), black-and-white mode and text size are changed with the eye button in the header."
 		},
 		{
 			"id": "account",

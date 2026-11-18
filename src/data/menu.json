@@ -137,6 +137,12 @@
           "desc": "Спільноти, традиції, дозвілля"
         },
         {
+          "nav": "student-stories",
+          "href": "student-stories.html",
+          "label": "Історії студентів",
+          "desc": "Сторіз і розповіді студентів"
+        },
+        {
           "nav": "schedule",
           "href": "schedule.html",
           "label": "Розклад і календар",
@@ -295,12 +301,6 @@
           "href": "study-abroad.html",
           "label": "Навчатися закордоном",
           "desc": "Мобільність, школи, подвійні дипломи"
-        },
-        {
-          "nav": "student-stories",
-          "href": "student-stories.html",
-          "label": "Історії наших студентів",
-          "desc": "Досвід студентів Політехніки"
         }
       ]
     },
