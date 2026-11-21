@@ -26,7 +26,6 @@ if ($method === 'GET' && isset($_GET['preview'])) {
     header('Content-Type: text/html; charset=utf-8');
     header('X-Robots-Tag: noindex');
     echo mail_render([
-        'logo' => SITE . '/assets/img/logo.png',
         'greeting' => 'Вітаємо, Студенте!',
         'title' => 'Підтвердіть свою пошту',
         'intro' => 'Ви зареєструвалися на студентській платформі World Students НТУ «Дніпровська політехніка». Натисніть кнопку нижче, щоб підтвердити адресу student@example.com - після цього відкриються чат, особисті повідомлення, відгуки й обмін файлами.',

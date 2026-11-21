@@ -1,7 +1,7 @@
 <?php
 /**
  * Shared helpers for the mail endpoints (mail.php, broadcast.php):
- * JSON replies, file-based rate limit, MIME email with the inline logo, sent with PHP mail() from noreply@ntu.dp.ua.
+ * JSON replies, file-based rate limit, MIME email (logo loaded by URL), sent with PHP mail() from noreply@ntu.dp.ua.
  */
 declare(strict_types=1);
 
@@ -64,8 +64,6 @@ function send_mail(string $to, string $subject, array $parts, array $extraHeader
 {
     [$html, $text] = $parts;
     $alt = 'a' . bin2hex(random_bytes(12));
-    $rel = 'r' . bin2hex(random_bytes(12));
-    $logoFile = dirname(__DIR__, 2) . '/assets/img/logo.png';
     $headers = array_merge([
         'From: ' . enc_header(MAIL_FROM_NAME) . ' <' . MAIL_FROM . '>',
         'Reply-To: ' . MAIL_FROM,
@@ -77,15 +75,10 @@ function send_mail(string $to, string $subject, array $parts, array $extraHeader
         'X-Auto-Response-Suppress: All',
         'Auto-Submitted: auto-generated',
     ], $extraHeaders);
-    // multipart/alternative: plain text + (HTML with the inline logo as multipart/related)
+    // multipart/alternative: plain text + HTML (the logo is a remote image, see mail_render())
     $nl = "\r\n";
     $body = "--$alt{$nl}Content-Type: text/plain; charset=UTF-8{$nl}Content-Transfer-Encoding: base64{$nl}{$nl}" . chunk_split(base64_encode($text))
-        . "--$alt{$nl}Content-Type: multipart/related; boundary=\"$rel\"; type=\"text/html\"{$nl}{$nl}"
-        . "--$rel{$nl}Content-Type: text/html; charset=UTF-8{$nl}Content-Transfer-Encoding: base64{$nl}{$nl}" . chunk_split(base64_encode($html));
-    if (is_file($logoFile)) {
-        $body .= "--$rel{$nl}Content-Type: image/png; name=\"logo.png\"{$nl}Content-Transfer-Encoding: base64{$nl}Content-ID: <logo@ntu.dp.ua>{$nl}"
-            . "Content-Disposition: inline; filename=\"logo.png\"{$nl}{$nl}" . chunk_split(base64_encode((string)file_get_contents($logoFile)));
-    }
-    $body .= "--$rel--{$nl}--$alt--{$nl}";
+        . "--$alt{$nl}Content-Type: text/html; charset=UTF-8{$nl}Content-Transfer-Encoding: base64{$nl}{$nl}" . chunk_split(base64_encode($html))
+        . "--$alt--{$nl}";
     return mail($to, enc_header($subject), $body, implode($nl, $headers), '-f' . MAIL_FROM);
 }

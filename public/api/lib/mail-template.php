@@ -25,8 +25,9 @@ function mail_render(array $m): array
     $pre = mail_e($m['preheader'] ?? $m['intro']);
     $hello = mail_e($m['greeting'] ?? 'Вітаємо!');
     $year = date('Y');
-    // in a letter the logo is an inline attachment (cid:), so it shows even when the mail client blocks remote images
-    $logo = mail_e($m['logo'] ?? 'cid:logo@ntu.dp.ua');
+    // remote image, not a cid: attachment - the Gmail mobile app often drops cid: images.
+    // The file has an opaque white background (3x size) so it stays visible when Gmail recolours letters in dark mode.
+    $logo = mail_e($m['logo'] ?? $site . '/assets/email/logo.png');
     $font = "font-family:Manrope,Onest,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
     $items = mail_items($m['items'] ?? [], $font);
     $unsubUrl = isset($m['unsubscribe']) ? mail_e($m['unsubscribe']) : '';

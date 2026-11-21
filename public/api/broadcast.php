@@ -129,8 +129,7 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 if ($method === 'GET' && isset($_GET['preview'])) {
     header('Content-Type: text/html; charset=utf-8');
     header('X-Robots-Tag: noindex');
-    $html = letter('Студенте', SITE . '/api/broadcast.php?unsub=PREVIEW')[0];
-    echo str_replace('cid:logo@ntu.dp.ua', SITE . '/assets/img/logo.png', $html);
+    echo letter('Студенте', SITE . '/api/broadcast.php?unsub=PREVIEW')[0];
     exit;
 }
 
