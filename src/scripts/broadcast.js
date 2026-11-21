@@ -72,11 +72,44 @@
 		})
 	}
 
+	// CSV з BOM і роздільником «;», щоб Excel одразу відкривав кирилицю й колонки
+	function csvCell(v) {
+		var s = String(v == null ? '' : v)
+		if (/^[=+\-@\t\r]/.test(s)) s = "'" + s
+		return /[";\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s
+	}
+	function when(ms) {
+		if (!ms) return ''
+		var d = new Date(ms), p = function (n) { return (n < 10 ? '0' : '') + n }
+		return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes())
+	}
+	var ROLES = { s: 'студент', t: 'викладач' }
+	function exportUsers() {
+		msg(T('Завантаження…'))
+		return call({ action: 'export' }).then(function (d) {
+			var head = ['uid', 'Нікнейм', 'Email', 'Пошту підтверджено', 'Заблоковано', 'Роль', 'Зареєстровано', 'Останній вхід', 'Востаннє онлайн', 'Відписався від новин']
+			var lines = [head.map(csvCell).join(';')].concat(d.users.map(function (u) {
+				return [u.uid, u.name, u.email, u.verified ? 'так' : 'ні', u.disabled ? 'так' : 'ні', ROLES[u.role] || '',
+					when(u.created), when(u.lastLogin), when(u.lastSeen), u.unsubscribed ? 'так' : 'ні'].map(csvCell).join(';')
+			}))
+			var blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' })
+			var a = document.createElement('a')
+			a.href = URL.createObjectURL(blob)
+			a.download = 'ntu-users-' + when(Date.now()).slice(0, 10) + '.csv'
+			document.body.appendChild(a)
+			a.click()
+			a.remove()
+			setTimeout(function () { URL.revokeObjectURL(a.href) }, 1000)
+			msg(T('Вивантажено користувачів: ') + d.count)
+		})
+	}
+
 	root.addEventListener('click', function (e) {
 		var b = e.target.closest('[data-bc-do]')
 		if (!b || busy) return
 		var what = b.getAttribute('data-bc-do')
 		if (what === 'status') return run(status())
+		if (what === 'export') return run(exportUsers())
 		if (what === 'test') return run(call({ action: 'test' }).then(function (d) { msg(T('Тестовий лист надіслано на ') + d.to) }))
 		if (what === 'send') {
 			var left = $('[data-bc-left]').textContent

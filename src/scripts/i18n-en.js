@@ -3795,6 +3795,8 @@ window.I18N_EN = {
  "Оновити": "Refresh",
  "Тестовий лист собі": "Test letter to myself",
  "Надіслати всім": "Send to everyone",
+ "Вивантажити користувачів (CSV)": "Export users (CSV)",
+ "Вивантажено користувачів:": "Users exported:",
  "Перед розсилкою перегляньте": "Before sending, check",
  "вигляд листа": "how the letter looks",
  "і надішліть тестовий лист собі. Повторний запуск нікому не надсилає лист двічі.": "and send a test letter to yourself. Running it again never mails anyone twice.",

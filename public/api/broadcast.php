@@ -9,6 +9,7 @@
  *   {action: "status"}            - recipients total / already sent / unsubscribed
  *   {action: "test"}              - send the letter only to the caller's own email
  *   {action: "send", confirm: "SEND"} - send the next batch (BATCH letters); call again until remaining = 0
+ *   {action: "export"}            - every Firebase Auth account + nickname/role from users/{uid} (the page saves it as CSV)
  * Recipients: Firebase Auth accounts with a verified email that are not disabled and did not unsubscribe.
  * Progress is stored per CAMPAIGN outside public_html, so a repeated run never mails anyone twice.
  */
@@ -111,6 +112,47 @@ function recipients(): array
     return $list;
 }
 
+/** Every Firebase Auth account (any status), merged with nickname/role from the database users/ list. */
+function export_users(): array
+{
+    $tk = fb_admin_token('https://www.googleapis.com/auth/cloud-platform');
+    $dbTk = fb_admin_token('https://www.googleapis.com/auth/firebase.database https://www.googleapis.com/auth/userinfo.email');
+    if (!$tk || !$dbTk) out(503, ['error' => 'NOT_CONFIGURED']);
+    @set_time_limit(120);
+    [$code, $db] = fb_http('GET', 'https://' . FB_PROJECT_ID . '-default-rtdb.europe-west1.firebasedatabase.app/users.json', null, ['Authorization: Bearer ' . $dbTk]);
+    if ($code !== 200) out(502, ['error' => 'UPSTREAM']);
+    $db = is_array($db) ? $db : [];
+    $unsub = bc_read('unsubscribed');
+    $rows = [];
+    $page = '';
+    for ($i = 0; $i < 50; $i++) {
+        $url = 'https://identitytoolkit.googleapis.com/v1/projects/' . FB_PROJECT_ID . '/accounts:batchGet?maxResults=1000'
+            . ($page !== '' ? '&nextPageToken=' . rawurlencode($page) : '');
+        [$code, $d] = fb_http('GET', $url, null, ['Authorization: Bearer ' . $tk]);
+        if ($code !== 200 || !is_array($d)) out(502, ['error' => 'UPSTREAM', 'detail' => (string)($d['error']['message'] ?? $code)]);
+        foreach ($d['users'] ?? [] as $u) {
+            $uid = (string)$u['localId'];
+            $p = is_array($db[$uid] ?? null) ? $db[$uid] : [];
+            $rows[] = [
+                'uid' => $uid,
+                'name' => (string)($p['n'] ?? $u['displayName'] ?? ''),
+                'email' => (string)($u['email'] ?? ''),
+                'verified' => !empty($u['emailVerified']),
+                'disabled' => !empty($u['disabled']),
+                'role' => (string)($p['r'] ?? ''),
+                'created' => (int)($u['createdAt'] ?? 0),
+                'lastLogin' => (int)($u['lastLoginAt'] ?? 0),
+                'lastSeen' => is_numeric($p['s'] ?? null) ? (int)$p['s'] : 0,
+                'unsubscribed' => isset($unsub[$uid]),
+            ];
+        }
+        $page = (string)($d['nextPageToken'] ?? '');
+        if ($page === '') break;
+    }
+    usort($rows, fn($a, $b) => $b['created'] <=> $a['created']);
+    return $rows;
+}
+
 /* ---------------------------------------------------------------- staff auth */
 
 function staff_user(): array
@@ -184,6 +226,12 @@ if ($action === 'status') {
     $pending = array_diff_key($all, $sent, $unsub);
     out(200, ['ok' => true, 'campaign' => CAMPAIGN, 'subject' => SUBJECT, 'total' => count($all),
         'sent' => count(array_intersect_key($sent, $all)), 'unsubscribed' => count(array_intersect_key($unsub, $all)), 'remaining' => count($pending)]);
+}
+
+if ($action === 'export') {
+    if (limited('bc-export:' . $user['sub'], 20, 3600)) out(429, ['error' => 'TOO_MANY_ATTEMPTS']);
+    $rows = export_users();
+    out(200, ['ok' => true, 'count' => count($rows), 'users' => $rows]);
 }
 
 if ($action === 'test') {
