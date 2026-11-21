@@ -175,14 +175,6 @@
 	transition: all 0.3s;
 }
 
-.faculties-overview .card {
-	border-top: 4px solid var(--primary-light);
-}
-
-.faculties-overview .card:hover {
-	border-top-color: var(--accent-gold);
-}
-
 .campus-events .institute-card {
 	transition: var(--transition-smooth);
 }

@@ -180,6 +180,25 @@
 	fullBtn.title = t('На весь екран')
 	fullBtn.setAttribute('aria-pressed', 'false')
 	var headBtns = el('div', 'chat-head__btns')
+	// учасники (закріплення) і локальна тема чату - chat-members.js / chat-prefs.js
+	var CP = window.NTU_CHATPREFS
+	var membersBtn = el('button', 'chat-head__close chat-head__members')
+	membersBtn.type = 'button'
+	membersBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.5a6.5 6.5 0 0 1 3 5.5"/></svg>'
+	membersBtn.setAttribute('aria-label', t('Учасники'))
+	membersBtn.title = t('Учасники')
+	membersBtn.setAttribute('aria-expanded', 'false')
+	var themeBtn = el('button', 'chat-head__close chat-head__theme')
+	themeBtn.type = 'button'
+	themeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 2-.8 2-1.9 0-.5-.2-.9-.5-1.3-.3-.3-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.3A4.7 4.7 0 0 0 22 9.8C22 6 17.5 3 12 3Z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10.5" cy="7" r="1.2"/><circle cx="15.5" cy="7.5" r="1.2"/></svg>'
+	themeBtn.setAttribute('aria-label', t('Тема чату'))
+	themeBtn.title = t('Тема чату')
+	themeBtn.setAttribute('aria-expanded', 'false')
+	if (CP) {
+		themeBtn.addEventListener('click', function (e) { e.stopPropagation(); CP.picker(themeBtn, 'chat') })
+		headBtns.appendChild(membersBtn)
+		headBtns.appendChild(themeBtn)
+	}
 	headBtns.appendChild(fullBtn)
 	headBtns.appendChild(close)
 	head.appendChild(headText)
@@ -417,6 +436,11 @@
 	panel.appendChild(toast)
 	root.appendChild(panel)
 	root.appendChild(fab)
+	if (CP) {
+		CP.apply(panel, 'chat')
+		CP.onChange(function () { CP.apply(panel, 'chat') })
+		if (window.NTU_CHATMEMBERS) window.NTU_CHATMEMBERS.mount(panel, membersBtn)
+	}
 
 	/* ---------- rendering ---------- */
 	function fmt(ts) {
@@ -1035,6 +1059,8 @@
 	}
 	function shut(noFocus) {
 		closePops()
+		if (window.NTU_CHATMEMBERS) window.NTU_CHATMEMBERS.close(true)
+		if (CP) CP.closePicker()
 		hideMentions()
 		isOpen = false
 		clearInterval(typingTimer)
@@ -1053,6 +1079,7 @@
 	close.addEventListener('click', shut)
 	document.addEventListener('keydown', function (e) {
 		if (e.key !== 'Escape' || !isOpen) return
+		if (window.NTU_CHATMEMBERS && window.NTU_CHATMEMBERS.isOpen()) { window.NTU_CHATMEMBERS.close(); return }
 		if (!rpick.hidden) { var mid = rpickMid; closeRpick(); var mb = mid && byMid(mid); var ab = mb && mb.querySelector('.chat-msg__add'); if (ab) ab.focus(); return }
 		if (!mentionBox.hidden) { hideMentions(); return }
 		if (!emojiPop.hidden || !gifPop.hidden) { var b = !gifPop.hidden ? gifBtn : emojiBtn; closePops(); b.focus(); return }

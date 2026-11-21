@@ -1,0 +1,13 @@
+/* ===== Glassmorphism-ілюстрації в шапках сторінок (data-glass, SVG з tools/glass-icons.mjs або Lottie) ===== */
+/* розміщення - як у .hero-art (19-live-chat-profile.css); тут лише вигляд і анімація */
+.glass-art{width:210px;height:210px;filter:drop-shadow(0 22px 34px rgba(4,20,48,.32))}
+.glass-art::before{content:"";position:absolute;inset:14% 10% 6%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.28),transparent);z-index:-1}
+.glass-art .glass-svg,.glass-art .glass-lottie{display:block;width:100%;height:100%}
+.glass-art .glass-lottie svg{display:block}
+.glass-art .ga-back{transform-box:fill-box;transform-origin:center;animation:gaBack 5.5s ease-in-out infinite}
+.glass-art .ga-glass{transform-box:fill-box;transform-origin:center;animation:gaGlass 5.5s ease-in-out infinite}
+@keyframes gaBack{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(4px,-6px) rotate(3deg)}}
+@keyframes gaGlass{0%,100%{transform:translate(0,0)}50%{transform:translate(-3px,3px)}}
+.page-hero--art .hero-art.glass-art{right:28px}
+@media(max-width:900px){.page-hero--art .glass-art{display:none}}
+@media(prefers-reduced-motion:reduce){.glass-art .ga-back,.glass-art .ga-glass{animation:none}}

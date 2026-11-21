@@ -1,0 +1,11 @@
+/* ===== broadcast.html: службова сторінка розсилки ===== */
+.bc{max-width:760px}
+.bc [hidden]{display:none!important}
+.bc__msg{margin:0 0 18px;font-weight:600;color:var(--ink)}
+.bc__stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 20px}
+.bc__stats div{padding:14px 16px;border-radius:16px;background:var(--blue-pale);border:1px solid var(--line)}
+.bc__stats dt{font-size:13px;color:var(--muted)}
+.bc__stats dd{margin:4px 0 0;font:800 26px Manrope,sans-serif;color:var(--ink)}
+.bc__actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.bc__hint{margin:0;font-size:14px;color:var(--muted)}
+@media(max-width:640px){.bc__stats{grid-template-columns:repeat(2,1fr)}}

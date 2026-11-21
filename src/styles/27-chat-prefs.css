@@ -1,0 +1,83 @@
+/* ===== Локальні теми чатів (data-ctheme на .chat-panel або .dm__conv) і закріплені учасники ===== */
+[data-ctheme=ocean]{--ct-bg:linear-gradient(160deg,#e3f7fd,#cdeefa);--ct-own:#0e8fb5;--ct-own2:#0a6f8f}
+[data-ctheme=sunset]{--ct-bg:linear-gradient(160deg,#fff1e6,#ffd9c2);--ct-own:#e8590c;--ct-own2:#c2410c}
+[data-ctheme=forest]{--ct-bg:linear-gradient(160deg,#eaf7ec,#d3eed9);--ct-own:#2f8f4e;--ct-own2:#22703c}
+[data-ctheme=lavender]{--ct-bg:linear-gradient(160deg,#f4eefe,#e4d8fb);--ct-own:#7c4ddb;--ct-own2:#6236c0}
+[data-ctheme=candy]{--ct-bg:linear-gradient(160deg,#fff0f7,#fbd6ea);--ct-own:#d63384;--ct-own2:#b02469}
+[data-ctheme=gold]{--ct-bg:linear-gradient(160deg,#fff8e6,#fbe9b8);--ct-own:#c48a00;--ct-own2:#9c6d00}
+[data-ctheme=night]{--ct-bg:linear-gradient(160deg,#141f33,#0d1524);--ct-own:#4f7cff;--ct-own2:#3359d6;--ct-other:#1f2c47;--ct-other-text:#e6ecf7;--ct-other-line:#2c3d61}
+[data-theme=dark] [data-ctheme=ocean]{--ct-bg:linear-gradient(160deg,#0d2630,#0a1c24)}
+[data-theme=dark] [data-ctheme=sunset]{--ct-bg:linear-gradient(160deg,#2e1a10,#22130b)}
+[data-theme=dark] [data-ctheme=forest]{--ct-bg:linear-gradient(160deg,#10261a,#0b1c12)}
+[data-theme=dark] [data-ctheme=lavender]{--ct-bg:linear-gradient(160deg,#211836,#181127)}
+[data-theme=dark] [data-ctheme=candy]{--ct-bg:linear-gradient(160deg,#2e1322,#220d19)}
+[data-theme=dark] [data-ctheme=gold]{--ct-bg:linear-gradient(160deg,#2b2210,#1f180a)}
+
+[data-ctheme] .chat-list,[data-ctheme] .dm__msgs{background:var(--ct-bg)}
+[data-ctheme] .chat-msg.is-mine,[data-ctheme] .dm-msg.is-mine .dm-msg__bubble{background:var(--ct-own);border-color:var(--ct-own);color:#fff}
+.chat-panel[data-ctheme] .chat-head{background:linear-gradient(135deg,var(--ct-own),var(--ct-own2))}
+.chat-panel[data-ctheme] .chat-send{background:var(--ct-own)}
+[data-ctheme=night] .chat-msg:not(.is-mine),[data-ctheme=night] .dm-msg:not(.is-mine) .dm-msg__bubble{background:var(--ct-other);border-color:var(--ct-other-line);color:var(--ct-other-text)}
+[data-ctheme=night] .chat-empty,[data-ctheme=night] .dm__hint,[data-ctheme=night] .chat-day{color:#aab8d4}
+
+/* вибір теми */
+.ctheme-pop{position:fixed;z-index:1300;width:262px;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--text);box-shadow:0 18px 44px rgba(11,37,69,.26)}
+.ctheme-pop__title{margin:0 0 8px;font:800 14px Manrope,sans-serif}
+.ctheme-pop__grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ctheme-sw{display:flex;align-items:center;gap:8px;padding:7px 8px;border:1px solid var(--line);border-radius:12px;background:none;color:var(--text);font:600 13px inherit;font-family:inherit;text-align:left;cursor:pointer}
+.ctheme-sw:hover{background:var(--blue-pale)}
+.ctheme-sw.is-active{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue-soft)}
+.ctheme-sw__dot{flex:none;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--sw-a) 0 50%,var(--sw-b) 50% 100%);border:1px solid rgba(0,0,0,.12)}
+.ctheme-own{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.ctheme-own__title{margin:0 0 6px;font:800 13px Manrope,sans-serif}
+.ctheme-own__row{display:flex;gap:6px;align-items:stretch}
+.ctheme-own__btn{flex:1;padding:8px 10px;border:1px dashed var(--blue);border-radius:12px;background:var(--blue-pale);color:var(--blue);font:600 13px inherit;font-family:inherit;cursor:pointer}
+.ctheme-own__btn:disabled{opacity:.6;cursor:progress}
+.ctheme-own__color{display:flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border:1px solid var(--line);border-radius:12px;font-size:13px;font-weight:600;cursor:pointer}
+.ctheme-own__color input{width:28px;height:28px;padding:0;border:0;border-radius:50%;background:none;cursor:pointer}
+.ctheme-own__status{margin:6px 0 0;min-height:1em;font-size:12px;color:var(--muted)}
+.ctheme-own__status:empty{display:none}
+.ctheme-own__rm{margin-top:6px;padding:0;border:0;background:none;color:#c2410c;font:600 12px inherit;font-family:inherit;cursor:pointer;text-decoration:underline}
+.ctheme-own__btn:focus-visible,.ctheme-own__rm:focus-visible,.ctheme-own__color:focus-within{outline:2px solid var(--blue);outline-offset:2px}
+.ctheme-sw__dot{background-size:cover;background-position:center}
+/* своя тема з фото: повідомлення трохи щільніші, щоб текст читався на будь-якому фоні */
+[data-ctheme=custom] .chat-msg:not(.is-mine),[data-ctheme=custom] .dm-msg:not(.is-mine) .dm-msg__bubble{box-shadow:0 2px 10px rgba(0,0,0,.12)}
+[data-ctheme=custom] .chat-empty,[data-ctheme=custom] .dm__hint{background:var(--surface);border-radius:12px;padding:6px 10px;align-self:center}
+.ctheme-pop__note{margin:8px 0 0;font-size:12px;color:var(--muted)}
+
+/* кнопки в шапці загального чату */
+.chat-head__members svg,.chat-head__theme svg{width:16px;height:16px;display:block;margin:auto}
+
+/* список учасників у загальному чаті */
+.chat-members{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;background:var(--surface);animation:dmIn .2s ease both}
+.chat-members[hidden]{display:none}
+.chat-members__head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+.chat-members__head strong{font:800 16px Manrope,sans-serif}
+.chat-members__close{width:32px;height:32px;border:0;border-radius:50%;background:var(--tint);color:var(--text);cursor:pointer}
+.chat-members__search{margin:10px 14px 4px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);font:inherit}
+.chat-members__list{flex:1;overflow-y:auto;padding:4px 8px 12px}
+.chat-members__group{margin:10px 8px 4px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.chat-members__hint{margin:18px 10px;color:var(--muted);font-size:14px;text-align:center}
+.chat-members__hint--warn{margin:8px 10px;color:#b45309}
+.chat-members__row{display:flex;align-items:center;gap:6px;border-radius:12px}
+.chat-members__row:hover{background:var(--blue-pale)}
+.chat-members__row.is-pinned{background:var(--blue-soft)}
+.chat-members__who{flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:7px 8px;border:0;background:none;color:var(--text);font:inherit;text-align:left;cursor:pointer}
+.chat-members__av{position:relative;flex:none}
+.chat-members__av .uavatar{width:36px;height:36px;font-size:13px}
+.chat-members__av .online-dot{position:absolute;right:-2px;bottom:-2px}
+.chat-members__name{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-weight:600;font-size:14px}
+.chat-members__me{margin-left:6px;font-weight:500;font-size:12px;color:var(--muted)}
+.chat-members__pin,.dm__tool{flex:none;display:grid;place-items:center;width:34px;height:34px;border:0;border-radius:50%;background:none;color:var(--muted);cursor:pointer;transition:background .15s,color .15s,transform .15s}
+.chat-members__pin svg,.dm__tool svg{width:17px;height:17px}
+.chat-members__pin:hover,.dm__tool:hover{background:var(--tint);color:var(--blue)}
+.chat-members__pin.is-on,.dm__tool.is-on{color:var(--blue);transform:rotate(-30deg)}
+.chat-members__pin:focus-visible,.dm__tool:focus-visible,.ctheme-sw:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* особисті повідомлення: закріплені розмови і кнопки в шапці */
+.dm__tools{display:flex;gap:4px;margin-left:auto;flex:none}
+.dm__head .dm__peer{flex:1}
+.dm__item.is-pinned{background:var(--blue-pale)}
+.dm__item.is-pinned.is-active{background:var(--blue-soft)}
+.dm__pinmark{margin-right:4px;font-size:12px}
+@media(prefers-reduced-motion:reduce){.chat-members{animation:none}.chat-members__pin,.dm__tool{transition:none}}

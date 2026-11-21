@@ -1,7 +1,9 @@
 <?php
 /**
  * HTML email in the World Students style (table layout + inline styles, so it renders in Gmail, Outlook, Apple Mail).
- * mail_render(['title','intro','button','url','note','preheader','greeting']) -> [html, text]
+ * mail_render(['title','intro','button','url','note','preheader','greeting', 'items'?, 'unsubscribe'?]) -> [html, text]
+ *   items       - optional list of [emoji, title, text], shown as a feature list before the button (newsletters)
+ *   unsubscribe - optional URL; adds an unsubscribe line to the footer (newsletters)
  */
 declare(strict_types=1);
 
@@ -26,6 +28,11 @@ function mail_render(array $m): array
     // in a letter the logo is an inline attachment (cid:), so it shows even when the mail client blocks remote images
     $logo = mail_e($m['logo'] ?? 'cid:logo@ntu.dp.ua');
     $font = "font-family:Manrope,Onest,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+    $items = mail_items($m['items'] ?? [], $font);
+    $unsubUrl = isset($m['unsubscribe']) ? mail_e($m['unsubscribe']) : '';
+    $footNote = $unsubUrl !== ''
+        ? 'Ви отримали цей лист, бо зареєстровані на платформі. Не хочете отримувати новини? <a href="' . $unsubUrl . '" style="color:#1a6fc4">Відписатися</a>.'
+        : 'Лист надіслано автоматично, відповідати на нього не потрібно.';
 
     $html = <<<HTML
 <!DOCTYPE html>
@@ -46,6 +53,7 @@ function mail_render(array $m): array
 <p style="margin:0 0 6px;color:#1a6fc4;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase">{$hello}</p>
 <h1 style="margin:0 0 14px;color:#0b2545;font-size:26px;line-height:1.25;font-weight:800">{$title}</h1>
 <p style="margin:0 0 26px;color:#4a5b70;font-size:16px;line-height:1.6">{$intro}</p>
+{$items}
 <table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="border-radius:14px;background:#1a6fc4">
 <a href="{$url}" style="display:inline-block;padding:15px 30px;color:#ffffff;font-size:16px;font-weight:800;text-decoration:none;border-radius:14px;{$font}">{$btn}</a>
 </td></tr></table>
@@ -58,7 +66,7 @@ function mail_render(array $m): array
 <tr><td style="padding:22px 36px;border-top:1px solid #e3ecf6;color:#8a99ab;font-size:12px;line-height:1.6;{$font}">
 World Students · студентська платформа НТУ «Дніпровська політехніка», створена студентами для студентів.<br>
 пр. Дмитра Яворницького, 19, Дніпро, 49005 · <a href="{$site}/" style="color:#1a6fc4;text-decoration:none">ntu.dp.ua</a><br>
-© {$year} World Students. Лист надіслано автоматично, відповідати на нього не потрібно.
+© {$year} World Students. {$footNote}
 </td></tr>
 </table>
 </td></tr></table>
@@ -66,7 +74,23 @@ World Students · студентська платформа НТУ «Дніпр�
 HTML;
 
     $text = $m['greeting'] ?? 'Вітаємо!';
-    $text .= "\n\n" . $m['title'] . "\n\n" . $m['intro'] . "\n\n" . $m['button'] . ': ' . $m['url'] . "\n\n" . $m['note']
+    $text .= "\n\n" . $m['title'] . "\n\n" . $m['intro'];
+    foreach ($m['items'] ?? [] as [$icon, $head, $body]) $text .= "\n\n" . $icon . ' ' . $head . "\n" . $body;
+    $text .= "\n\n" . $m['button'] . ': ' . $m['url'] . "\n\n" . $m['note']
         . "\n\n--\nWorld Students · НТУ «Дніпровська політехніка»\n" . $site . "/\n";
+    if (isset($m['unsubscribe'])) $text .= 'Відписатися від новин: ' . $m['unsubscribe'] . "\n";
     return [$html, $text];
+}
+
+/** Feature list for newsletters: [[emoji, title, text], ...] -> table HTML ('' for an empty list). */
+function mail_items(array $items, string $font): string
+{
+    if (!$items) return '';
+    $rows = '';
+    foreach ($items as [$icon, $head, $body]) {
+        $rows .= '<tr><td width="58" valign="top" style="padding:0 14px 16px 0"><div style="width:44px;height:44px;line-height:44px;text-align:center;font-size:22px;background:#eef4fb;border-radius:14px">' . mail_e($icon) . '</div></td>'
+            . '<td valign="top" style="padding:0 0 16px;' . $font . '"><p style="margin:2px 0 4px;color:#0b2545;font-size:16px;font-weight:800">' . mail_e($head) . '</p>'
+            . '<p style="margin:0;color:#4a5b70;font-size:14.5px;line-height:1.55">' . mail_e($body) . '</p></td></tr>';
+    }
+    return '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 18px">' . $rows . '</table>';
 }

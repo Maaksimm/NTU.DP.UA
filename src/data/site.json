@@ -11,6 +11,8 @@
 		"main.js",
 		"profanity.js",
 		"profile-card.js",
+		"chat-prefs.js",
+		"chat-members.js",
 		"chat.js",
 		"ai.js"
 	]

@@ -81,6 +81,26 @@
         }
       }
     },
+    "prefs": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "newData.hasChildren()",
+        "pins": {
+          "$peer": { ".validate": "$peer.matches(/^[A-Za-z0-9]{20,64}$/) && newData.isNumber()" }
+        },
+        "themes": {
+          "$key": { ".validate": "($key === 'chat' || $key.matches(/^[A-Za-z0-9]{20,64}_[A-Za-z0-9]{20,64}$/)) && newData.isString() && newData.val().matches(/^(ocean|sunset|forest|lavender|candy|night|gold|custom)$/)" }
+        },
+        "custom": {
+          ".validate": "newData.hasChildren() && (!newData.child('bg').exists() || (newData.child('bg').isString() && newData.child('bg').val().matches(/^https:\\/\\/ntu\\.dp\\.ua\\/uploads\\/[0-9]{4}\\/[0-9]{2}\\/[a-f0-9]{16,64}\\.(jpg|jpeg|png|webp)$/))) && (!newData.child('c').exists() || (newData.child('c').isString() && newData.child('c').val().matches(/^#[0-9a-f]{6}$/)))",
+          "bg": { ".validate": true },
+          "c": { ".validate": true },
+          "$other": { ".validate": false }
+        },
+        "$other": { ".validate": false }
+      }
+    },
     "inbox": {
       "$uid": {
         ".read": "auth != null && auth.uid === $uid",

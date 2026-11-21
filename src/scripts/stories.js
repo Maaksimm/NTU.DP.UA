@@ -1,10 +1,9 @@
 /*
  * Сторіз (як в Instagram) та розділ «Історії студентів».
  *  - [data-stories]  стрічка кружечків: фото або відео, підпис, музика, лайки; живуть 24 години.
- *                    RTDB stories/{id} = {u, n, img | v, c, m (готовий трек) | mu + mt (свій трек), ts}, storyLikes/{id}/{uid} = true
+ *                    RTDB stories/{id} = {u, n, img | v, c, mu + mt (свій трек), ts}, storyLikes/{id}/{uid} = true
  *  - [data-tales]    стрічка історій студентів: заголовок, текст, фото.   RTDB tales/{id}   = {u, n, ti, b, img, cat, ts}
  * Файли вантажаться через NTU_AUTH.upload (api/upload.php, kind story), фото перед цим стискаються до 1440 px JPEG.
- * Готові треки - story-music.js (window.NTU_MUSIC).
  */
 (function () {
 	'use strict'
@@ -111,7 +110,6 @@
 	var MAX_VIDEO_MB = 25
 	var MAX_VIDEO_SEC = 60
 	var MAX_AUDIO_MB = 10
-	var M = window.NTU_MUSIC || { list: [], has: function () { return false }, name: function () { return '' }, play: function () { return function () {} } }
 
 	function videoMeta(file) {
 		return new Promise(function (res, rej) {
@@ -140,13 +138,11 @@
 		return uploadStoryFile(file)
 	}
 	function musicTitle(s) {
-		if (s.m && M.has(s.m)) return t(M.name(s.m))
 		if (safeImg(s.mu)) return s.mt || t('Свій трек')
 		return ''
 	}
 	/* програє музику сторіз; повертає stop() */
 	function playMusic(s) {
-		if (s.m && M.has(s.m)) return M.play(s.m)
 		if (safeImg(s.mu)) {
 			var a = new Audio(s.mu)
 			a.loop = true
@@ -455,7 +451,6 @@
 			close.setAttribute('aria-label', t('Закрити'))
 			box.appendChild(close)
 			box.appendChild(el('h2', 'story-compose__title', t('Нова сторіз')))
-			box.appendChild(el('p', 'story-compose__hint', t('Фото або відео до 60 секунд, підпис і музика. Сторіз зникне через 24 години.')))
 			var pick = el('label', 'story-compose__pick')
 			var input = el('input')
 			input.type = 'file'
@@ -480,9 +475,9 @@
 			var sel = el('select')
 			sel.id = 'storyMusic'
 			mlab.htmlFor = 'storyMusic'
-			var opts = [['', t('Без музики')]].concat(M.list.map(function (x) { return [x.id, '♪ ' + t(x.name)] })).concat([['own', t('Свій трек (MP3)…')]])
+			var opts = [['', t('Без музики')], ['own', t('Свій трек (MP3)…')]]
 			opts.forEach(function (o) { var op = el('option', null, o[1]); op.value = o[0]; sel.appendChild(op) })
-			var play = el('button', 'story-compose__play', '▶')
+			var play = el('button', 'story-compose__play')
 			play.type = 'button'
 			play.setAttribute('aria-label', t('Прослухати'))
 			play.disabled = true
@@ -512,7 +507,8 @@
 			var file = null, isVideo = false, ownTrack = null, stopPreview = null, previewUrl = ''
 			function stopPrev() {
 				if (stopPreview) { stopPreview(); stopPreview = null }
-				play.textContent = '▶'
+				play.classList.remove('is-playing')
+				play.setAttribute('aria-label', t('Прослухати'))
 			}
 			function done() {
 				stopPrev()
@@ -563,8 +559,9 @@
 					var a = new Audio(URL.createObjectURL(ownTrack))
 					a.play().catch(function () {})
 					stopPreview = function () { a.pause(); URL.revokeObjectURL(a.src) }
-				} else if (sel.value) stopPreview = M.play(sel.value)
-				play.textContent = '■'
+				} else return
+				play.classList.add('is-playing')
+				play.setAttribute('aria-label', t('Зупинити'))
 			})
 
 			send.addEventListener('click', function () {
@@ -582,7 +579,6 @@
 					: compress(file).then(uploadStoryFile).then(function (url) { data.img = url })
 				media.then(function () {
 					if (sel.value === 'own') return uploadAudio(ownTrack).then(function (url) { data.mu = url; data.mt = ownTrack.name.replace(/\.[a-z0-9]+$/i, '').slice(0, 80) })
-					if (sel.value) data.m = sel.value
 				}).then(function () {
 					return A.db('PUT', 'stories/' + newId(), data)
 				}).then(function () { done(); load() }).catch(function (e) {

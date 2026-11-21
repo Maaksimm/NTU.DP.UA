@@ -121,7 +121,10 @@
 		var q = (search.value || '').trim().toLowerCase()
 		var rows = Object.keys(inbox).map(function (cid) { return { cid: cid, x: inbox[cid], p: people[inbox[cid].w] } })
 			.filter(function (r) { return r.p && (!q || r.p.n.toLowerCase().indexOf(q) >= 0) })
-			.sort(function (a, b) { return b.x.ts - a.x.ts })
+			.sort(function (a, b) {
+				var pa = CP && CP.isPinned(a.x.w) ? 1 : 0, pb = CP && CP.isPinned(b.x.w) ? 1 : 0
+				return pb - pa || b.x.ts - a.x.ts
+			})
 		listBox.textContent = ''
 		if (!rows.length) {
 			listBox.appendChild(el('p', 'dm__hint', q ? t('Нічого не знайдено.') : t('Розмов поки немає. Відкрийте профіль користувача в «Списку користувачів» і натисніть «Написати тут».')))
@@ -136,7 +139,14 @@
 			b.appendChild(av)
 			var info = el('span', 'dm__info')
 			var top = el('span', 'dm__top')
-			top.appendChild(el('strong', null, r.p.n))
+			var nm = el('strong', null, r.p.n)
+			if (CP && CP.isPinned(r.x.w)) {
+				b.classList.add('is-pinned')
+				var pinMark = el('span', 'dm__pinmark', '📌')
+				pinMark.title = t('Закріплено')
+				nm.insertBefore(pinMark, nm.firstChild)
+			}
+			top.appendChild(nm)
 			top.appendChild(el('time', null, fmtTime(r.x.ts)))
 			info.appendChild(top)
 			var unread = r.x.lu && r.x.lu !== u.uid && r.x.ts > (r.x.r || 0)
@@ -151,6 +161,41 @@
 		})
 	}
 	search.addEventListener('input', renderInbox)
+
+	/* ---------- закріплення співрозмовника і локальна тема розмови (chat-prefs.js) ---------- */
+	var CP = window.NTU_CHATPREFS
+	var PIN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5M5 17h14l-2-4V5h1V3H6v2h1v8z"/></svg>'
+	var THEME_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 2-.8 2-1.9 0-.5-.2-.9-.5-1.3-.3-.3-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.3A4.7 4.7 0 0 0 22 9.8C22 6 17.5 3 12 3Z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10.5" cy="7" r="1.2"/><circle cx="15.5" cy="7.5" r="1.2"/></svg>'
+	var convTools = el('span', 'dm__tools')
+	var pinBtn = el('button', 'dm__tool')
+	pinBtn.type = 'button'
+	pinBtn.innerHTML = PIN_SVG
+	var themeBtn = el('button', 'dm__tool')
+	themeBtn.type = 'button'
+	themeBtn.innerHTML = THEME_SVG
+	themeBtn.setAttribute('aria-label', t('Тема чату'))
+	themeBtn.title = t('Тема чату')
+	themeBtn.setAttribute('aria-expanded', 'false')
+	convTools.appendChild(pinBtn)
+	convTools.appendChild(themeBtn)
+	if (CP) {
+		peerBox.parentNode.appendChild(convTools)
+		pinBtn.addEventListener('click', function () {
+			if (cur && CP.togglePin(cur.peer) === null) pinBtn.title = t('Можна закріпити не більше 50 учасників.')
+		})
+		themeBtn.addEventListener('click', function (e) { e.stopPropagation(); if (cur) CP.picker(themeBtn, cur.cid) })
+		CP.onChange(function () { syncConvPrefs(); renderInbox() })
+	}
+	function syncConvPrefs() {
+		if (!CP) return
+		CP.apply(conv, cur && cur.cid)
+		var on = !!(cur && CP.isPinned(cur.peer))
+		var label = on ? t('Відкріпити') : t('Закріпити')
+		pinBtn.classList.toggle('is-on', on)
+		pinBtn.setAttribute('aria-pressed', on ? 'true' : 'false')
+		pinBtn.setAttribute('aria-label', label)
+		pinBtn.title = label
+	}
 
 	/* ---------- розмова ---------- */
 	function renderPeer() {
@@ -472,6 +517,8 @@
 		peerSt = {}; stPrevC = null; peerTyping = false; stKey = ''; readMarked = 0; rx = {}; rxKey = ''
 		closePicker()
 		modal.classList.add('is-conv')
+		if (CP) CP.closePicker()
+		syncConvPrefs()
 		conv.hidden = false
 		placeholder.hidden = true
 		msgsBox.textContent = ''
@@ -486,6 +533,8 @@
 	}
 	$('[data-dm-back]', modal).addEventListener('click', function () {
 		cur = null
+		if (CP) CP.closePicker()
+		syncConvPrefs()
 		clearInterval(pollTimer)
 		modal.classList.remove('is-conv')
 		conv.hidden = true

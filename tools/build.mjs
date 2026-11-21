@@ -20,6 +20,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
 import { fileURLToPath } from 'node:url'
+import { glassSvg } from './glass-icons.mjs'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const SRC = path.join(ROOT, 'src')
@@ -192,6 +193,18 @@ function webpPictures(body) {
 	})
 }
 
+// <span ... data-glass="NAME"></span> -> glassmorphism SVG inside; + data-lottie when public/assets/lottie/glass-NAME.json exists
+function glassArt(body, file) {
+	return body.replace(/<span\b([^>]*)\sdata-glass="([a-z]+)"([^>]*)><\/span>/g, (tag, a, name, b) => {
+		const svg = glassSvg(name)
+		if (!svg) throw new Error(file + ': unknown glass icon "' + name + '"')
+		const rel = 'assets/lottie/glass-' + name + '.json'
+		const src = path.join(ROOT, 'public', rel)
+		const lottie = fs.existsSync(src) ? ` data-lottie="${rel}?v=${hash(fs.readFileSync(src))}"` : ''
+		return `<span${a} data-glass="${name}"${lottie}${b}>${svg}</span>`
+	})
+}
+
 /* ---------------------------------------------------------------- pages */
 const FM_RE = /^<!--\s*(\{[\s\S]*?\})\s*-->\s*/
 const pages = []
@@ -204,7 +217,7 @@ for (const f of listDir(path.join(SRC, 'pages'), '.html')) {
 	for (const k of ['title', 'description', 'page']) if (!fm[k]) throw new Error(f + ': front matter needs "' + k + '"')
 	fm.path = fm.path || f
 	fm.image = fm.image || site.defaultImage
-	const body = webpPictures(unifyCrumbs(fm, f, raw.slice(m[0].length).replace(/\s+$/, '')))
+	const body = glassArt(webpPictures(unifyCrumbs(fm, f, raw.slice(m[0].length).replace(/\s+$/, ''))), f)
 	const scripts = [...site.scripts, ...(fm.scripts || [])].map(s => `<script src="${asset('assets/js/' + s)}"></script>`)
 	const html = ['<!DOCTYPE html>', '<html lang="uk">', head(fm), '', `<body data-page="${esc(fm.page)}">`,
 		'<a class="skip-link" href="#main">Перейти до змісту</a>', partial('preloader'), header(fm.page), body, '', footer(), ...scripts, '</body>', '</html>', ''].join('\n')

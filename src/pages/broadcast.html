@@ -1,0 +1,45 @@
+<!--
+{
+	"title": "Розсилка новин - World Students",
+	"description": "Службова сторінка команди World Students: лист з новинами платформи всім зареєстрованим користувачам.",
+	"page": "broadcast",
+	"robots": "noindex, nofollow",
+	"scripts": [
+		"broadcast.js"
+	],
+	"breadcrumbs": [
+		["Головна", "index.html"],
+		["Розсилка новин", "broadcast.html"]
+	]
+}
+-->
+<main id="main">
+<section class="page-hero page-hero--art">
+<div class="container reveal">
+<span class="hero-art glass-art" data-glass="chat" aria-hidden="true"></span>
+<div class="breadcrumb"><a href="index.html">Головна</a>› Розсилка новин</div>
+<h1>Розсилка новин</h1>
+<p class="lead">Лист «На платформі з’явився чат» усім користувачам з підтвердженою поштою. Доступно лише команді платформи.</p>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+<div class="card bc reveal" data-bc aria-live="polite">
+<p class="bc__msg" data-bc-msg>Увійдіть в акаунт команди, щоб керувати розсилкою.</p>
+<dl class="bc__stats" data-bc-stats hidden>
+<div><dt>Отримувачів</dt><dd data-bc-total>-</dd></div>
+<div><dt>Уже надіслано</dt><dd data-bc-sent>-</dd></div>
+<div><dt>Відписалися</dt><dd data-bc-unsub>-</dd></div>
+<div><dt>Залишилось</dt><dd data-bc-left>-</dd></div>
+</dl>
+<div class="actions bc__actions" data-bc-actions hidden>
+<button class="btn btn-secondary" type="button" data-bc-do="status">Оновити</button>
+<button class="btn btn-secondary" type="button" data-bc-do="test">Тестовий лист собі</button>
+<button class="btn btn-primary" type="button" data-bc-do="send">Надіслати всім</button>
+</div>
+<p class="bc__hint">Перед розсилкою перегляньте <a href="api/broadcast.php?preview=1" target="_blank" rel="noopener">вигляд листа</a> і надішліть тестовий лист собі. Повторний запуск нікому не надсилає лист двічі.</p>
+</div>
+</div>
+</section>
+</main>

@@ -32,7 +32,6 @@
 .story-view__nav--next{right:0}
 
 .story-compose__title{margin:0 0 6px;font-size:22px}
-.story-compose__hint{margin:0 0 14px;color:var(--muted);font-size:14px}
 .story-compose__pick{position:relative;display:grid;place-items:center;min-height:160px;margin-bottom:12px;border:2px dashed var(--line);border-radius:14px;color:var(--blue);font-weight:600;cursor:pointer;overflow:hidden}
 .story-compose__pick input{position:absolute;inset:0;opacity:0;cursor:pointer}
 .story-compose__preview{width:100%;max-height:320px;object-fit:contain}
@@ -90,6 +89,8 @@ video.story-view__img{width:100%;height:100%;object-fit:contain;background:#000}
 .story-compose__music{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;margin:6px 0}
 .story-compose__music label{font-weight:600;font-size:14px}
 .story-compose__music select{min-width:0;padding:9px 10px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);font:inherit}
-.story-compose__play{width:38px;height:38px;border:0;border-radius:50%;background:var(--blue);color:#fff;font-size:14px;cursor:pointer}
+.story-compose__play{position:relative;width:38px;height:38px;padding:0;border:0;border-radius:50%;background:var(--blue);color:#fff;cursor:pointer}
+.story-compose__play::before{content:"";position:absolute;top:50%;left:50%;width:0;height:0;border-style:solid;border-width:7px 0 7px 12px;border-color:transparent transparent transparent currentColor;transform:translate(-38%,-50%)}
+.story-compose__play.is-playing::before{width:12px;height:12px;border:0;border-radius:2px;background:currentColor;transform:translate(-50%,-50%)}
 .story-compose__play:disabled{opacity:.4;cursor:default}
 .story-compose__own{margin:0 0 6px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
