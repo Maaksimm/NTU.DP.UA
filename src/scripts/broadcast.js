@@ -83,13 +83,14 @@
 		var d = new Date(ms), p = function (n) { return (n < 10 ? '0' : '') + n }
 		return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes())
 	}
-	var ROLES = { s: 'студент', t: 'викладач' }
+	var ROLES = { a: 'суперадмін', s: 'студент', t: 'викладач' }
+	var REQ = { pending: 'на розгляді', rejected: 'відхилено' }
 	function exportUsers() {
 		msg(T('Завантаження…'))
 		return call({ action: 'export' }).then(function (d) {
-			var head = ['uid', 'Нікнейм', 'Email', 'Пошту підтверджено', 'Заблоковано', 'Роль', 'Зареєстровано', 'Останній вхід', 'Востаннє онлайн', 'Відписався від новин']
+			var head = ['uid', 'Нікнейм', 'Email', 'Пошту підтверджено', 'Заблоковано', 'Роль', 'Предмет', 'Запит на роль викладача', 'Зареєстровано', 'Останній вхід', 'Востаннє онлайн', 'Відписався від новин']
 			var lines = [head.map(csvCell).join(';')].concat(d.users.map(function (u) {
-				return [u.uid, u.name, u.email, u.verified ? 'так' : 'ні', u.disabled ? 'так' : 'ні', ROLES[u.role] || '',
+				return [u.uid, u.name, u.email, u.verified ? 'так' : 'ні', u.disabled ? 'так' : 'ні', ROLES[u.role] || '', u.subject || '', REQ[u.teacherRequest] || '',
 					when(u.created), when(u.lastLogin), when(u.lastSeen), u.unsubscribed ? 'так' : 'ні'].map(csvCell).join(';')
 			}))
 			var blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' })
@@ -118,12 +119,15 @@
 		}
 	})
 
+	// доступ: бейдж команди (chat-config.js) або суперадмін (admins/{uid}); остаточно перевіряє сервер
 	A.onChange(function (user) {
-		var staff = user && A.staff && A.staff(user.uid)
-		$('[data-bc-actions]').hidden = !staff
-		if (!user) return msg(T('Увійдіть в акаунт команди, щоб керувати розсилкою.'))
-		if (!staff) return msg(T('Цей акаунт не входить до команди платформи.'))
-		if (!A.remote) return msg(T('Розсилка працює лише на сайті з підключеною базою.'))
-		run(status())
+		var check = !user ? Promise.resolve(false) : A.staff && A.staff(user.uid) ? Promise.resolve(true) : A.isAdmin ? A.isAdmin() : Promise.resolve(false)
+		check.then(function (staff) {
+			$('[data-bc-actions]').hidden = !staff
+			if (!user) return msg(T('Увійдіть в акаунт команди, щоб керувати розсилкою.'))
+			if (!staff) return msg(T('Цей акаунт не входить до команди платформи.'))
+			if (!A.remote) return msg(T('Розсилка працює лише на сайті з підключеною базою.'))
+			run(status())
+		})
 	})
 })()

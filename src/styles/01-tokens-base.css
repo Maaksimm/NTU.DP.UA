@@ -65,3 +65,6 @@ img {
 body.loading {
 	overflow: hidden;
 }
+
+/* the hidden attribute always wins over component display rules (.card, .btn, .form-card...) */
+[hidden]{display:none!important}

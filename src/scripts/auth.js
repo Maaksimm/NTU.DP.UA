@@ -149,6 +149,10 @@
 			return r.json()
 		})
 	}
+	/* Запит на роль викладача: roleRequests/{uid} = {n, subj, ts[, st: 'no']}; роль 't' у профілі ставить лише адмін */
+	function requestTeacher(uid, name, subj) {
+		return dbCall('PUT', 'roleRequests/' + encodeURIComponent(uid), { n: String(name || '').slice(0, 40), subj: String(subj || '').slice(0, 80), ts: Date.now() }, true)
+	}
 	function profileGet(uid) {
 		return fetch(DB + '/users/' + encodeURIComponent(uid) + '.json').then(function (r) { return r.ok ? r.json() : null }).catch(function () { return null })
 	}
@@ -179,7 +183,10 @@
 				state.user.role = x && x.role === 't' ? 't' : 's'
 				state.user.subj = (x && x.subj) || ''
 				state.user.info = pickInfo(x)
-			}).catch(function () {})
+			}).catch(function () {}).then(function () {
+				return dbCall('GET', 'roleRequests/' + encodeURIComponent(session.uid), undefined, true)
+					.then(function (r) { if (state.user) state.user.roleReq = r && r.ts ? { subj: r.subj || '', rejected: r.st === 'no' } : null }, function () {})
+			})
 		})
 	}
 
@@ -226,7 +233,9 @@
 					setSessionFrom(d)
 					return profilePut(session.uid, { n: name, ts: Date.now() })
 				}).then(function () {
-					return dbCall('PATCH', 'profiles/' + encodeURIComponent(session.uid), { role: role, subj: subj }, true).catch(function () {})
+					return dbCall('PATCH', 'profiles/' + encodeURIComponent(session.uid), { role: 's', subj: '' }, true).catch(function () {})
+				}).then(function () {
+					return role === 't' ? requestTeacher(session.uid, name, subj).catch(function () {}) : null
 				}).then(function () {
 					return sendOob({ requestType: 'VERIFY_EMAIL', idToken: session.idToken }, 'verifyEmail').catch(function () {})
 				}).then(function () { return loadRemoteUser() }).then(function () { startPresence(); emit() })
@@ -276,7 +285,8 @@
 					var name = String(d.displayName || d.fullName || (d.email || '').split('@')[0]).trim().replace(/\s+/g, ' ').slice(0, 40)
 					if (name.length < 2) name = 'Student'
 					return profilePut(session.uid, { n: name, ts: Date.now() }).then(function () {
-						return dbCall('PATCH', 'profiles/' + encodeURIComponent(session.uid), { role: role, subj: '' }, true).catch(function () {})
+						return dbCall('PATCH', 'profiles/' + encodeURIComponent(session.uid), { role: 's', subj: '' }, true).catch(function () {})
+							.then(function () { return role === 't' ? requestTeacher(session.uid, name, '').catch(function () {}) : null })
 					})
 				})
 			}).then(function () { return loadRemoteUser() }).then(function () { startPresence(); emit() })
@@ -451,6 +461,19 @@
 		return b
 	}
 
+	/* ---------- суперадміни: admins/{uid} = true у Realtime Database (додається лише в консолі Firebase).
+	   Правила дають їм модерацію: навчальні матеріали, видалення повідомлень чату, сторіз, історій, відгуків. ---------- */
+	var adminCache = {}
+	api.isAdmin = function (uid) {
+		uid = uid || (state.user && state.user.uid)
+		if (!uid || !REMOTE || !state.user || state.user.uid !== uid) return Promise.resolve(false)
+		if (!adminCache[uid]) {
+			adminCache[uid] = dbCall('GET', 'admins/' + encodeURIComponent(uid), undefined, true)
+				.then(function (v) { return v === true }, function () { delete adminCache[uid]; return false })
+		}
+		return adminCache[uid]
+	}
+
 	/* ---------- локальні вподобання (налаштування → Приватність і сповіщення) ---------- */
 	var PREF_DEF = { typing: true, sound: false, notify: false }
 	api.pref = function (k) {
@@ -503,11 +526,23 @@
 		subj = role === 't' ? String(subj || '').trim().slice(0, 80) : ''
 		if (role === 't' && !subj) return Promise.reject(new Error(t('Оберіть предмет, який ви викладаєте.')))
 		if (REMOTE) {
-			return dbCall('PATCH', 'profiles/' + encodeURIComponent(state.user.uid), { role: role, subj: subj }, true).then(function () {
+			var uid = state.user.uid
+			// стати викладачем можна лише через підтвердження адміністратора; вже підтверджений викладач може змінити предмет
+			if (role === 't' && state.user.role !== 't') {
+				return requestTeacher(uid, state.user.name, subj).then(function () {
+					state.user.roleReq = { subj: subj, rejected: false }
+					emit()
+					return { pending: true }
+				})
+			}
+			return dbCall('PATCH', 'profiles/' + encodeURIComponent(uid), { role: role, subj: subj }, true).then(function () {
 				state.user.role = role
 				state.user.subj = subj
-				emit()
-			})
+				if (role === 's' && state.user.roleReq) {
+					state.user.roleReq = null
+					return dbCall('DELETE', 'roleRequests/' + encodeURIComponent(uid), undefined, true).catch(function () {})
+				}
+			}).then(function () { emit(); return { pending: false } })
 		}
 		var u = users()
 		if (u[state.user.email]) { u[state.user.email].role = role; u[state.user.email].subj = subj; saveUsers(u) }
@@ -518,10 +553,11 @@
 	}
 
 	/* Завантаження файлу на сервер сайту (api/upload.php) частинами по 1,5 МБ.
-	   kind: 'chat' (до 10 МБ: PDF, зображення, документи), 'lesson' (PDF до 20 МБ) або 'story' (фото, відео, аудіо до 25 МБ). Повертає {url, name, size, type}. */
+	   kind: 'chat' (до 10 МБ: PDF, зображення, документи), 'lesson' (PDF до 20 МБ), 'material' (PDF/документи до 20 МБ) або 'story' (фото, відео, аудіо до 25 МБ). Повертає {url, name, size, type}. */
 	var UP_ERR = {
 		TOO_LARGE: 'Файл завеликий.', TYPE: 'Такий тип файлу не підтримується.', NOT_VERIFIED: 'Підтвердьте пошту, щоб надсилати файли.',
-		TOKEN: 'Сесія застаріла. Оновіть сторінку або увійдіть знову.', EXPIRED: 'Сесія застаріла. Оновіть сторінку або увійдіть знову.'
+		TOKEN: 'Сесія застаріла. Оновіть сторінку або увійдіть знову.', EXPIRED: 'Сесія застаріла. Оновіть сторінку або увійдіть знову.',
+		NOT_CONFIGURED: 'Завантаження файлів працює лише на сайті ntu.dp.ua.'
 	}
 	api.upload = function (file, kind, onProgress) {
 		if (!REMOTE || !state.user) return Promise.reject(new Error(t('Надсилати файли можна лише після підключення сервера.')))
@@ -531,7 +567,7 @@
 		var i = 0
 		function next(tk) {
 			var fd = new FormData()
-			fd.append('kind', kind === 'lesson' || kind === 'story' ? kind : 'chat')
+			fd.append('kind', /^(lesson|story|material)$/.test(kind) ? kind : 'chat')
 			fd.append('upload_id', id)
 			fd.append('index', String(i))
 			fd.append('total', String(total))
@@ -541,16 +577,32 @@
 			return fetch('api/upload.php', { method: 'POST', headers: { Authorization: 'Bearer ' + tk }, body: fd })
 				.catch(function () { throw fail('NETWORK') })
 				.then(function (r) {
-					return r.json().catch(function () { return {} }).then(function (d) {
+					return r.json().catch(function () { return null }).then(function (d) {
+						// не JSON (сервер без PHP, помилка хостингу) - зупиняємось, а не шлемо частини без кінця
+						if (!d) throw new Error(t('Сервер завантаження недоступний. Спробуйте пізніше.'))
 						if (!r.ok) throw new Error(t(UP_ERR[d.error] || 'Не вдалося завантажити файл.'))
 						i++
 						if (onProgress) onProgress(Math.round(i / total * 100))
-						return d.done ? d : next(tk)
+						if (d.done) return d
+						if (i >= total) throw new Error(t('Не вдалося завантажити файл.'))
+						return next(tk)
 					})
 				})
 		}
 		return token().then(next)
 	}
+
+	/* Дії суперадміна з ролями (правила бази пропускають їх лише для admins/{uid}) */
+	api.roleRequests = function () { return dbCall('GET', 'roleRequests', undefined, true) }
+	api.teachers = function () { return dbCall('GET', 'profiles?orderBy=%22role%22&equalTo=%22t%22', undefined, true) }
+	api.approveTeacher = function (uid, subj) {
+		var p = 'profiles/' + encodeURIComponent(uid)
+		return dbCall('PUT', p + '/subj', String(subj || '').slice(0, 80), true)
+			.then(function () { return dbCall('PUT', p + '/role', 't', true) })
+			.then(function () { return dbCall('DELETE', 'roleRequests/' + encodeURIComponent(uid), undefined, true) })
+	}
+	api.rejectTeacher = function (uid) { return dbCall('PUT', 'roleRequests/' + encodeURIComponent(uid) + '/st', 'no', true) }
+	api.demoteTeacher = function (uid) { return dbCall('PUT', 'profiles/' + encodeURIComponent(uid) + '/role', 's', true) }
 
 	api.fileToAvatar = function (file) {
 		return new Promise(function (res, rej) {
@@ -730,6 +782,11 @@
 	function initials(n) { return (n || '?').trim().split(/\s+/).slice(0, 2).map(function (w) { return w[0] }).join('').toUpperCase() }
 	api.initials = initials
 	function renderHeader() {
+		// інші кнопки «Увійти / Особистий кабінет» (головна сторінка)
+		Array.prototype.forEach.call(document.querySelectorAll('[data-acct-link]'), function (b) {
+			b.href = state.user ? 'personal-area.html' : 'login.html'
+			b.textContent = state.user ? t('Особистий кабінет') : t('Увійти')
+		})
 		var a = document.querySelector('[data-acct]')
 		if (!a) return
 		var u = state.user

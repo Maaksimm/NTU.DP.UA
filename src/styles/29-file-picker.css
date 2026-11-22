@@ -1,0 +1,17 @@
+/* поле вибору файлу (14-file-picker.js): справжній input прихований, видно зону з іконкою й кнопкою */
+.filepick__input{position:absolute!important;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0,0,0,0)}
+.field label.filepick,label.filepick{display:flex;margin:0;font-weight:400;font-size:inherit;text-transform:none;letter-spacing:0;align-items:center;gap:14px;width:100%;padding:14px 16px;border:1.5px dashed color-mix(in srgb,var(--blue) 45%,var(--line));border-radius:16px;background:var(--blue-pale,var(--surface));color:var(--text);cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s}
+.filepick>svg{flex:none;width:42px;height:42px;padding:10px;border-radius:12px;background:var(--blue-soft);color:var(--blue);transition:transform .2s}
+.filepick:hover,.filepick.is-drag{border-color:var(--blue);background:var(--blue-soft);box-shadow:0 8px 22px rgba(26,111,196,.12)}
+.filepick:hover>svg,.filepick.is-drag>svg{transform:translateY(-2px)}
+.filepick__input:focus-visible+.filepick{outline:2px solid var(--blue);outline-offset:2px}
+.filepick__text{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.filepick__main{font:700 14.5px Manrope,sans-serif;color:var(--ink,var(--text));overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.filepick__sub{font-size:12.5px;color:var(--muted)}
+.filepick__btn{flex:none;padding:8px 16px;border-radius:99px;background:var(--blue);color:#fff;font:700 13px Manrope,sans-serif;box-shadow:0 6px 16px rgba(26,111,196,.25)}
+.filepick.has-file{border-style:solid;border-color:var(--blue)}
+.filepick.has-file>svg{background:var(--blue);color:#fff}
+.filepick.has-file .filepick__btn{background:var(--surface);color:var(--blue);border:1px solid var(--blue);box-shadow:none}
+[data-theme=dark] .filepick{background:rgba(255,255,255,.03)}
+[data-theme=dark] .filepick:hover,[data-theme=dark] .filepick.is-drag{background:rgba(26,111,196,.14)}
+@media (max-width:420px){.filepick{gap:10px;padding:12px}.filepick>svg{width:36px;height:36px;padding:8px}.filepick__btn{padding:7px 12px}}

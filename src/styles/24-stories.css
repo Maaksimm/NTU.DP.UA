@@ -94,3 +94,4 @@ video.story-view__img{width:100%;height:100%;object-fit:contain;background:#000}
 .story-compose__play.is-playing::before{width:12px;height:12px;border:0;border-radius:2px;background:currentColor;transform:translate(-50%,-50%)}
 .story-compose__play:disabled{opacity:.4;cursor:default}
 .story-compose__own{margin:0 0 6px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+.tales-side{display:flex;flex-direction:column;gap:18px}

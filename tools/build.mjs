@@ -86,7 +86,7 @@ function header(pageKey) {
 			// the section's own page is already the "Відкрити розділ →" link on the left: do not repeat it in the list
 			if (it.href === g.href) continue
 			const cur = it.nav === pageKey && !it.href.includes('#') ? ' aria-current="page"' : ''
-			out.push(`<li><a href="${it.href}" data-nav="${it.nav}"${cur}><span>${it.label}</span><small>${it.desc}</small></a></li>`)
+			out.push(`<li><a href="${it.href}" data-nav="${it.nav}"${cur}><span>${it.label}</span></a></li>`)
 		}
 		out.push('</ul></div></div>')
 	}

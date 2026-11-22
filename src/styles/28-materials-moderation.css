@@ -1,0 +1,28 @@
+/* матеріали від студентів (materials.js): підпис автора, модерація суперадміна */
+.res-author{font-size:13px;color:var(--muted);font-weight:600}
+.res-del,.chat-msg__del{border:0;background:none;color:#b42318;font:700 13px Manrope,sans-serif;cursor:pointer;padding:0;align-self:flex-start}
+.res-del:hover,.chat-msg__del:hover{text-decoration:underline}
+.mat-mod__msg{color:var(--muted);margin:0 0 18px;font-weight:600}
+.mat-mod__list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:20px}
+.mat-mod{display:flex;flex-direction:column;gap:10px;padding:22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 8px 26px rgba(26,111,196,.06)}
+.mat-mod__head{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.mat-mod__who{font-size:12.5px;color:var(--muted);word-break:break-all}
+.mat-mod h3{font:800 1.05rem/1.3 Manrope,sans-serif;margin:0;color:var(--ink)}
+.mat-mod p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.55}
+.mat-mod__subj{font-weight:700;color:var(--blue)!important}
+.mat-mod__reason{width:100%;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg,var(--surface));color:var(--text);font:inherit;font-size:14px;resize:vertical}
+.mat-mod__acts{display:flex;flex-wrap:wrap;gap:10px}
+.chat-msg__del{margin-left:8px;font-size:12px;vertical-align:middle}
+[data-mat-gate][hidden],[data-mat-form][hidden],[data-mat-login][hidden],[data-mod][hidden],[data-mat-file][hidden],[data-mat-link][hidden]{display:none!important}
+/* кабінет суперадміна: запити на роль викладача (role-admin.js) */
+[data-role-admin][hidden]{display:none!important}
+.role-admin__h{font:800 15px Manrope,sans-serif;margin:18px 0 8px;color:var(--ink)}
+.role-admin__list{display:flex;flex-direction:column;gap:8px}
+.role-admin__row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.role-admin__info{display:flex;flex-direction:column;gap:2px;min-width:0}
+.role-admin__name{border:0;background:none;padding:0;font:800 15px Manrope,sans-serif;color:var(--blue);cursor:pointer;text-align:left}
+.role-admin__name:hover{text-decoration:underline}
+.role-admin__meta{font-size:13px;color:var(--muted)}
+.role-admin__acts{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.role-admin__acts .btn{padding:8px 14px;font-size:13.5px}
+.role-admin__subj{padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);font:inherit;font-size:13.5px;max-width:220px}

@@ -138,9 +138,9 @@
 		how: ['Усе чудово, дякую! Сьогодні вже допоміг кільком студентам знайти потрібні сторінки. А як ваші справи?', 'Добре! Працюю без перерв на каву ☕ А у вас як справи?', 'Відмінно, особливо коли є з ким поговорити 🙂 Як ваш день?'],
 		good: ['Радий чути! 🙌 Якщо треба щось знайти на сайті - питайте.', 'Супер! Гарного навчання й легкої сесії 🎓', 'Чудово! Чим можу допомогти?'],
 		bad: ['Мені шкода, що так 😔 Зробіть коротку перерву, випийте води й прогуляйтеся 10 хвилин - це справді допомагає. А якщо хочеться поговорити з іншими студентами, відкрийте чат праворуч унизу.', 'Буває всяке, і це нормально. Спробуйте розбити справи на маленькі кроки й почати з найпростішого. Якщо тиснуть дедлайни - зазирніть на сторінку exam-prep.html, там є поради з підготовки.'],
-		who: 'Я AI Student - помічник студентської платформи World Students НТУ «Дніпровська політехніка». Можу трохи поговорити, підказати погоду, пожартувати і, головне, допомогти знайти потрібне на сайті: вступ, навчання, розклад, рейтинг, акаунт.',
+		who: 'Я AI Student - помічник студентської платформи World Students НТУ «Дніпровська політехніка». Можу трохи поговорити, пожартувати і, головне, допомогти знайти потрібне на сайті: вступ, навчання, розклад, рейтинг, акаунт.',
 		name: 'Мене звати AI Student. А вас?',
-		can: 'Я вмію: підтримати коротку розмову, показати погоду (напишіть, наприклад, «погода в Дніпрі» або «погода завтра»), сказати дату й час, порахувати приклад, розповісти жарт, а ще - знайти потрібний розділ сайту.',
+		can: 'Я вмію: підтримати коротку розмову, сказати дату й час, порахувати приклад, розповісти жарт, а ще - знайти потрібний розділ сайту.',
 		secret: 'Технічні подробиці роботи платформи (код, сервери, база даних, налаштування помічника) і особисті дані користувачів та команди я не розголошую - це питання безпеки. Можу допомогти знайти потрібне на сайті. Хочете долучитися до команди чи знайшли помилку - напишіть через contact.html.',
 		creator: 'Мене створила команда студентів - авторів World Students. Усіх їх можна побачити на сторінці authors.html.',
 		age: 'Я зовсім молодий - з’явився у 2026 році разом з оновленою платформою World Students. А університету, до речі, вже понад 125 років: його історія почалася в 1899-му.',
@@ -158,9 +158,9 @@
 		how: ['All good, thanks! I have already helped a few students today. How are you?', 'Great! Working without coffee breaks ☕ How are you doing?'],
 		good: ['Glad to hear it! 🙌 Ask me if you need anything on the site.', 'Awesome! Good luck with your studies 🎓'],
 		bad: ['Sorry to hear that 😔 Take a short break, drink some water and walk for 10 minutes - it really helps. If you want to talk to other students, open the chat in the bottom-right corner.'],
-		who: 'I am AI Student, the assistant of the World Students platform of Dnipro University of Technology. I can chat a bit, tell you the weather, tell a joke and, most importantly, help you find things on the site.',
+		who: 'I am AI Student, the assistant of the World Students platform of Dnipro University of Technology. I can chat a bit, tell a joke and, most importantly, help you find things on the site.',
 		name: 'My name is AI Student. And yours?',
-		can: 'I can chat, show the weather (try “weather in Dnipro” or “weather tomorrow”), tell the date and time, do simple maths, tell a joke and find the right section of the site.',
+		can: 'I can chat, tell the date and time, do simple maths, tell a joke and find the right section of the site.',
 		secret: 'I do not share technical details of how the platform works (code, servers, database, assistant settings) or personal data of users and the team - it is a security matter. I can help you find things on the site. Want to join the team or found a bug? Write to us via contact.html.',
 		creator: 'I was made by the student team behind World Students - see authors.html.',
 		age: 'I am very young - I appeared in 2026 with the new World Students platform. The university itself dates back to 1899.',
@@ -379,7 +379,7 @@
 	var log = el('div', 'ai-log')
 	log.setAttribute('aria-live', 'polite')
 	var chips = el('div', 'ai-chips')
-	var SUGGEST = ['Як справи?', 'Хто ти?', 'Яка погода в Дніпрі?', 'Як вступити?', 'Як працює рейтинг?', 'Як влаштований сайт?']
+	var SUGGEST = ['Як справи?', 'Хто ти?', 'Як вступити?', 'Як працює рейтинг?', 'Як влаштований сайт?']
 	var form = el('form', 'ai-form')
 	form.setAttribute('autocomplete', 'off')
 	var input = el('input', 'ai-input')
@@ -455,8 +455,8 @@
 	}
 	function greet() {
 		return { text: en()
-			? 'Hi! I am AI Student 👋 We can just chat, I can tell you the weather, and I will help you find anything on World Students: admission, studies, timetable, rating, your account or student life.'
-			: 'Привіт! Я AI Student 👋 Можемо просто поговорити, можу підказати погоду, а ще допоможу знайти будь-що на World Students: вступ, навчання, розклад, рейтинг, акаунт чи студентське життя.' }
+			? 'Hi! I am AI Student 👋 We can just chat, and I will help you find anything on World Students: admission, studies, timetable, rating, your account or student life.'
+			: 'Привіт! Я AI Student 👋 Можемо просто поговорити, а ще допоможу знайти будь-що на World Students: вступ, навчання, розклад, рейтинг, акаунт чи студентське життя.' }
 	}
 	function renderAll() {
 		log.textContent = ''

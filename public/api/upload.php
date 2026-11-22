@@ -2,7 +2,7 @@
 /**
  * Завантаження файлів для особистих повідомлень і записів уроків (World Students).
  *
- * POST multipart частинами: file=<частина>, kind=chat|lesson|story, upload_id, index, total, size, name;
+ * POST multipart частинами: file=<частина>, kind=chat|lesson|material|story, upload_id, index, total, size, name;
  * заголовок Authorization: Bearer <Firebase ID token>.
  * Токен перевіряється за підписом (RS256, відкриті ключі Google securetoken), aud/iss проєкту, строком дії
  * та підтвердженою поштою. Дозволені лише перелічені типи файлів; ім'я на сервері випадкове.
@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 const PROJECT_ID = 'ntubd-93efc';
 const SITE = 'https://ntu.dp.ua';
-const MAX_BYTES = ['chat' => 10 * 1024 * 1024, 'lesson' => 20 * 1024 * 1024, 'story' => 25 * 1024 * 1024];
+const MAX_BYTES = ['chat' => 10 * 1024 * 1024, 'lesson' => 20 * 1024 * 1024, 'material' => 20 * 1024 * 1024, 'story' => 25 * 1024 * 1024];
 const TYPES = [
     'chat' => [
         'pdf' => ['application/pdf'],
@@ -24,6 +24,14 @@ const TYPES = [
         'zip' => ['application/zip', 'application/x-zip-compressed'],
     ],
     'lesson' => ['pdf' => ['application/pdf']],
+    // навчальні матеріали від студентів (потрапляють на сайт лише після схвалення адміністратором)
+    'material' => [
+        'pdf' => ['application/pdf'],
+        'docx' => ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/zip'],
+        'pptx' => ['application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/zip'],
+        'xlsx' => ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/zip'],
+        'zip' => ['application/zip', 'application/x-zip-compressed'],
+    ],
     // сторіз: фото, відео й власна музика
     'story' => [
         'jpg' => ['image/jpeg'], 'jpeg' => ['image/jpeg'], 'png' => ['image/png'], 'webp' => ['image/webp'],

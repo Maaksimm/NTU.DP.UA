@@ -14,6 +14,8 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=
 http.createServer((req, res) => {
 	let p
 	try { p = decodeURIComponent(new URL(req.url.replace(/^\/+/, '/'), 'http://x').pathname) } catch { res.writeHead(400); res.end('Bad request'); return }
+	// PHP is not executed locally: answer like a server without configuration instead of sending the PHP source
+	if (p.endsWith('.php')) { res.writeHead(503, { 'Content-Type': 'application/json' }); res.end('{"error":"NOT_CONFIGURED","local":true}'); return }
 	if (p.endsWith('/')) p += 'index.html'
 	const file = path.join(DIST, path.normalize(p))
 	if (!file.startsWith(DIST) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) { res.writeHead(404); res.end('Not found'); return }

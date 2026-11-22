@@ -9,7 +9,7 @@
  *   {action: "status"}            - recipients total / already sent / unsubscribed
  *   {action: "test"}              - send the letter only to the caller's own email
  *   {action: "send", confirm: "SEND"} - send the next batch (BATCH letters); call again until remaining = 0
- *   {action: "export"}            - every Firebase Auth account + nickname/role from users/{uid} (the page saves it as CSV)
+ *   {action: "export"}            - every Firebase Auth account + nickname from users/{uid}, role from admins/ and profiles/ (the page saves it as CSV)
  * Recipients: Firebase Auth accounts with a verified email that are not disabled and did not unsubscribe.
  * Progress is stored per CAMPAIGN outside public_html, so a repeated run never mails anyone twice.
  */
@@ -21,7 +21,7 @@ require __DIR__ . '/lib/mailer.php';
 
 const CAMPAIGN = '2026-11-chat';
 const BATCH = 25;
-const STAFF_UIDS = ['wm6Q5hkr1cQIGVsWzlLTDJlsQ5q1', 'AFWawaCZt7aBmCN9QTWtpglFyot1'];
+const STAFF_UIDS = ['wm6Q5hkr1cQIGVsWzlLTDJlsQ5q1', 'DTKVkTyDOsgzDUqz2SPejK7u0ak1', 'AFWawaCZt7aBmCN9QTWtpglFyot1'];
 const SUBJECT = 'На World Students з’явився чат - і ще багато нового';
 
 /* ---------------------------------------------------------------- storage */
@@ -112,7 +112,7 @@ function recipients(): array
     return $list;
 }
 
-/** Every Firebase Auth account (any status), merged with nickname/role from the database users/ list. */
+/** Every Firebase Auth account (any status), merged with the nickname (users/), role (admins/ -> 'a', profiles/{uid}/role) and teacher request (roleRequests/). */
 function export_users(): array
 {
     $tk = fb_admin_token('https://www.googleapis.com/auth/cloud-platform');
@@ -122,6 +122,14 @@ function export_users(): array
     [$code, $db] = fb_http('GET', 'https://' . FB_PROJECT_ID . '-default-rtdb.europe-west1.firebasedatabase.app/users.json', null, ['Authorization: Bearer ' . $dbTk]);
     if ($code !== 200) out(502, ['error' => 'UPSTREAM']);
     $db = is_array($db) ? $db : [];
+    $node = function (string $path) use ($dbTk): array {
+        [$c, $d] = fb_http('GET', 'https://' . FB_PROJECT_ID . '-default-rtdb.europe-west1.firebasedatabase.app/' . $path . '.json', null, ['Authorization: Bearer ' . $dbTk]);
+        if ($c !== 200) out(502, ['error' => 'UPSTREAM']);
+        return is_array($d) ? $d : [];
+    };
+    $admins = $node('admins');
+    $profiles = $node('profiles');
+    $requests = $node('roleRequests');
     $unsub = bc_read('unsubscribed');
     $rows = [];
     $page = '';
@@ -139,7 +147,9 @@ function export_users(): array
                 'email' => (string)($u['email'] ?? ''),
                 'verified' => !empty($u['emailVerified']),
                 'disabled' => !empty($u['disabled']),
-                'role' => (string)($p['r'] ?? ''),
+                'role' => ($admins[$uid] ?? null) === true ? 'a' : ((($profiles[$uid]['role'] ?? '') === 't') ? 't' : 's'),
+                'subject' => (string)($profiles[$uid]['subj'] ?? ''),
+                'teacherRequest' => is_array($requests[$uid] ?? null) ? ((($requests[$uid]['st'] ?? '') === 'no') ? 'rejected' : 'pending') : '',
                 'created' => (int)($u['createdAt'] ?? 0),
                 'lastLogin' => (int)($u['lastLoginAt'] ?? 0),
                 'lastSeen' => is_numeric($p['s'] ?? null) ? (int)$p['s'] : 0,

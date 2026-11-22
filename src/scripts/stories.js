@@ -9,6 +9,11 @@
 	'use strict'
 	var A = window.NTU_AUTH
 	if (!A) return
+	// суперадмін може видаляти чужі сторіз та історії (правила бази теж це дозволяють лише йому)
+	var isAdmin = false
+	if (A.isAdmin) A.onChange(function () {
+		A.isAdmin().then(function (v) { if (v !== isAdmin) { isAdmin = v; document.dispatchEvent(new Event('ntu:admin')) } })
+	})
 	var DAY = 24 * 60 * 60 * 1000
 	var STORY_MS = 6000
 	var MAX_CAPTION = 200
@@ -283,7 +288,7 @@
 			var mt = musicTitle(s), mus = ov.querySelector('.story-view__music')
 			mus.textContent = mt ? '♪ ' + mt : ''
 			mus.hidden = !mt
-			ov.querySelector('.story-view__del').hidden = !(A.user && A.user.uid === s.u)
+			ov.querySelector('.story-view__del').hidden = !(A.user && (A.user.uid === s.u || isAdmin))
 			var hasSound = !!mt || !!safeImg(s.v)
 			var muteBtn = ov.querySelector('.story-view__mute')
 			muteBtn.hidden = !hasSound
@@ -658,7 +663,7 @@
 				})
 				a.appendChild(more)
 			}
-			if (A.user && A.user.uid === x.u) {
+			if (A.user && (A.user.uid === x.u || isAdmin)) {
 				var del = el('button', 'tale__del', t('Видалити'))
 				del.type = 'button'
 				del.addEventListener('click', function () {
@@ -720,6 +725,7 @@
 		}
 
 		A.onChange(function () { syncGate(); render() })
+		document.addEventListener('ntu:admin', render)
 		window.addEventListener('ntu:lang', render)
 		load()
 	}

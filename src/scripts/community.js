@@ -430,7 +430,11 @@
 	var teacherPanel = $('[data-teacher-panel]')
 	var lessonForm = $('[data-lesson-form]')
 	var myLessons = $('[data-my-lessons]')
-	function roleText(role, subj) { return role === 't' ? t('Викладач') + (subj ? ' · ' + t(subj) : '') : t('Учень') }
+	function roleText(role, subj, req) {
+		if (role === 't') return t('Викладач') + (subj ? ' · ' + t(subj) : '')
+		if (req) return t('Учень') + ' · ' + (req.rejected ? t('запит на роль викладача відхилено') : t('запит на роль викладача на розгляді'))
+		return t('Учень')
+	}
 	function fmtDate(ts) { var d = new Date(ts); return ('0' + d.getDate()).slice(-2) + '.' + ('0' + (d.getMonth() + 1)).slice(-2) + '.' + d.getFullYear() }
 	function fmtSize(b) { return b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB' }
 	/* Картка запису уроку (для кабінету викладача та профілю) */
@@ -532,8 +536,8 @@
 			e.preventDefault()
 			var r = (roleForm.querySelector('input[name=role]:checked') || {}).value || 's'
 			if (r === 't' && !rSubj.value) { rSubj.focus(); return say(rs, t('Оберіть предмет, який ви викладаєте.')) }
-			A.setRole(r, rSubj.value).then(function () {
-				say(rs, t('Роль збережено.'), true)
+			A.setRole(r, rSubj.value).then(function (res) {
+				say(rs, res && res.pending ? t('Запит надіслано. Роль викладача з’явиться після підтвердження адміністратором.') : t('Роль збережено.'), true)
 				roleForm.closest('[data-fold]') && roleForm.closest('[data-fold]').dispatchEvent(new CustomEvent('fold:close'))
 			}, function (er) { say(rs, er.message) })
 		})
@@ -543,12 +547,12 @@
 		if (!u) return
 		var tch = u.role === 't'
 		if (roleLine) {
-			roleLine.textContent = roleText(u.role, u.subj)
+			roleLine.textContent = roleText(u.role, u.subj, u.roleReq)
 			var ab = A.authorBadge && A.authorBadge(u.uid)
 			if (ab) { roleLine.appendChild(document.createTextNode(' ')); roleLine.appendChild(ab) }
 		}
 		var cr = $('[data-cur-role]')
-		if (cr) cr.textContent = roleText(u.role, u.subj)
+		if (cr) cr.textContent = roleText(u.role, u.subj, u.roleReq)
 		if (teacherPanel) teacherPanel.hidden = !tch
 		if (roleForm) {
 			Array.prototype.forEach.call(roleForm.querySelectorAll('input[name=role]'), function (r) { r.checked = r.value === (tch ? 't' : 's') })

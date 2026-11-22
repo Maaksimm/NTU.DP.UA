@@ -2,7 +2,6 @@
 function initResourceFilter() {
 	const grid = document.getElementById('resGrid')
 	if (!grid) return
-	const cards = Array.from(grid.querySelectorAll('.res-card'))
 	const search = document.getElementById('resSearch')
 	const empty = document.getElementById('resEmpty')
 	const chips = document.querySelectorAll('.res-chip')
@@ -10,7 +9,7 @@ function initResourceFilter() {
 	function apply() {
 		const q = search.value.trim().toLowerCase()
 		let shown = 0
-		cards.forEach(c => {
+		grid.querySelectorAll('.res-card').forEach(c => {
 			// card text is Ukrainian in data-text, so search matches visible text in either language
 			const hay = c.dataset.text + ' ' + c.textContent.toLowerCase()
 			const ok = (type === 'all' || c.dataset.type === type) && (!q || hay.includes(q))
@@ -25,6 +24,8 @@ function initResourceFilter() {
 		apply()
 	}))
 	search.addEventListener('input', apply)
+	// materials.js adds approved student materials later and fires this event
+	grid.addEventListener('ntu:res', apply)
 }
 
 /* ===== Media gallery: category filter ===== */

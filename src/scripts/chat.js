@@ -498,7 +498,33 @@
 		return hit
 	}
 
+	/* суперадмін (admins/{uid} у базі) може видаляти будь-які повідомлення */
+	var chatAdmin = false, adminHooked = false
+	function hookAdmin() {
+		var A = window.NTU_AUTH
+		if (adminHooked || !A || !A.isAdmin) return
+		adminHooked = true
+		A.onChange(function () {
+			A.isAdmin().then(function (v) { if (v !== chatAdmin) { chatAdmin = v; render() } })
+		})
+	}
+	function adminDelete(m) {
+		var del = el('button', 'chat-msg__del', '🗑')
+		del.type = 'button'
+		del.title = t('Видалити повідомлення (модерація)')
+		del.setAttribute('aria-label', del.title)
+		del.addEventListener('click', function (e) {
+			e.stopPropagation()
+			if (!window.confirm(t('Видалити це повідомлення для всіх?'))) return
+			window.NTU_AUTH.db('DELETE', 'chat/messages/' + encodeURIComponent(m.id)).then(function () {
+				messages = messages.filter(function (x) { return x.id !== m.id })
+				render()
+			}).catch(function (err) { window.alert(err.message) })
+		})
+		return del
+	}
 	function render() {
+		hookAdmin()
 		var atBottom = list.scrollHeight - list.scrollTop - list.clientHeight < 60
 		list.textContent = ''
 		if (!messages.length) list.appendChild(empty)
@@ -568,6 +594,7 @@
 				tick.setAttribute('aria-label', tick.title)
 				meta.appendChild(tick)
 			}
+			if (chatAdmin && backend.remote && m.id) meta.appendChild(adminDelete(m))
 			b.appendChild(meta)
 			if (!bad) {
 				var addR = el('button', 'chat-msg__add')
