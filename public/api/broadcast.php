@@ -130,6 +130,8 @@ function export_users(): array
     $admins = $node('admins');
     $profiles = $node('profiles');
     $requests = $node('roleRequests');
+    // users/{uid}/s is 0 for people who hid their online status; their real activity time is in presence/{uid}
+    $presence = $node('presence');
     $unsub = bc_read('unsubscribed');
     $rows = [];
     $page = '';
@@ -152,7 +154,8 @@ function export_users(): array
                 'teacherRequest' => is_array($requests[$uid] ?? null) ? ((($requests[$uid]['st'] ?? '') === 'no') ? 'rejected' : 'pending') : '',
                 'created' => (int)($u['createdAt'] ?? 0),
                 'lastLogin' => (int)($u['lastLoginAt'] ?? 0),
-                'lastSeen' => is_numeric($p['s'] ?? null) ? (int)$p['s'] : 0,
+                'lastSeen' => max(is_numeric($p['s'] ?? null) ? (int)$p['s'] : 0, is_numeric($presence[$uid] ?? null) ? (int)$presence[$uid] : 0),
+                'hidden' => !empty($profiles[$uid]['hide']),
                 'unsubscribed' => isset($unsub[$uid]),
             ];
         }

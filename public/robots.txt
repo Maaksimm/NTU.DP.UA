@@ -6,5 +6,7 @@ Disallow: /register.html
 Disallow: /forgot-password.html
 Disallow: /auth-action.html
 Disallow: /broadcast.html
+Disallow: /api/
+Disallow: /uploads/
 
 Sitemap: https://ntu.dp.ua/sitemap.xml

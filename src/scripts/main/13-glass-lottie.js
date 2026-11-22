@@ -1,5 +1,7 @@
 /* Glassmorphism-ілюстрації: якщо збірка знайшла assets/lottie/glass-NAME.json, у span є data-lottie.
-   Тоді (і лише якщо користувач не просив зменшити рух) підвантажуємо lottie-web і замінюємо статичний SVG анімацією.
+   Тоді підвантажуємо lottie-web і замінюємо статичний SVG анімацією. Якщо в системі ввімкнено «зменшити рух»
+   (у Windows - вимкнені «Ефекти анімації»), анімація програється один раз (коротше 5 с, WCAG 2.2.2) і зупиняється,
+   а повторюється лише при наведенні - без нескінченного циклу.
    Без файлів анімацій нічого не завантажується - лишається SVG-версія з CSS-анімацією. */
 ;(function () {
 	var LOTTIE_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie_light.min.js'
@@ -20,10 +22,15 @@
 		return loading
 	}
 
-	function mount(el, lottie) {
+	function mount(el, lottie, calm) {
 		var box = document.createElement('span')
 		box.className = 'glass-lottie'
-		var anim = lottie.loadAnimation({ container: box, renderer: 'svg', loop: true, autoplay: true, path: el.getAttribute('data-lottie') })
+		var anim = lottie.loadAnimation({ container: box, renderer: 'svg', loop: !calm, autoplay: true, path: el.getAttribute('data-lottie') })
+		if (calm) {
+			// один прохід, далі - лише на наведення (сама ілюстрація aria-hidden, тому слухаємо всю шапку)
+			var hero = el.closest('.page-hero') || el
+			hero.addEventListener('mouseenter', function () { if (anim.isPaused) anim.goToAndPlay(0, true) })
+		}
 		// SVG прибираємо лише коли анімація справді завантажилась; при помилці лишається статична версія
 		anim.addEventListener('DOMLoaded', function () {
 			var svg = el.querySelector('.glass-svg')
@@ -37,12 +44,12 @@
 	function init() {
 		var els = document.querySelectorAll('[data-lottie]')
 		if (!els.length) return
-		if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return
+		var calm = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)
 		loadLottie().then(function (lottie) {
 			Array.prototype.forEach.call(els, function (el) {
-				var anim = mount(el, lottie)
-				// не крутимо анімацію, коли її не видно
-				if ('IntersectionObserver' in window) {
+				var anim = mount(el, lottie, calm)
+				// не крутимо анімацію, коли її не видно (у спокійному режимі вона й так один раз)
+				if (!calm && 'IntersectionObserver' in window) {
 					new IntersectionObserver(function (entries) {
 						entries.forEach(function (e) { e.isIntersecting ? anim.play() : anim.pause() })
 					}).observe(el)

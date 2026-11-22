@@ -81,7 +81,7 @@
 </div>
 
 <div class="field">
-<label for="cf-message">Ваше питання про сайт<span class="required">*</span></label>
+<label for="cf-message">Ваше питання<span class="required">*</span></label>
 <textarea id="cf-message" name="message" rows="4" required minlength="10" maxlength="2000" placeholder="Наприклад: на сторінці кампусу не відкривається карта"></textarea>
 <span class="field-error"></span>
 </div>
@@ -97,7 +97,8 @@
 </div>
 
 <div class="container">
-<div class="map-frame-wrap reveal">
+<div class="map-frame-wrap reveal" data-map-full>
+<button type="button" class="map-full-btn" data-map-toggle aria-label="Відкрити карту на весь екран" title="На весь екран"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span>На весь екран</span></button>
 <iframe
  src="https://www.google.com/maps?q=%D0%9D%D0%A2%D0%A3%20%D0%94%D0%BD%D1%96%D0%BF%D1%80%D0%BE%D0%B2%D1%81%D1%8C%D0%BA%D0%B0%20%D0%BF%D0%BE%D0%BB%D1%96%D1%82%D0%B5%D1%85%D0%BD%D1%96%D0%BA%D0%B0%2C%20%D0%BF%D1%80.%20%D0%94%D0%BC%D0%B8%D1%82%D1%80%D0%B0%20%D0%AF%D0%B2%D0%BE%D1%80%D0%BD%D0%B8%D1%86%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE%2019%2C%20%D0%94%D0%BD%D1%96%D0%BF%D1%80%D0%BE&z=17&output=embed"
  loading="lazy" allowfullscreen title="Карта - НТУ «Дніпровська політехніка»"></iframe>

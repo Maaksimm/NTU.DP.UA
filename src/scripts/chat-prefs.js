@@ -152,7 +152,10 @@
 		// URL перевірений BG_RE (лише латиниця, цифри, / . -), тож у CSS його можна вставити без екранування
 		var dark = document.documentElement.getAttribute('data-theme') === 'dark'
 		var tint = dark ? [shade(col, 0.22), shade(col, 0.14)] : [shade(col, 1.9), shade(col, 1.8)]
-		node.style.setProperty('--ct-bg', c.bg ? 'url("' + c.bg + '") center / cover no-repeat' : 'linear-gradient(160deg,' + tint[0] + ',' + tint[1] + ')')
+		// фото: cover по центру - підлаштовується під будь-який розмір панелі (телефон, зміна розміру, повний екран);
+		// у темній темі поверх фото - напівпрозора темна вуаль, щоб світле фото не сліпило і бульбашки читались
+		var veil = dark ? 'linear-gradient(rgba(8,16,30,.46),rgba(8,16,30,.46)), ' : 'linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.08)), '
+		node.style.setProperty('--ct-bg', c.bg ? veil + 'url("' + c.bg + '") center / cover no-repeat ' + tint[1] : 'linear-gradient(160deg,' + tint[0] + ',' + tint[1] + ')')
 		node.style.setProperty('--ct-own', col)
 		node.style.setProperty('--ct-own2', shade(col, 0.78))
 	}
@@ -291,9 +294,12 @@
 			rm.className = 'ctheme-own__rm'
 			rm.textContent = t('Прибрати фон')
 			rm.addEventListener('click', function () {
-				setCustom({ c: (state.custom && state.custom.c) || '' }, true)
-				rm.remove()
-				up.textContent = t('Завантажити фон')
+				(window.NTU_AUTH && window.NTU_AUTH.confirm ? window.NTU_AUTH.confirm(t('Прибрати свій фон чату?'), t('Прибрати')) : Promise.resolve(window.confirm(t('Прибрати свій фон чату?')))).then(function (ok) {
+					if (!ok) return
+					setCustom({ c: (state.custom && state.custom.c) || '' }, true)
+					if (rm.parentNode) rm.remove()
+					up.textContent = t('Завантажити фон')
+				})
 			})
 			box.appendChild(rm)
 		}

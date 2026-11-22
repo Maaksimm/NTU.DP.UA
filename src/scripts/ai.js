@@ -509,7 +509,13 @@
 		ask(v)
 		input.focus()
 	})
-	clearBtn.addEventListener('click', function () { history = []; save(); renderAll(); input.focus() })
+	clearBtn.addEventListener('click', function () {
+		if (!history.length) return input.focus()
+		(window.NTU_AUTH && window.NTU_AUTH.confirm ? window.NTU_AUTH.confirm(t('Очистити всю розмову з AI Студентом?'), t('Очистити')) : Promise.resolve(window.confirm(t('Очистити всю розмову з AI Студентом?')))).then(function (ok) {
+			if (!ok) return
+			history = []; save(); renderAll(); input.focus()
+		})
+	})
 
 	var isOpen = false
 	function open() {

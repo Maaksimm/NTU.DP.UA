@@ -114,12 +114,15 @@
 			var f = bgFile.files && bgFile.files[0]
 			if (!f) return
 			say(bgs, t('Збереження...'), true)
-			A.fileToCover(f).then(function (d) { return A.setBackground(d, bgMode) })
+			(A.fileToBackground || A.fileToCover)(f).then(function (d) { return A.setBackground(d, bgMode) })
 				.then(function () { say(bgs, t('Фон збережено') + ' ' + modeName() + '.', true) }, function (e) { say(bgs, e.message) })
 			bgFile.value = ''
 		})
 		$('[data-bg-reset]').addEventListener('click', function () {
-			A.setBackground('', bgMode).then(function () { say(bgs, t('Фон прибрано') + ' ' + modeName() + '.', true) }, function (e) { say(bgs, e.message) })
+			A.confirm(t('Прибрати фон профілю') + ' ' + modeName() + '?', t('Прибрати')).then(function (ok) {
+				if (!ok) return
+				A.setBackground('', bgMode).then(function () { say(bgs, t('Фон прибрано') + ' ' + modeName() + '.', true) }, function (e) { say(bgs, e.message) })
+			})
 		})
 		A.onChange(paintBg)
 	}
@@ -218,12 +221,12 @@
 		if (!extraForm || !personalSlot || !extraPanel) return
 		clearTimeout(moveTimer)
 		if (filled) {
-			personalSlot.appendChild(extraHint)
+			if (extraHint) personalSlot.appendChild(extraHint)
 			personalSlot.appendChild(extraForm)
 			extraPanel.hidden = true
 			personalSec.hidden = false
 		} else {
-			extraPanel.appendChild(extraHint)
+			if (extraHint) extraPanel.appendChild(extraHint)
 			extraPanel.appendChild(extraForm)
 			extraPanel.hidden = false
 			personalSec.hidden = true
@@ -414,10 +417,10 @@
 				ca.appendChild(el('span', null, u.avatar ? t('Фото встановлено') : t('Без фото')))
 			}
 			$('[data-set-verified]').textContent = !A.remote || u.verified !== false ? t('Підтверджено') : t('Не підтверджено')
-			setCheck.checked = !u.hideOnline
+			setCheck.checked = !!u.hideOnline // чек-бокс «Приховати статус»
 		})
 		setCheck.addEventListener('change', function () {
-			A.setHideOnline(!setCheck.checked).then(function () { say(setStatus, t('Збережено.'), true) }, function (e) {
+			A.setHideOnline(setCheck.checked).then(function () { say(setStatus, t('Збережено.'), true) }, function (e) {
 				setCheck.checked = !setCheck.checked
 				say(setStatus, e.message)
 			})
@@ -536,10 +539,25 @@
 			e.preventDefault()
 			var r = (roleForm.querySelector('input[name=role]:checked') || {}).value || 's'
 			if (r === 't' && !rSubj.value) { rSubj.focus(); return say(rs, t('Оберіть предмет, який ви викладаєте.')) }
-			A.setRole(r, rSubj.value).then(function (res) {
-				say(rs, res && res.pending ? t('Запит надіслано. Роль викладача з’явиться після підтвердження адміністратором.') : t('Роль збережено.'), true)
-				roleForm.closest('[data-fold]') && roleForm.closest('[data-fold]').dispatchEvent(new CustomEvent('fold:close'))
-			}, function (er) { say(rs, er.message) })
+			var u = A.user || {}
+			var sub = roleForm.querySelector('[type=submit]')
+			if (sub && sub.disabled) return
+			// нічого не змінилось - не шлемо запит (і не створюємо повторний запит на роль)
+			if (r === (u.role || 's') && (r === 's' ? !u.roleReq : rSubj.value === (u.subj || ''))) return say(rs, t('Роль не змінилась.'), true)
+			// такий самий запит уже чекає на розгляд - не витрачаємо ліміт (2 запити на добу)
+			if (r === 't' && u.role !== 't' && u.roleReq && !u.roleReq.rejected && u.roleReq.subj === rSubj.value) return say(rs, t('Ваш запит уже на розгляді.'), true)
+			// викладач, що обирає «Учень», втрачає роль назавжди (повернути її може лише адміністратор); так само скасовується запит
+			var warn = r === 's' && u.role === 't' ? t('Зняти з себе роль викладача? Повернути її зможе лише адміністратор.')
+				: r === 's' && u.roleReq ? t('Скасувати ваш запит на роль викладача?') : ''
+			var go = warn ? A.confirm(warn, t('Так, змінити')) : Promise.resolve(true)
+			go.then(function (ok) {
+				if (!ok) return
+				if (sub) sub.disabled = true
+				return A.setRole(r, rSubj.value).then(function (res) {
+					say(rs, res && res.pending ? t('Запит надіслано. Роль викладача з’явиться після підтвердження адміністратором.') : t('Роль збережено.'), true)
+					roleForm.closest('[data-fold]') && roleForm.closest('[data-fold]').dispatchEvent(new CustomEvent('fold:close'))
+				}, function (er) { say(rs, er.message) })
+			}).then(function () { if (sub) sub.disabled = false })
 		})
 	}
 	var lessonsLoadedFor = null
@@ -667,6 +685,7 @@
 			if (u.g) meta.push(t(GENDER[u.g]))
 			info.appendChild(el('span', 'ucard__meta', meta.join(' · ') || t('Профіль не заповнено')))
 			if (!u.hide) info.appendChild(el('span', 'ucard__seen' + (online(u.s) ? ' is-on' : ''), A.lastSeen(u.s)))
+			else if (A.revealHidden) { var hs = el('span', 'ucard__seen'); info.appendChild(hs); A.revealHidden(u.uid, hs, d) }
 			b.appendChild(av)
 			b.appendChild(info)
 			if (u.tg) { var tb = el('span', 'tgbadge', 'Telegram'); tb.title = t('Можна зв’язатися в Telegram'); b.appendChild(tb) }
@@ -711,8 +730,10 @@
 		hi.appendChild(el('h3', null, u.n || t('Гість')))
 		var st = el('p', 'pf__status')
 		var on = self || (!p.hide && online(u.s))
-		st.appendChild(dot(on))
-		st.appendChild(document.createTextNode(self ? t('В мережі') : p.hide ? t('Статус «в мережі» приховано') : A.lastSeen(u.s)))
+		var stDot = dot(on), stTxt = el('span', null, self ? t('В мережі') : p.hide ? t('Статус «в мережі» приховано') : A.lastSeen(u.s))
+		st.appendChild(stDot)
+		st.appendChild(stTxt)
+		if (!self && p.hide && A.revealHidden) A.revealHidden(uid, stTxt, stDot)
 		hi.appendChild(st)
 		var rl = el('p', 'pf__role')
 		rl.appendChild(el('span', 'role-badge' + (p.role === 't' ? ' role-badge--t' : ''), p.role === 't' ? t('Викладач') : t('Учень')))

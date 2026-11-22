@@ -271,3 +271,11 @@ button:disabled{cursor:not-allowed}
 .field--missing label::after{content:" !";color:#dc2626;font-weight:900}
 @keyframes warnPulse{0%,100%{box-shadow:0 0 0 2px var(--surface),0 0 0 2px rgba(220,38,38,.55)}50%{box-shadow:0 0 0 2px var(--surface),0 0 0 8px rgba(220,38,38,0)}}
 @media(prefers-reduced-motion:reduce){.acct-btn__warn,.fill-alert__ic{animation:none}}
+/* фото-фон профілю на вузьких екранах: картка стає колонкою з текстом по центру, тож горизонтальна вуаль
+   (зліва направо) лишала праву половину тексту на голому фото - робимо рівномірну вуаль зверху вниз */
+.has-bg-img{background-repeat:no-repeat}
+@media(max-width:640px){
+.account__card.has-bg-img::before{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.82));opacity:1}
+.account__card.has-bg-img::before{background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 55%,transparent),color-mix(in srgb,var(--surface) 85%,transparent))}
+[data-theme=dark] .account__card.has-bg-img::before{background:linear-gradient(180deg,rgba(19,36,59,.55),rgba(19,36,59,.85))}
+}

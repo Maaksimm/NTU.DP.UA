@@ -150,8 +150,25 @@
 		})
 	}
 	/* Запит на роль викладача: roleRequests/{uid} = {n, subj, ts[, st: 'no']}; роль 't' у профілі ставить лише адмін */
+	// Не більше REQ_MAX запитів за 24 години: лічильник roleReqQuota/{uid} = {c, w: початок вікна, ts} пишеться
+	// разом із запитом одним PATCH від кореня, а правила бази перевіряють і рахунок, і що обидва записи прийшли разом.
+	var REQ_MAX = 2, REQ_WINDOW = 24 * 60 * 60 * 1000
 	function requestTeacher(uid, name, subj) {
-		return dbCall('PUT', 'roleRequests/' + encodeURIComponent(uid), { n: String(name || '').slice(0, 40), subj: String(subj || '').slice(0, 80), ts: Date.now() }, true)
+		var id = encodeURIComponent(uid)
+		return dbCall('GET', 'roleReqQuota/' + id, undefined, true).catch(function () { return null }).then(function (q) {
+			var fresh = !q || typeof q.w !== 'number' || Date.now() - q.w >= REQ_WINDOW
+			if (!fresh && q.c >= REQ_MAX) {
+				var at = new Date(q.w + REQ_WINDOW)
+				var hm = ('0' + at.getHours()).slice(-2) + ':' + ('0' + at.getMinutes()).slice(-2)
+				var day = at.toDateString() === new Date().toDateString() ? t('сьогодні') : t('завтра')
+				throw new Error(t('Запит на роль викладача можна надіслати не більше 2 разів на добу. Наступний - ') + day + ' ' + t('о') + ' ' + hm + '.')
+			}
+			var now = { '.sv': 'timestamp' }
+			var patch = {}
+			patch['roleRequests/' + uid] = { n: String(name || '').slice(0, 40), subj: String(subj || '').slice(0, 80), ts: Date.now() }
+			patch['roleReqQuota/' + uid] = fresh ? { c: 1, w: now, ts: now } : { c: q.c + 1, w: q.w, ts: now }
+			return dbCall('PATCH', '', patch, true)
+		})
 	}
 	function profileGet(uid) {
 		return fetch(DB + '/users/' + encodeURIComponent(uid) + '.json').then(function (r) { return r.ok ? r.json() : null }).catch(function () { return null })
@@ -339,6 +356,9 @@
 				var uid = encodeURIComponent(state.user.uid)
 				return dbCall('PATCH', 'profiles/' + uid, { hide: !!hide }, true).then(function () {
 					return dbCall('PATCH', 'users/' + uid, { s: hide ? 0 : { '.sv': 'timestamp' } }, true)
+				}).then(function () {
+					// приховали - час активності йде в presence/{uid}; показали знову - прибираємо його
+					return (hide ? dbCall('PUT', 'presence/' + uid, { '.sv': 'timestamp' }, true) : dbCall('DELETE', 'presence/' + uid, undefined, true)).catch(function () {})
 				}).then(function () {
 					state.user.hideOnline = !!hide
 					emit()
@@ -625,12 +645,113 @@
 
 
 
+	/* ---------- журнал дій суперадмінів: adminLog/{id} = {a, n, act, t?, d?, ts} ----------
+	   act: role.approve | role.reject | role.remove | chat.delete | story.delete | tale.delete | material.remove |
+	        report.delete | report.dismiss (material.approve/reject і files.clean пише сервер).
+	   Помилка запису журналу не зриває саму дію - лише потрапляє в консоль. */
+	api.adminLog = function (act, target, detail) {
+		if (!REMOTE || !state.user) return Promise.resolve()
+		var row = { a: state.user.uid, n: String(state.user.name || '').slice(0, 40), act: String(act).slice(0, 40), ts: { '.sv': 'timestamp' } }
+		if (target) row.t = String(target).slice(0, 64)
+		if (detail) row.d = String(detail).replace(/\s+/g, ' ').trim().slice(0, 300)
+		return dbCall('POST', 'adminLog', row, true).catch(function (e) { if (window.console) console.warn('[adminLog]', e && e.message) })
+	}
+
+	/* ---------- скарги: reports/{kind_id}/{uid} = {k, id, o, x, r, ts} (одна скарга від людини на один запис) ---------- */
+	api.REPORT_REASONS = ['Образи або цькування', 'Спам або реклама', 'Неприйнятний вміст', 'Неправдива інформація', 'Інше']
+	api.report = function (kind, id, owner, excerpt) {
+		if (!state.user) { location.href = 'login.html'; return Promise.resolve(false) }
+		if (!REMOTE) return Promise.reject(new Error(t('Скарги працюють лише на сайті ntu.dp.ua.')))
+		if (state.user.verified === false) return Promise.reject(new Error(t('Підтвердьте пошту, щоб надсилати скарги.')))
+		if (owner && owner === state.user.uid) return Promise.resolve(false)
+		return reportDialog().then(function (reason) {
+			if (!reason) return false
+			var row = { k: kind, id: String(id), ts: { '.sv': 'timestamp' }, r: reason.slice(0, 300) }
+			if (owner) row.o = String(owner).slice(0, 64)
+			if (excerpt) row.x = String(excerpt).replace(/\s+/g, ' ').trim().slice(0, 200)
+			return dbCall('PUT', 'reports/' + encodeURIComponent(kind + '_' + id) + '/' + encodeURIComponent(state.user.uid), row, true)
+				.then(function () { return true }, function (e) {
+					// правило !data.exists(): повторна скарга на той самий запис
+					throw new Error(e && e.code === 'PERMISSION' ? t('Ви вже надіслали скаргу на цей запис.') : t('Не вдалося надіслати скаргу.'))
+				})
+		})
+	}
+	function reportDialog() {
+		return new Promise(function (resolve) {
+			var prev = document.activeElement
+			var m = document.createElement('div')
+			m.className = 'modal modal--confirm'
+			m.setAttribute('role', 'dialog')
+			m.setAttribute('aria-modal', 'true')
+			m.setAttribute('aria-label', t('Скарга'))
+			var box = document.createElement('form')
+			box.className = 'modal__box modal__box--sm report-dlg'
+			var h = document.createElement('p')
+			h.className = 'confirm__text'
+			h.textContent = t('Що не так із цим записом?')
+			box.appendChild(h)
+			var name = 'rep' + Date.now()
+			api.REPORT_REASONS.forEach(function (r, i) {
+				var l = document.createElement('label')
+				l.className = 'report-dlg__opt'
+				var inp = document.createElement('input')
+				inp.type = 'radio'
+				inp.name = name
+				inp.value = r
+				if (!i) inp.checked = true
+				l.appendChild(inp)
+				l.appendChild(document.createTextNode(' ' + t(r)))
+				box.appendChild(l)
+			})
+			var note = document.createElement('textarea')
+			note.className = 'report-dlg__note'
+			note.rows = 2
+			note.maxLength = 200
+			note.placeholder = t('Коментар (необов’язково)')
+			note.setAttribute('aria-label', t('Коментар до скарги'))
+			box.appendChild(note)
+			var row = document.createElement('div')
+			row.className = 'confirm__row'
+			var no = document.createElement('button')
+			no.type = 'button'
+			no.className = 'btn btn-secondary'
+			no.textContent = t('Скасувати')
+			var yes = document.createElement('button')
+			yes.type = 'submit'
+			yes.className = 'btn btn-primary'
+			yes.textContent = t('Надіслати скаргу')
+			row.appendChild(no)
+			row.appendChild(yes)
+			box.appendChild(row)
+			m.appendChild(box)
+			document.body.appendChild(m)
+			function done(v) {
+				document.removeEventListener('keydown', key, true)
+				m.remove()
+				if (prev && prev.focus) prev.focus()
+				resolve(v)
+			}
+			function key(e) { if (e.key === 'Escape') { e.stopPropagation(); done(null) } }
+			document.addEventListener('keydown', key, true)
+			no.addEventListener('click', function () { done(null) })
+			m.addEventListener('click', function (e) { if (e.target === m) done(null) })
+			box.addEventListener('submit', function (e) {
+				e.preventDefault()
+				var picked = box.querySelector('input[name="' + name + '"]:checked')
+				var r = picked ? picked.value : 'Інше'
+				var c = note.value.trim()
+				done(c ? r + ': ' + c : r)
+			})
+			box.querySelector('input').focus()
+		})
+	}
+
 	/* ---------- confirmation dialog ---------- */
 	api.confirm = function (message, okLabel, cancelLabel) {
 		return new Promise(function (resolve) {
 			var prev = document.activeElement
 			var m = document.createElement('div')
-			m.className = 'modal'
+			m.className = 'modal modal--confirm'
 			m.setAttribute('role', 'alertdialog')
 			m.setAttribute('aria-modal', 'true')
 			var box = document.createElement('div')
@@ -709,30 +830,69 @@
 			node.style.background = pr.css
 			node.classList.add('has-bg')
 			if (pr.dark) node.classList.add('is-dark-bg')
-		} else if (/^data:image\/(jpeg|png|webp);base64,/.test(bg)) {
+		} else if (/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(bg) || BG_URL_RE.test(bg)) {
+			// URL і data: перевірені регулярними виразами (без лапок і дужок), тож їх можна вставити в CSS
 			node.style.backgroundImage = 'url("' + bg + '")'
 			node.classList.add('has-bg', 'has-bg-img')
 		}
 	}
-	api.fileToCover = function (file) {
+	// Фото фону профілю, завантажене на сервер (api/upload.php) - повна якість для широких екранів і телефонів
+	var BG_URL_RE = /^https:\/\/ntu\.dp\.ua\/uploads\/\d{4}\/\d{2}\/[a-f0-9]{16,64}\.(jpg|jpeg|png|webp)$/
+	var BG_MAX_PX = 1920, BG_DATA_MAX = 115000
+	function readImage(file) {
 		return new Promise(function (res, rej) {
-			if (!file || !/^image\//.test(file.type)) return rej(new Error(t('Оберіть файл зображення (JPG, PNG або WebP).')))
+			if (!file || !/^image\/(jpeg|png|webp)$/.test(file.type)) return rej(new Error(t('Оберіть файл зображення (JPG, PNG або WebP).')))
 			if (file.size > 12 * 1024 * 1024) return rej(new Error(t('Файл завеликий (максимум 12 МБ).')))
 			var url = URL.createObjectURL(file)
 			var img = new Image()
-			img.onload = function () {
-				var W = 960, H = 320, c = document.createElement('canvas')
-				c.width = W; c.height = H
-				var k = Math.max(W / img.width, H / img.height)
-				var w = W / k, h = H / k
-				c.getContext('2d').drawImage(img, (img.width - w) / 2, (img.height - h) / 2, w, h, 0, 0, W, H)
-				URL.revokeObjectURL(url)
-				var q = 0.72, out = c.toDataURL('image/jpeg', q)
-				while (out.length > 110000 && q > 0.3) { q -= 0.1; out = c.toDataURL('image/jpeg', q) }
-				res(out)
-			}
+			img.onload = function () { URL.revokeObjectURL(url); res(img) }
 			img.onerror = function () { URL.revokeObjectURL(url); rej(new Error(t('Не вдалося прочитати зображення.'))) }
 			img.src = url
+		})
+	}
+	// пропорції фото зберігаємо (без обрізання до смужки 3:1) - CSS cover сам підбирає кадр під ширину картки
+	function drawScaled(img, maxPx) {
+		var k = Math.min(1, maxPx / Math.max(img.width, img.height))
+		var c = document.createElement('canvas')
+		c.width = Math.max(1, Math.round(img.width * k))
+		c.height = Math.max(1, Math.round(img.height * k))
+		var g = c.getContext('2d')
+		g.fillStyle = '#fff'
+		g.fillRect(0, 0, c.width, c.height)
+		g.drawImage(img, 0, 0, c.width, c.height)
+		return c
+	}
+	// Запасний варіант (демо-режим або пошта не підтверджена): data: URL у профілі, вкладаємося в ліміт правил (120 000 символів)
+	api.fileToCover = function (file) {
+		return readImage(file).then(function (img) {
+			var px = 1280, q = 0.78, c = drawScaled(img, px), out = c.toDataURL('image/jpeg', q)
+			while (out.length > BG_DATA_MAX && px > 480) {
+				if (q > 0.5) q -= 0.08
+				else { px = Math.round(px * 0.82); c = drawScaled(img, px) }
+				out = c.toDataURL('image/jpeg', q)
+			}
+			if (out.length > BG_DATA_MAX) throw new Error(t('Не вдалося стиснути зображення. Спробуйте інше фото.'))
+			return out
+		})
+	}
+	// Основний шлях: фото до 1920 px завантажуємо на сервер і зберігаємо в профілі лише посилання
+	api.fileToBackground = function (file) {
+		if (!REMOTE || !state.user || !state.user.verified) return api.fileToCover(file)
+		return readImage(file).then(function (img) {
+			return new Promise(function (res, rej) {
+				drawScaled(img, BG_MAX_PX).toBlob(function (b) {
+					b ? res(new File([b], 'profile-bg.jpg', { type: 'image/jpeg' })) : rej(new Error(t('Не вдалося прочитати зображення.')))
+				}, 'image/jpeg', 0.86)
+			})
+		}).then(function (f) {
+			return api.upload(f, 'chat')
+		}).then(function (r) {
+			if (!r || !BG_URL_RE.test(r.url || '')) throw new Error(t('Не вдалося завантажити файл.'))
+			return r.url
+		}, function (e) {
+			// сервер недоступний - зберігаємо стиснену копію прямо в профілі, щоб фон усе одно з'явився
+			if (window.console) console.warn('[bg upload]', e && e.message)
+			return api.fileToCover(file)
 		})
 	}
 
@@ -750,9 +910,38 @@
 
 	/* ---------- presence (online status) ---------- */
 	var presenceTimer = null
+	// Прихований статус: публічне users/{uid}/s не оновлюємо, а час активності пишемо в presence/{uid},
+	// який за правилами бази читають лише суперадміни (і сам власник).
 	function beat() {
-		if (!REMOTE || !state.user || document.hidden || state.user.hideOnline) return
-		dbCall('PATCH', 'users/' + encodeURIComponent(state.user.uid), { s: { '.sv': 'timestamp' } }, true).catch(function () {})
+		if (!REMOTE || !state.user || document.hidden) return
+		var uid = encodeURIComponent(state.user.uid), now = { '.sv': 'timestamp' }
+		var call = state.user.hideOnline ? dbCall('PUT', 'presence/' + uid, now, true) : dbCall('PATCH', 'users/' + uid, { s: now }, true)
+		call.catch(function () {})
+	}
+	/* Суперадмін бачить реальний статус користувача з прихованим «в мережі».
+	   statusEl отримує текст «Був(ла) у мережі ... · приховано від інших», dotEl - зелений індикатор. */
+	var presenceCache = null, presenceAt = 0
+	api.adminPresence = function () {
+		if (!REMOTE || !state.user || !api.isAdmin) return Promise.resolve({})
+		return api.isAdmin().then(function (yes) {
+			if (!yes) return {}
+			if (presenceCache && Date.now() - presenceAt < 30000) return presenceCache
+			presenceAt = Date.now()
+			presenceCache = dbCall('GET', 'presence', undefined, true).then(function (d) { return d && typeof d === 'object' ? d : {} }, function () { presenceCache = null; return {} })
+			return presenceCache
+		})
+	}
+	api.revealHidden = function (uid, statusEl, dotEl) {
+		if (!statusEl) return
+		api.adminPresence().then(function (all) {
+			if (!statusEl.isConnected || !Object.prototype.hasOwnProperty.call(all, uid)) return
+			var seen = typeof all[uid] === 'number' ? all[uid] : 0
+			var on = api.isOnline(seen)
+			statusEl.textContent = api.lastSeen(seen) + ' · ' + t('приховано від інших')
+			statusEl.classList.toggle('is-on', on)
+			statusEl.title = t('Статус прихований: його бачать лише адміністратори')
+			if (dotEl) dotEl.classList.toggle('is-on', on)
+		})
 	}
 	function startPresence() {
 		if (presenceTimer || !REMOTE) return

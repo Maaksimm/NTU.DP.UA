@@ -4,7 +4,7 @@
 	"description": "Особистий кабінет користувача студентської платформи World Students.",
 	"page": "account",
 	"robots": "noindex, follow",
-	"scripts": ["community.js", "dm.js", "role-admin.js"],
+	"scripts": ["community.js", "dm.js", "role-admin.js", "admin-tools.js"],
 	"breadcrumbs": [
 		["Головна", "index.html"],
 		["Платформа", "platform.html"],
@@ -70,11 +70,25 @@
 <div class="card account__panel role-admin" data-role-admin hidden>
 <h2 style="font-size:20px">Ролі викладачів</h2>
 <p class="account__hint" style="margin-top:6px">Матеріали від студентів модеруються на сторінці <a href="materials.html#share">Навчальні матеріали</a>.</p>
+<p class="account__hint">Вивантаження всіх користувачів у CSV (час реєстрації, останнього входу й активності) - на службовій сторінці <a href="broadcast.html">Розсилка й вивантаження</a>.</p>
 <h3 class="role-admin__h">Запити</h3>
 <div class="role-admin__list" data-ra-requests></div>
 <h3 class="role-admin__h">Викладачі</h3>
 <div class="role-admin__list" data-ra-teachers></div>
 <p class="form-note-status" data-ra-status role="status"></p>
+</div>
+<div class="card account__panel role-admin admin-tools" data-admin-tools hidden>
+<h2 style="font-size:20px">Модерація</h2>
+<h3 class="role-admin__h">Скарги <span class="admin-tools__count" data-at-rcount></span></h3>
+<div class="role-admin__list" data-at-reports></div>
+<h3 class="role-admin__h">Журнал дій адміністраторів</h3>
+<div class="admin-log" data-at-log></div>
+<button type="button" class="btn btn-secondary admin-tools__more" data-at-more hidden>Показати ще</button>
+<h3 class="role-admin__h">Файли на сервері</h3>
+<p class="account__hint">Видаляє прострочені сторіз (старші 24 год) і файли, на які вже ніщо не посилається: видалені сторіз і повідомлення, замінені фони, прибрані матеріали. Файли, завантажені менше ніж 2 доби тому, не чіпаються.</p>
+<div class="admin-tools__files" data-at-files></div>
+<div class="actions"><button type="button" class="btn btn-secondary" data-at-scan>Перевірити</button><button type="button" class="btn btn-primary" data-at-clean disabled>Очистити</button></div>
+<p class="form-note-status" data-at-status role="status"></p>
 </div>
 <div class="card account__panel teacher-panel" data-teacher-panel hidden>
 <div class="teacher-panel__head"><div><h2 style="font-size:20px">Мої записи уроків</h2>
@@ -92,7 +106,6 @@
 <div class="account__grid">
 <div class="card account__panel" data-extra-panel>
 <h2 style="font-size:20px">Про мене <span class="warn-badge" data-fill-dot hidden aria-hidden="true">!</span></h2>
-<p class="account__hint" style="margin-top:6px" data-extra-hint>Ці дані бачать зареєстровані користувачі платформи. Вкажіть стать, вік, курс і факультет, Telegram - за бажанням.</p>
 <form data-extra-form novalidate style="margin-top:14px">
 <div class="two-field-row">
 <div class="field"><label for="ex-gender">Стать</label><select id="ex-gender" name="gender"><option value="">Не вказувати</option><option value="m">Чоловік</option><option value="f">Жінка</option></select></div>
@@ -184,7 +197,7 @@
 <section class="setgroup" data-setgroup>
 <button type="button" class="setgroup__head" aria-expanded="false" aria-controls="grpPrivacy"><span class="setgroup__ic" aria-hidden="true">🔔</span><span class="setgroup__t"><strong>Приватність і сповіщення</strong><small>Статус «в мережі», «друкує», звук повідомлень</small></span></button>
 <div class="setgroup__body" id="grpPrivacy" hidden>
-<label class="setrow setrow--check"><input type="checkbox" id="setOnline"><span>Показувати іншим, що я в мережі<small>Якщо вимкнути, інші бачитимуть вас як «не в мережі».</small></span></label>
+<label class="setrow setrow--check"><input type="checkbox" id="setOnline"><span>Приховати статус</span></label>
 <label class="setrow setrow--check"><input type="checkbox" data-pref="typing"><span>Показувати, що я друкую<small>Співрозмовники бачать «друкує…» в чаті та особистих повідомленнях.</small></span></label>
 <label class="setrow setrow--check"><input type="checkbox" data-pref="sound"><span>Звук нових повідомлень<small>Короткий сигнал, коли приходить нове повідомлення, а вкладка не активна або чат закритий.</small></span></label>
 <label class="setrow setrow--check"><input type="checkbox" data-pref="notify"><span>Сповіщення браузера<small>Спливаюче сповіщення про нові особисті повідомлення, коли сайт відкрито у фоні.</small></span></label>
@@ -195,7 +208,7 @@
 <button type="button" class="setgroup__head" aria-expanded="false" aria-controls="grpSecurity"><span class="setgroup__ic" aria-hidden="true">🔒</span><span class="setgroup__t"><strong>Безпека</strong><small>Пароль і підтвердження пошти</small></span></button>
 <div class="setgroup__body" id="grpSecurity" hidden>
 <div class="setrow"><span class="setrow__k">Статус пошти</span><span class="setrow__v" data-set-verified></span></div>
-<div class="setrow setrow--act"><span class="setrow__k">Пароль<small>Надішлемо на вашу пошту лист із посиланням для зміни пароля.</small></span><button type="button" class="btn btn-secondary" data-pass-reset>Змінити пароль</button></div>
+<div class="setrow setrow--act"><span class="setrow__k">Пароль</span><button type="button" class="btn btn-secondary" data-pass-reset>Змінити пароль</button></div>
 <p class="form-note-status" data-sec-status role="status"></p>
 </div>
 </section>

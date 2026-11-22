@@ -22,10 +22,16 @@
 		if (text != null) e.textContent = text
 		return e
 	}
+	// посилання: лише https з нормальним доменом (new URL відсікає «https://a b», пробіли, порожній хост)
+	function validLink(s) {
+		if (!/^https:\/\/\S+$/.test(s) || s.length > 500) return false
+		try { var u = new URL(s); return u.protocol === 'https:' && /\.[a-z0-9-]{2,}$/i.test(u.hostname) } catch (e) { return false }
+	}
 	function safeUrl(u) { return /^https:\/\//.test(String(u || '')) ? String(u) : '' }
 	function list(obj) {
-		return Object.keys(obj || {}).map(function (k) { var x = obj[k]; x.id = k; return x })
-			.filter(function (x) { return x && x.ti && safeUrl(x.url) })
+		return Object.keys(obj || {}).filter(function (k) { return obj[k] && typeof obj[k] === 'object' })
+			.map(function (k) { var x = obj[k]; x.id = k; return x })
+			.filter(function (x) { return typeof x.ti === 'string' && x.ti && safeUrl(x.url) })
 			.sort(function (a, b) { return (b.ts || 0) - (a.ts || 0) })
 	}
 	// тип для фільтра: PDF-файли - «PDF», інші файли видно лише в «Усе»
@@ -68,8 +74,11 @@
 			var del = el('button', 'res-del', T('Прибрати з сайту'))
 			del.type = 'button'
 			del.addEventListener('click', function () {
-				if (!window.confirm(T('Прибрати цей матеріал із сайту?'))) return
-				A.db('DELETE', 'materials/approved/' + encodeURIComponent(x.id)).then(loadApproved).catch(function (e) { window.alert(e.message) })
+				(window.NTU_AUTH && window.NTU_AUTH.confirm ? window.NTU_AUTH.confirm(T('Прибрати цей матеріал із сайту?'), T('Прибрати')) : Promise.resolve(window.confirm(T('Прибрати цей матеріал із сайту?')))).then(function (ok) {
+					if (!ok) return
+					del.disabled = true
+					A.db('DELETE', 'materials/approved/' + encodeURIComponent(x.id)).then(function () { if (A.adminLog) A.adminLog('material.remove', x.u, x.ti); return loadApproved() }).catch(function (e) { del.disabled = false; window.alert(e.message) })
+				})
 			})
 			c.appendChild(del)
 		}
@@ -114,7 +123,9 @@
 			if (ti.length < 3) return say(T('Вкажіть назву (щонайменше 3 символи).'))
 			if (type === 'file' && !file) return say(T('Оберіть файл.'))
 			if (type === 'file' && file.size > 20 * 1024 * 1024) return say(T('Файл завеликий (максимум 20 МБ).'))
-			if (type !== 'file' && !/^https:\/\/[^\s]+\.[^\s]+$/.test(link)) return say(T('Вкажіть посилання, що починається з https://'))
+			if (type === 'file' && !/\.(pdf|docx|pptx|xlsx|zip)$/i.test(file.name)) return say(T('Підтримуються файли PDF, DOCX, PPTX, XLSX або ZIP.'))
+			if (type === 'file' && file.size === 0) return say(T('Файл порожній.'))
+			if (type !== 'file' && !validLink(link)) return say(T('Вкажіть посилання, що починається з https://'))
 			busy = true
 			form.querySelector('[type=submit]').disabled = true
 			say(T('Надсилання…'), true)
@@ -122,6 +133,7 @@
 				? A.upload(file, 'material', function (p) { say(T('Завантаження файлу: ') + p + '%', true) })
 				: Promise.resolve({ url: link })
 			up.then(function (f) {
+				if (!A.user) throw new Error(T('Увійдіть, щоб надіслати матеріал.'))
 				var item = {
 					u: A.user.uid, n: String(A.user.name || '').slice(0, 40), e: A.user.email,
 					ti: ti.slice(0, 150), type: type, url: f.url, ts: Date.now()
@@ -164,7 +176,7 @@
 		NOT_FOUND: 'Матеріал уже розглянуто.', REASON: 'Вкажіть причину відмови (3-500 символів).',
 		MAIL: 'Не вдалося надіслати лист автору. Спробуйте ще раз.', NO_EMAIL: 'У заявці немає коректної пошти автора.',
 		NOT_CONFIGURED: 'На сервері не налаштована пошта.', UPSTREAM: 'База даних не відповіла. Спробуйте ще раз.',
-		TOO_MANY_ATTEMPTS: 'Забагато дій - спробуйте пізніше.'
+		TOO_MANY_ATTEMPTS: 'Забагато дій - спробуйте пізніше.', BAD_ITEM: 'Заявка пошкоджена (немає назви, типу або коректного посилання). Відхиліть її.'
 	}
 	function call(body) {
 		return A.token().then(function (tk) {
@@ -212,11 +224,17 @@
 				yes.disabled = no.disabled = false
 			})
 		}
-		yes.addEventListener('click', function () { act({ action: 'approve', id: x.id }, T('Опубліковано.')) })
+		yes.addEventListener('click', function () {
+			(window.NTU_AUTH && window.NTU_AUTH.confirm ? window.NTU_AUTH.confirm(T('Опублікувати матеріал') + ' «' + x.ti + '»?', T('Схвалити')) : Promise.resolve(window.confirm(T('Опублікувати матеріал') + ' «' + x.ti + '»?'))).then(function (ok) {
+				if (ok) act({ action: 'approve', id: x.id }, T('Опубліковано.'))
+			})
+		})
 		no.addEventListener('click', function () {
 			var r = reason.value.trim()
 			if (r.length < 3) { reason.focus(); note.textContent = T(ERR.REASON); return }
-			act({ action: 'reject', id: x.id, reason: r }, T('Відхилено, автору надіслано лист.'))
+			(window.NTU_AUTH && window.NTU_AUTH.confirm ? window.NTU_AUTH.confirm(T('Відхилити матеріал') + ' «' + x.ti + '»? ' + T('Автор отримає лист із причиною, файл буде видалено.'), T('Відхилити')) : Promise.resolve(window.confirm(T('Відхилити матеріал') + ' «' + x.ti + '»? ' + T('Автор отримає лист із причиною, файл буде видалено.')))).then(function (ok) {
+				if (ok) act({ action: 'reject', id: x.id, reason: r }, T('Відхилено, автору надіслано лист.'))
+			})
 		})
 		acts.appendChild(yes)
 		acts.appendChild(no)

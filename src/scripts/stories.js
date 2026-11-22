@@ -82,7 +82,10 @@
 				var c = document.createElement('canvas')
 				c.width = Math.round(img.width * k)
 				c.height = Math.round(img.height * k)
-				c.getContext('2d').drawImage(img, 0, 0, c.width, c.height)
+				var g = c.getContext('2d')
+				g.fillStyle = '#fff' // прозорий PNG у JPEG інакше стає чорним
+				g.fillRect(0, 0, c.width, c.height)
+				g.drawImage(img, 0, 0, c.width, c.height)
 				URL.revokeObjectURL(url)
 				c.toBlob(function (b) {
 					if (!b) return rej(new Error(t('Не вдалося прочитати зображення.')))
@@ -107,8 +110,9 @@
 		return ''
 	}
 	function toList(obj) {
-		return Object.keys(obj || {}).map(function (k) { var x = obj[k]; x.id = k; return x })
-			.filter(function (x) { return x && typeof x.u === 'string' && typeof x.ts === 'number' })
+		// не-об'єкти пропускаємо до присвоєння id: у strict mode true.id = k кидає TypeError і ламає всю стрічку
+		return Object.keys(obj || {}).filter(function (k) { var x = obj[k]; return x && typeof x === 'object' && typeof x.u === 'string' && typeof x.ts === 'number' })
+			.map(function (k) { var x = obj[k]; x.id = k; return x })
 	}
 
 	/* =================== СТОРІЗ =================== */
@@ -127,7 +131,7 @@
 				if (v.duration > MAX_VIDEO_SEC + 0.5) return rej(new Error(t('Відео задовге (максимум 60 секунд).')))
 				res(file)
 			}
-			v.onerror = function () { rej(new Error(t('Не вдалося прочитати відео.'))) }
+			v.onerror = function () { URL.revokeObjectURL(v.src); rej(new Error(t('Не вдалося прочитати відео.'))) }
 			v.src = URL.createObjectURL(file)
 		})
 	}
@@ -210,6 +214,7 @@
 		var VIEW_HTML = '<div class="story-view__box"><div class="story-view__bars"></div>' +
 			'<div class="story-view__head"><span class="story-view__who"></span><span class="story-view__time"></span>' +
 			'<button type="button" class="story-view__mute" hidden></button>' +
+			'<button type="button" class="story-view__rep" hidden>⚑</button>' +
 			'<button type="button" class="story-view__del" hidden></button><button type="button" class="story-view__close">✕</button></div>' +
 			'<div class="story-view__media"></div><p class="story-view__music" hidden></p><p class="story-view__cap"></p>' +
 			'<button type="button" class="story-view__like"><span class="story-view__heart" aria-hidden="true">♡</span><span class="story-view__likes"></span></button>' +
@@ -229,6 +234,8 @@
 			ov.innerHTML = VIEW_HTML
 			ov.querySelector('.story-view__close').setAttribute('aria-label', t('Закрити'))
 			ov.querySelector('.story-view__del').textContent = t('Видалити')
+			ov.querySelector('.story-view__rep').setAttribute('aria-label', t('Поскаржитись на сторіз'))
+			ov.querySelector('.story-view__rep').title = t('Поскаржитись')
 			ov.querySelector('.story-view__like').setAttribute('aria-label', t('Подобається'))
 			ov.querySelector('.story-view__nav--prev').setAttribute('aria-label', t('Попередня'))
 			ov.querySelector('.story-view__nav--next').setAttribute('aria-label', t('Наступна'))
@@ -237,6 +244,7 @@
 				if (e.target.closest('.story-view__like')) return toggleLike()
 				if (e.target.closest('.story-view__mute')) return toggleMute()
 				if (e.target.closest('.story-view__del')) return removeCurrent()
+				if (e.target.closest('.story-view__rep')) return reportCurrent()
 				var nav = e.target.closest('.story-view__nav')
 				if (!nav) return
 				var now = Date.now()
@@ -257,7 +265,7 @@
 			ov.querySelector('.story-view__close').focus()
 		}
 		function onKey(e) {
-			if (!viewer) return
+			if (!viewer || document.querySelector('.modal--confirm')) return // відкрите вікно скарги/підтвердження
 			if (e.key === 'Escape') closeViewer()
 			else if (e.key === 'ArrowRight') step(1)
 			else if (e.key === 'ArrowLeft') step(-1)
@@ -289,12 +297,17 @@
 			mus.textContent = mt ? '♪ ' + mt : ''
 			mus.hidden = !mt
 			ov.querySelector('.story-view__del').hidden = !(A.user && (A.user.uid === s.u || isAdmin))
+			ov.querySelector('.story-view__rep').hidden = !(A.user && A.user.uid !== s.u && !isAdmin)
 			var hasSound = !!mt || !!safeImg(s.v)
 			var muteBtn = ov.querySelector('.story-view__mute')
 			muteBtn.hidden = !hasSound
 			syncMuteBtn()
 			markSeen(s.id)
 			loadLikes(s)
+			// таймер цієї сторіз ще не запущено (відео чекає метаданих): пауза до старту не повинна «з'їсти» час
+			viewer.start = 0
+			viewer.ready = false
+			viewer.paused = false
 
 			var media = ov.querySelector('.story-view__media')
 			media.textContent = ''
@@ -308,12 +321,14 @@
 				viewer.video = v
 				v.addEventListener('loadedmetadata', function () {
 					if (viewer && viewer.video === v) {
-						viewer.total = viewer.left = Math.min(MAX_VIDEO_SEC, v.duration || 6) * 1000
+						var dur = isFinite(v.duration) && v.duration > 0 ? v.duration : 6
+						viewer.total = viewer.left = Math.min(MAX_VIDEO_SEC, dur) * 1000
+						if (viewer.paused) return // натиснули й тримають - стартуємо після відпускання (resume)
 						v.play().catch(function () { v.muted = true; v.play().catch(function () {}) })
 						run()
 					}
 				})
-				v.addEventListener('error', function () { if (viewer && viewer.video === v) { viewer.total = viewer.left = STORY_MS; run() } })
+				v.addEventListener('error', function () { if (viewer && viewer.video === v) { viewer.total = viewer.left = STORY_MS; if (!viewer.paused) run() } })
 			} else {
 				var im = el('img', 'story-view__img')
 				im.alt = ''
@@ -335,13 +350,14 @@
 				bar.style.width = '100%'
 			}
 			viewer.start = Date.now()
+			viewer.ready = true
 			viewer.timer = setTimeout(function () { step(1) }, viewer.left)
 		}
 		function pause() {
 			if (!viewer || viewer.paused) return
 			viewer.paused = true
 			clearTimeout(viewer.timer)
-			viewer.left = Math.max(0, viewer.left - (Date.now() - viewer.start))
+			if (viewer.ready && viewer.start) viewer.left = Math.max(0, viewer.left - (Date.now() - viewer.start))
 			if (viewer.video) viewer.video.pause()
 			var bar = viewer.ov.querySelectorAll('.story-view__bar i')[viewer.si]
 			if (bar) { bar.style.width = getComputedStyle(bar).width; bar.style.transition = 'none' }
@@ -349,7 +365,10 @@
 		function resume() {
 			if (!viewer || !viewer.paused) return
 			viewer.paused = false
-			if (viewer.video) viewer.video.play().catch(function () {})
+			if (viewer.video) {
+				if (!(viewer.video.readyState >= 1)) return // метадані ще не прийшли - run() запустить loadedmetadata
+				viewer.video.play().catch(function () {})
+			}
 			run()
 		}
 		function step(d) {
@@ -430,14 +449,21 @@
 			setLike(true)
 		}
 
+		function reportCurrent() {
+			var s = current(), g = groups[viewer.gi]
+			pause()
+			A.report('story', s.id, s.u, (g.n || '') + (s.c ? ': ' + s.c : '')).then(function () { resume() }, function (e) { window.alert(e.message); resume() })
+		}
 		function removeCurrent() {
 			var s = current()
+			var owner = groups[viewer.gi] ? groups[viewer.gi].n : ''
 			pause()
 			if (!window.confirm(t('Видалити цю сторіз?'))) return resume()
 			// спершу лайки (правила дозволяють це автору, поки сторіз існує), потім саму сторіз
 			A.db('DELETE', 'storyLikes/' + encodeURIComponent(s.id)).catch(function () {}).then(function () {
 				return A.db('DELETE', 'stories/' + encodeURIComponent(s.id))
 			}).then(function () {
+				if (A.user && s.u !== A.user.uid && A.adminLog) A.adminLog('story.delete', s.u, (owner || '') + (s.c ? ': ' + s.c : ''))
 				closeViewer()
 				load()
 			}).catch(function (e) { window.alert(e.message); resume() })
@@ -495,8 +521,11 @@
 			mrow.appendChild(play)
 			box.appendChild(mrow)
 			box.appendChild(audioIn)
-			var ownName = el('p', 'story-compose__own')
+			var ownName = el('button', 'story-compose__own')
+			ownName.type = 'button'
 			ownName.hidden = true
+			ownName.title = t('Змінити трек')
+			ownName.addEventListener('click', function () { audioIn.click() }) // інакше вибрати інший трек не можна: select уже «Свій трек»
 			box.appendChild(ownName)
 
 			var msg = el('p', 'form-note-status', why)
@@ -509,13 +538,14 @@
 			document.body.appendChild(m)
 			document.body.style.overflow = 'hidden'
 
-			var file = null, isVideo = false, ownTrack = null, stopPreview = null, previewUrl = ''
+			var file = null, isVideo = false, ownTrack = null, stopPreview = null, previewUrl = '', closed = false
 			function stopPrev() {
 				if (stopPreview) { stopPreview(); stopPreview = null }
 				play.classList.remove('is-playing')
 				play.setAttribute('aria-label', t('Прослухати'))
 			}
 			function done() {
+				closed = true
 				stopPrev()
 				if (previewUrl) URL.revokeObjectURL(previewUrl)
 				m.remove()
@@ -541,7 +571,15 @@
 					prev.appendChild(p)
 					prev.hidden = false
 					pickText.textContent = t('Змінити')
-				}).catch(function (e) { file = null; msg.textContent = e.message })
+				}).catch(function (e) {
+					// нове фото/відео не підійшло - прибираємо і старий прев'ю, щоб не здавалося, що він ще обраний
+					file = null
+					prev.textContent = ''
+					prev.hidden = true
+					pickText.textContent = t('Обрати фото або відео')
+					input.value = ''
+					msg.textContent = e.message
+				})
 			})
 			sel.addEventListener('change', function () {
 				stopPrev()
@@ -553,6 +591,13 @@
 			audioIn.addEventListener('change', function () {
 				var f = audioIn.files && audioIn.files[0]
 				if (!f) { if (!ownTrack) sel.value = ''; return }
+				if ((!/^audio\/(mpeg|mp3|mp4|x-m4a|ogg)$/.test(f.type) && !/\.(mp3|m4a|ogg)$/i.test(f.name)) || f.size > MAX_AUDIO_MB * 1024 * 1024) {
+					msg.textContent = t('Музика: MP3, M4A або OGG до 10 МБ.')
+					audioIn.value = ''
+					if (!ownTrack) { sel.value = ''; play.disabled = true }
+					return
+				}
+				msg.textContent = why
 				ownTrack = f
 				ownName.textContent = '♪ ' + f.name
 				ownName.hidden = false
@@ -585,8 +630,10 @@
 				media.then(function () {
 					if (sel.value === 'own') return uploadAudio(ownTrack).then(function (url) { data.mu = url; data.mt = ownTrack.name.replace(/\.[a-z0-9]+$/i, '').slice(0, 80) })
 				}).then(function () {
-					return A.db('PUT', 'stories/' + newId(), data)
-				}).then(function () { done(); load() }).catch(function (e) {
+					// вікно закрили під час завантаження - вважаємо це скасуванням і не публікуємо
+					if (closed) return
+					return A.db('PUT', 'stories/' + newId(), data).then(function () { done(); load() })
+				}).catch(function (e) {
 					msg.textContent = e.message
 					send.disabled = false
 				})
@@ -667,10 +714,26 @@
 				var del = el('button', 'tale__del', t('Видалити'))
 				del.type = 'button'
 				del.addEventListener('click', function () {
-					if (!window.confirm(t('Видалити цю історію?'))) return
-					A.db('DELETE', 'tales/' + encodeURIComponent(x.id)).then(load).catch(function (e) { window.alert(e.message) })
+					A.confirm(t('Видалити цю історію?'), t('Видалити')).then(function (ok) {
+						if (!ok) return
+						del.disabled = true
+						A.db('DELETE', 'tales/' + encodeURIComponent(x.id)).then(function () {
+							if (A.user && x.u !== A.user.uid && A.adminLog) A.adminLog('tale.delete', x.u, (x.n || '') + ': ' + x.ti)
+							return load()
+						}).catch(function (e) { del.disabled = false; window.alert(e.message) })
+					})
 				})
 				a.appendChild(del)
+			}
+			if (A.user && A.user.uid !== x.u && !isAdmin) {
+				var rep = el('button', 'tale__rep', '⚑ ' + t('Поскаржитись'))
+				rep.type = 'button'
+				rep.addEventListener('click', function () {
+					A.report('tale', x.id, x.u, (x.n || '') + ': ' + x.ti).then(function (sent) {
+						if (sent) { rep.textContent = '✓ ' + t('Скаргу надіслано'); rep.disabled = true }
+					}, function (e) { window.alert(e.message) })
+				})
+				a.appendChild(rep)
 			}
 			return a
 		}
@@ -709,6 +772,7 @@
 				var up = file ? uploadPhoto(file) : Promise.resolve('')
 				up.then(function (url) {
 					var u = A.user
+					if (!u) throw new Error(t('Увійдіть, щоб публікувати.'))
 					var data = { u: u.uid, n: String(u.name || '').slice(0, 40), ti: ti, b: b, cat: c, ts: { '.sv': 'timestamp' } }
 					if (url) data.img = url
 					return A.db('PUT', 'tales/' + newId(), data)

@@ -34,9 +34,22 @@
 		n.addEventListener('click', function () { if (window.NTU_PROFILE) window.NTU_PROFILE.show(uid) })
 		return n
 	}
-	function act(promise, okText) {
+	// стилізоване підтвердження (NTU_AUTH.confirm), без нього - системне
+	function ask(msg, okLabel) {
+		return A.confirm ? A.confirm(msg, okLabel) : Promise.resolve(window.confirm(msg))
+	}
+	// дія над рядком: кнопки рядка вимкнені, поки запит не завершився (подвійний клік не шле запит двічі)
+	var busy = false
+	function act(row, run, okText) {
+		if (busy) return Promise.resolve()
+		busy = true
+		var btns = row ? row.querySelectorAll('button, select') : []
+		Array.prototype.forEach.call(btns, function (b) { b.disabled = true })
 		status.textContent = T('Зачекайте…')
-		return promise.then(function () { status.textContent = okText; load() }, function (e) { status.textContent = e.message })
+		return run().then(function () { status.textContent = okText; return load() }, function (e) {
+			status.textContent = (e && e.message) || T('Не вдалося виконати дію.')
+			Array.prototype.forEach.call(btns, function (b) { b.disabled = false })
+		}).then(function () { busy = false }, function () { busy = false })
 	}
 
 	function requestRow(x) {
@@ -56,10 +69,16 @@
 		subj.value = x.subj || ''
 		acts.appendChild(subj)
 		acts.appendChild(btn(T('Підтвердити'), 'btn-primary', function () {
-			if (!subj.value) { subj.focus(); status.textContent = T('Оберіть предмет, який ви викладаєте.'); return }
-			act(A.approveTeacher(x.uid, subj.value), T('Роль викладача підтверджено.'))
+			if (!subj.value) { subj.focus(); status.textContent = T('Оберіть предмет для викладача.'); return }
+			ask(T('Надати роль викладача користувачу') + ' «' + (x.n || T('Гість')) + '» (' + T(subj.value) + ')?', T('Підтвердити')).then(function (ok) {
+				if (ok) act(row, function () { return A.approveTeacher(x.uid, subj.value).then(function () { return A.adminLog('role.approve', x.uid, (x.n || '') + ' · ' + subj.value) }) }, T('Роль викладача підтверджено.'))
+			})
 		}))
-		if (x.st !== 'no') acts.appendChild(btn(T('Відхилити'), 'btn-secondary', function () { act(A.rejectTeacher(x.uid), T('Запит відхилено.')) }))
+		if (x.st !== 'no') acts.appendChild(btn(T('Відхилити'), 'btn-secondary', function () {
+			ask(T('Відхилити запит') + ' «' + (x.n || T('Гість')) + '» ' + T('на роль викладача?'), T('Відхилити')).then(function (ok) {
+				if (ok) act(row, function () { return A.rejectTeacher(x.uid).then(function () { return A.adminLog('role.reject', x.uid, (x.n || '') + (x.subj ? ' · ' + x.subj : '')) }) }, T('Запит відхилено.'))
+			})
+		}))
 		row.appendChild(acts)
 		return row
 	}
@@ -71,8 +90,9 @@
 		row.appendChild(info)
 		var acts = el('div', 'role-admin__acts')
 		acts.appendChild(btn(T('Зняти роль'), 'btn-secondary', function () {
-			if (!window.confirm(T('Зняти роль викладача з цього користувача?'))) return
-			act(A.demoteTeacher(x.uid), T('Роль викладача знято.'))
+			ask(T('Зняти роль викладача з користувача') + ' «' + (x.name || T('Гість')) + '»?', T('Зняти роль')).then(function (ok) {
+				if (ok) act(row, function () { return A.demoteTeacher(x.uid).then(function () { return A.adminLog('role.remove', x.uid, (x.name || '') + (x.subj ? ' · ' + x.subj : '')) }) }, T('Роль викладача знято.'))
+			})
 		}))
 		row.appendChild(acts)
 		return row

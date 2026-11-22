@@ -88,10 +88,10 @@
 	function exportUsers() {
 		msg(T('Завантаження…'))
 		return call({ action: 'export' }).then(function (d) {
-			var head = ['uid', 'Нікнейм', 'Email', 'Пошту підтверджено', 'Заблоковано', 'Роль', 'Предмет', 'Запит на роль викладача', 'Зареєстровано', 'Останній вхід', 'Востаннє онлайн', 'Відписався від новин']
+			var head = ['uid', 'Нікнейм', 'Email', 'Пошту підтверджено', 'Заблоковано', 'Роль', 'Предмет', 'Запит на роль викладача', 'Зареєстровано', 'Останній вхід', 'Востаннє онлайн', 'Статус «в мережі» приховано', 'Відписався від новин']
 			var lines = [head.map(csvCell).join(';')].concat(d.users.map(function (u) {
 				return [u.uid, u.name, u.email, u.verified ? 'так' : 'ні', u.disabled ? 'так' : 'ні', ROLES[u.role] || '', u.subject || '', REQ[u.teacherRequest] || '',
-					when(u.created), when(u.lastLogin), when(u.lastSeen), u.unsubscribed ? 'так' : 'ні'].map(csvCell).join(';')
+					when(u.created), when(u.lastLogin), when(u.lastSeen), u.hidden ? 'так' : 'ні', u.unsubscribed ? 'так' : 'ні'].map(csvCell).join(';')
 			}))
 			var blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' })
 			var a = document.createElement('a')

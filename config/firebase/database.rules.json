@@ -200,12 +200,75 @@
         }
       }
     },
+    "presence": {
+      ".read": "(auth != null && root.child('admins/' + auth.uid).val() === true)",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "newData.isNumber() && newData.val() <= now"
+      }
+    },
+    "adminLog": {
+      ".read": "(auth != null && root.child('admins/' + auth.uid).val() === true)",
+      ".indexOn": [
+        "ts"
+      ],
+      "$id": {
+        ".write": "(auth != null && root.child('admins/' + auth.uid).val() === true) && !data.exists() && newData.exists()",
+        ".validate": "newData.hasChildren(['a','act','ts']) && newData.child('a').val() === auth.uid && newData.child('ts').val() === now && newData.child('act').isString() && newData.child('act').val().length <= 40 && (!newData.child('n').exists() || (newData.child('n').isString() && newData.child('n').val().length <= 40)) && (!newData.child('t').exists() || (newData.child('t').isString() && newData.child('t').val().length <= 64)) && (!newData.child('d').exists() || (newData.child('d').isString() && newData.child('d').val().length <= 300))"
+      }
+    },
+    "reports": {
+      ".read": "(auth != null && root.child('admins/' + auth.uid).val() === true)",
+      "$key": {
+        ".write": "(auth != null && root.child('admins/' + auth.uid).val() === true) && !newData.exists()",
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid && auth.token.email_verified === true && !data.exists() && newData.exists()",
+          ".validate": "newData.hasChildren(['k','id','ts','r','o']) && (newData.child('k').val() === 'chat' || newData.child('k').val() === 'story' || newData.child('k').val() === 'tale') && newData.child('id').isString() && newData.child('id').val().matches(/^[A-Za-z0-9_-]{4,40}$/) && newData.child('k').val() + '_' + newData.child('id').val() === $key && newData.child('ts').val() === now && newData.child('r').isString() && newData.child('r').val().length >= 1 && newData.child('r').val().length <= 300 && newData.child('o').isString() && newData.child('o').val().matches(/^[A-Za-z0-9]{10,64}$/) && newData.child('o').val() !== auth.uid && ((newData.child('k').val() === 'chat' && root.child('chat/messages/' + newData.child('id').val() + '/u').val() === newData.child('o').val()) || (newData.child('k').val() === 'story' && root.child('stories/' + newData.child('id').val() + '/u').val() === newData.child('o').val()) || (newData.child('k').val() === 'tale' && root.child('tales/' + newData.child('id').val() + '/u').val() === newData.child('o').val())) && (!newData.child('x').exists() || (newData.child('x').isString() && newData.child('x').val().length <= 200))",
+          "k": {},
+          "id": {},
+          "ts": {},
+          "r": {},
+          "o": {},
+          "x": {},
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
+    "roleReqQuota": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('admins/' + auth.uid).val() === true)",
+        ".write": "auth != null && auth.uid === $uid && newData.exists()",
+        ".validate": "newData.hasChildren(['c','w','ts']) && newData.child('ts').val() === now && ((data.exists() && now - data.child('w').val() < 86400000 && newData.child('w').val() === data.child('w').val() && newData.child('c').val() === data.child('c').val() + 1 && newData.child('c').val() <= 2) || ((!data.exists() || now - data.child('w').val() >= 86400000) && newData.child('w').val() === now && newData.child('c').val() === 1))",
+        "c": {
+          ".validate": "newData.isNumber()"
+        },
+        "w": {
+          ".validate": "newData.isNumber()"
+        },
+        "ts": {
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
     "roleRequests": {
       ".read": "(auth != null && root.child('admins/' + auth.uid).val() === true)",
       "$uid": {
         ".read": "auth != null && auth.uid === $uid",
-        ".write": "(auth != null && auth.uid === $uid) || (auth != null && root.child('admins/' + auth.uid).val() === true)",
-        ".validate": "newData.hasChildren(['n','ts']) && newData.child('n').isString() && newData.child('n').val().length <= 40 && newData.child('ts').isNumber() && (!newData.child('subj').exists() || (newData.child('subj').isString() && newData.child('subj').val().length <= 80)) && (!newData.child('st').exists() || (newData.child('st').val() === 'no' && root.child('admins/' + auth.uid).val() === true))"
+        ".write": "(auth != null && auth.uid === $uid && (!newData.exists() || newData.parent().parent().child('roleReqQuota').child($uid).child('ts').val() === now)) || (auth != null && root.child('admins/' + auth.uid).val() === true)",
+        ".validate": "newData.hasChildren(['n','ts']) && newData.child('n').isString() && newData.child('n').val().length <= 40 && newData.child('ts').isNumber() && (!newData.child('subj').exists() || (newData.child('subj').isString() && newData.child('subj').val().length <= 80)) && (!newData.child('st').exists() || (newData.child('st').val() === 'no' && root.child('admins/' + auth.uid).val() === true))",
+        "n": {},
+        "subj": {},
+        "ts": {},
+        "st": {},
+        "$other": {
+          ".validate": false
+        }
       }
     }
   }

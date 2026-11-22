@@ -214,7 +214,10 @@
 			st = el('span', 'dm__peer-status is-typing')
 			st.appendChild(el('span', 'chat-dots'))
 			st.appendChild(document.createTextNode(t('друкує…')))
-		} else st = el('span', 'dm__peer-status' + (!p.hide && A.isOnline(p.s) ? ' is-on' : ''), statusText(p) + (p.role === 't' && p.subj ? ' · ' + t(p.subj) : ''))
+		} else {
+			st = el('span', 'dm__peer-status' + (!p.hide && A.isOnline(p.s) ? ' is-on' : ''), statusText(p) + (p.role === 't' && p.subj ? ' · ' + t(p.subj) : ''))
+			if (p.hide && A.revealHidden) A.revealHidden(p.uid, st)
+		}
 		info.appendChild(st)
 		peerBox.appendChild(info)
 	}

@@ -57,6 +57,8 @@ a {
 img {
 	display: block;
 	max-width: 100%;
+	/* width/height атрибути (збірка ставить їх для CLS) задають лише пропорції, а не фіксовану висоту */
+	height: auto;
 }
 .container {
 	width: min(var(--container), calc(100% - 48px));

@@ -39,6 +39,17 @@ function db(string $method, string $path, ?array $body = null): array
         $body === null ? null : json_encode($body, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), ['Content-Type: application/json']);
 }
 
+/** adminLog/{id}: who did what (written as the admin, so the database rules check it). Failure is not fatal. */
+function admin_log(string $act, string $target, string $detail): void
+{
+    global $adminUid, $admin;
+    $row = ['a' => $adminUid, 'act' => $act, 'ts' => ['.sv' => 'timestamp']];
+    $name = mb_substr((string)($admin['name'] ?? ''), 0, 40);
+    if ($name !== '') $row['n'] = $name;
+    if ($target !== '' && strlen($target) <= 64) $row['t'] = $target;
+    if ($detail !== '') $row['d'] = mb_substr(preg_replace('/\s+/u', ' ', $detail) ?? '', 0, 300);
+    db('POST', 'adminLog', $row);
+}
 [$code, $isAdmin] = db('GET', 'admins/' . $adminUid);
 if ($code !== 200 || $isAdmin !== true) out(403, ['error' => 'FORBIDDEN']);
 
@@ -51,6 +62,12 @@ if (!in_array($action, ['approve', 'reject'], true) || !preg_match('/^[A-Za-z0-9
 [$code, $item] = db('GET', 'materials/pending/' . $id);
 if ($code !== 200) out(502, ['error' => 'UPSTREAM']);
 if (!is_array($item)) out(404, ['error' => 'NOT_FOUND']);
+// a broken or hand-edited entry must not be published (missing type -> PHP warning, javascript: link -> XSS risk)
+$type = (string)($item['type'] ?? '');
+$url = (string)($item['url'] ?? '');
+if ($action === 'approve' && (!in_array($type, ['file', 'link', 'article'], true) || !preg_match('~^https://[^\s"<>]+$~', $url) || trim((string)($item['ti'] ?? '')) === '')) {
+    out(400, ['error' => 'BAD_ITEM']);
+}
 
 $title = mb_substr((string)($item['ti'] ?? ''), 0, 150);
 $email = (string)($item['e'] ?? '');
@@ -58,13 +75,14 @@ $name = mb_substr((string)($item['n'] ?? ''), 0, 40);
 $hello = $name !== '' ? 'Вітаємо, ' . $name . '!' : 'Вітаємо!';
 
 if ($action === 'approve') {
-    $pub = ['ti' => $title, 'type' => (string)$item['type'], 'url' => (string)$item['url'], 'ts' => (int)round(microtime(true) * 1000)];
+    $pub = ['ti' => $title, 'type' => $type, 'url' => $url, 'ts' => (int)round(microtime(true) * 1000)];
     foreach (['subj', 'd', 'fn', 'n', 'u'] as $k) {
         if (isset($item[$k]) && is_string($item[$k]) && $item[$k] !== '') $pub[$k] = $item[$k];
     }
     [$code] = db('PUT', 'materials/approved/' . $id, $pub);
     if ($code !== 200) out(502, ['error' => 'UPSTREAM']);
     db('DELETE', 'materials/pending/' . $id);
+    admin_log('material.approve', (string)($item['u'] ?? ''), $title);
     $mailed = valid_email($email) && send_mail($email, 'Ваш матеріал опубліковано на World Students', mail_render([
         'greeting' => $hello,
         'title' => 'Матеріал опубліковано',
@@ -92,6 +110,7 @@ $sent = send_mail($email, 'Ваш матеріал не опубліковано
 // the author must learn the decision: keep the entry if the email did not go out, so the admin can retry
 if (!$sent) out(502, ['error' => 'MAIL']);
 db('DELETE', 'materials/pending/' . $id);
+admin_log('material.reject', (string)($item['u'] ?? ''), $title . ' · ' . $reason);
 
 // remove the uploaded file (only our own uploads/YYYY/MM/<random>.<ext>)
 if (preg_match('~^' . preg_quote(SITE, '~') . '/uploads/(\d{4}/\d{2}/[a-f0-9]{32}\.[a-z0-9]{2,5})$~', (string)($item['url'] ?? ''), $m)) {

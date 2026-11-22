@@ -508,6 +508,22 @@
 			A.isAdmin().then(function (v) { if (v !== chatAdmin) { chatAdmin = v; render() } })
 		})
 	}
+	// «Поскаржитись» на чуже повідомлення: скарга йде в чергу суперадмінів (особистий кабінет)
+	function reportBtn(m) {
+		var b = el('button', 'chat-msg__report', '⚑')
+		b.type = 'button'
+		b.title = t('Поскаржитись')
+		b.setAttribute('aria-label', t('Поскаржитись на повідомлення'))
+		b.addEventListener('click', function (e) {
+			e.stopPropagation()
+			var A = window.NTU_AUTH
+			if (!A || !A.report) return
+			A.report('chat', m.id, m.u, (m.n || '') + ': ' + (m.t || '')).then(function (sent) {
+				if (sent) { b.textContent = '✓'; b.disabled = true; b.title = t('Скаргу надіслано') }
+			}, function (err) { window.alert(err.message) })
+		})
+		return b
+	}
 	function adminDelete(m) {
 		var del = el('button', 'chat-msg__del', '🗑')
 		del.type = 'button'
@@ -515,11 +531,14 @@
 		del.setAttribute('aria-label', del.title)
 		del.addEventListener('click', function (e) {
 			e.stopPropagation()
-			if (!window.confirm(t('Видалити це повідомлення для всіх?'))) return
-			window.NTU_AUTH.db('DELETE', 'chat/messages/' + encodeURIComponent(m.id)).then(function () {
-				messages = messages.filter(function (x) { return x.id !== m.id })
-				render()
-			}).catch(function (err) { window.alert(err.message) })
+			(window.NTU_AUTH && window.NTU_AUTH.confirm ? window.NTU_AUTH.confirm(t('Видалити це повідомлення для всіх?'), t('Видалити')) : Promise.resolve(window.confirm(t('Видалити це повідомлення для всіх?')))).then(function (ok) {
+				if (!ok) return
+				window.NTU_AUTH.db('DELETE', 'chat/messages/' + encodeURIComponent(m.id)).then(function () {
+					if (window.NTU_AUTH.adminLog) window.NTU_AUTH.adminLog('chat.delete', m.u, (m.n || '') + ': ' + (m.t || (m.f && m.f.name) || ''))
+					messages = messages.filter(function (x) { return x.id !== m.id })
+					render()
+				}).catch(function (err) { window.alert(err.message) })
+			})
 		})
 		return del
 	}
@@ -595,6 +614,7 @@
 				meta.appendChild(tick)
 			}
 			if (chatAdmin && backend.remote && m.id) meta.appendChild(adminDelete(m))
+			else if (!mine && backend.remote && m.id && window.NTU_AUTH && window.NTU_AUTH.user) meta.appendChild(reportBtn(m))
 			b.appendChild(meta)
 			if (!bad) {
 				var addR = el('button', 'chat-msg__add')

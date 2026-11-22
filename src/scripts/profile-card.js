@@ -73,7 +73,9 @@
 		head.appendChild(av)
 		var hi = el('div', 'uprof__hi')
 		hi.appendChild(el('h3', 'uprof__name', u.n || t('Користувач')))
-		hi.appendChild(el('p', 'uprof__status' + (on ? ' is-on' : ''), self ? t('Це ви') : p.hide ? t('Статус «в мережі» приховано') : A.lastSeen(u.s)))
+		var stEl = el('p', 'uprof__status' + (on ? ' is-on' : ''), self ? t('Це ви') : p.hide ? t('Статус «в мережі» приховано') : A.lastSeen(u.s))
+		hi.appendChild(stEl)
+		if (!self && p.hide && A.revealHidden) A.revealHidden(d.uid, stEl, dot)
 		if (d.full) {
 			var rl = el('p', 'uprof__role')
 			rl.appendChild(el('span', 'role-badge' + (p.role === 't' ? ' role-badge--t' : ''), p.role === 't' ? t('Викладач') : t('Учень')))

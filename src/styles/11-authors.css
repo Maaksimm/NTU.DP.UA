@@ -467,3 +467,59 @@
 		display: none; 
 	}
 }
+
+/* ===== Темна тема: картки-перепустки як темне скло з кольоровим акцентом ролі =====
+   Раніше світлий градієнт (#fff -> blue-soft) у темній темі давав білий верх і темний низ,
+   а бейджі QA/контенту зливались із фоном. Колір ролі тепер задається змінною --ac. */
+.author-card { --ac: #5aa9f5; --ac-bg: rgba(90, 169, 245, 0.14); }
+.author-card[data-role='design'] { --ac: #f5b83d; --ac-bg: rgba(245, 184, 61, 0.14); }
+.author-card[data-role='content'] { --ac: #4cc38a; --ac-bg: rgba(76, 195, 138, 0.14); }
+.author-card[data-role='qa'] { --ac: #c58af0; --ac-bg: rgba(197, 138, 240, 0.15); }
+
+[data-theme=dark] .author-card__face { box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35); }
+[data-theme=dark] .author-card__front {
+	background:
+		radial-gradient(120% 70% at 50% 0%, var(--ac-bg), transparent 62%),
+		linear-gradient(180deg, #172b45 0%, #10213a 100%);
+	border: 1px solid rgba(160, 200, 245, 0.14);
+}
+[data-theme=dark] .author-card__front::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 3px;
+	background: linear-gradient(90deg, transparent, var(--ac), transparent);
+	opacity: 0.85;
+}
+[data-theme=dark] .author-card:hover .author-card__front {
+	border-color: var(--ac);
+	box-shadow: 0 22px 44px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--ac), 0 0 36px -8px var(--ac);
+}
+[data-theme=dark] .author-card__front::before { background: rgba(160, 200, 245, 0.22); }
+[data-theme=dark] .author-card__photo-wrap::after { border-color: var(--ac); opacity: 0.75; }
+[data-theme=dark] .author-card__photo,
+[data-theme=dark] .author-card__avatar { box-shadow: 0 0 0 3px #10213a, 0 8px 22px rgba(0, 0, 0, 0.45); filter: none; }
+[data-theme=dark] .author-card h3 { color: #eef4fc; }
+[data-theme=dark] .author-card .author-card__role,
+[data-theme=dark] .author-card[data-role] .author-card__role {
+	color: var(--ac);
+	background: var(--ac-bg);
+	border: 1px solid color-mix(in srgb, var(--ac) 40%, transparent);
+}
+[data-theme=dark] .author-card__grad { color: #8fc3f7; }
+[data-theme=dark] .author-card__hint { color: #8ea4bf; }
+[data-theme=dark] .author-card__back {
+	background:
+		radial-gradient(120% 80% at 50% 0%, var(--ac-bg), transparent 65%),
+		linear-gradient(160deg, #10284a, #0b1a30);
+	border: 1px solid rgba(160, 200, 245, 0.16);
+}
+[data-theme=dark] .author-card__contrib { color: #c9d8ea; }
+[data-theme=dark] .author-card__link { color: var(--ac); border-color: color-mix(in srgb, var(--ac) 45%, transparent); }
+[data-theme=dark] .author-card__link:hover { background: var(--ac-bg); }
+[data-theme=dark] .authors-join { border-color: rgba(160, 200, 245, 0.22); background: rgba(19, 36, 59, 0.45); }
+[data-theme=dark] .authors-join:hover { border-color: var(--blue); }
+[data-theme=dark] .authors-filter { background: #13243b; color: #8fc3f7; }
+[data-theme=dark] .authors-filter.is-active { background: var(--blue); color: #fff; }

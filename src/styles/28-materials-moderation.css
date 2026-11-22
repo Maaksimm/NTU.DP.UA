@@ -26,3 +26,30 @@
 .role-admin__acts{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .role-admin__acts .btn{padding:8px 14px;font-size:13.5px}
 .role-admin__subj{padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);font:inherit;font-size:13.5px;max-width:220px}
+/* скарга на повідомлення: непомітна, з'являється при наведенні на бульбашку */
+.chat-msg__report{margin-left:8px;padding:0 2px;border:0;background:none;color:var(--muted);font-size:12px;line-height:1;cursor:pointer;opacity:0;transition:opacity .15s}
+.chat-msg:hover .chat-msg__report,.chat-msg__report:focus-visible,.chat-msg__report:disabled{opacity:.85}
+.chat-msg__report:hover{color:#b42318}
+@media(hover:none){.chat-msg__report{opacity:.6}}
+/* вікно скарги */
+.report-dlg{display:flex;flex-direction:column;gap:8px}
+.report-dlg__opt{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;cursor:pointer;font-size:14px}
+.report-dlg__opt:has(input:checked){border-color:var(--blue);background:var(--blue-pale)}
+.report-dlg__note{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px;font:inherit;resize:vertical}
+/* кабінет суперадміна: скарги, журнал дій, чистка файлів (admin-tools.js) */
+[data-admin-tools][hidden]{display:none!important}
+.admin-tools__count{display:inline-block;min-width:22px;padding:1px 7px;border-radius:999px;background:#b42318;color:#fff;font-size:12px;text-align:center;vertical-align:middle}
+.admin-tools__count:empty{display:none}
+.admin-rep__x{margin:4px 0 0;padding:8px 10px;border-left:3px solid var(--line);background:var(--section);border-radius:8px;font-size:14px;overflow-wrap:anywhere}
+.admin-rep__why{font-size:13px;color:var(--muted)}
+.admin-log{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.admin-log__row{display:grid;grid-template-columns:120px 1fr;gap:4px 12px;padding:10px 14px;border-top:1px solid var(--line);font-size:14px}
+.admin-log__row:first-child{border-top:0}
+.admin-log__when{color:var(--muted);font-size:13px;white-space:nowrap}
+.admin-log__what b{color:var(--ink)}
+.admin-log__d{grid-column:2;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+.admin-log__empty{padding:12px 14px;color:var(--muted)}
+.admin-tools__more{margin-top:10px}
+.admin-tools__files{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.admin-tools__files span{padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:13px}
+@media(max-width:560px){.admin-log__row{grid-template-columns:1fr}.admin-log__d{grid-column:1}}

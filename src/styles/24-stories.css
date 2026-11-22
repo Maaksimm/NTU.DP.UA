@@ -93,5 +93,13 @@ video.story-view__img{width:100%;height:100%;object-fit:contain;background:#000}
 .story-compose__play::before{content:"";position:absolute;top:50%;left:50%;width:0;height:0;border-style:solid;border-width:7px 0 7px 12px;border-color:transparent transparent transparent currentColor;transform:translate(-38%,-50%)}
 .story-compose__play.is-playing::before{width:12px;height:12px;border:0;border-radius:2px;background:currentColor;transform:translate(-50%,-50%)}
 .story-compose__play:disabled{opacity:.4;cursor:default}
-.story-compose__own{margin:0 0 6px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+.story-compose__own{display:block;width:100%;text-align:left;background:none;border:0;padding:0;font:inherit;cursor:pointer;margin:0 0 6px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
 .tales-side{display:flex;flex-direction:column;gap:18px}
+.story-compose__own[hidden]{display:none}
+/* скарга на сторіз / історію */
+.story-view__rep{margin-left:auto;width:34px;height:34px;border:0;border-radius:50%;background:rgba(0,0,0,.35);color:#fff;font-size:15px;cursor:pointer}
+.story-view__rep:not([hidden])+.story-view__del,.story-view__rep:not([hidden])~.story-view__close{margin-left:0}
+.story-view__rep:hover{background:rgba(180,35,24,.7)}
+.tale__rep{display:inline-block;margin:0 0 18px 18px;padding:0;border:0;background:none;color:var(--muted);font:inherit;font-size:13px;cursor:pointer}
+.tale__rep:hover{color:#c0392b}
+.tale__rep:disabled{cursor:default;color:var(--muted)}

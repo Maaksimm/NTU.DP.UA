@@ -121,8 +121,10 @@ function footer() {
 function head(fm) {
 	const url = site.url + (fm.path === 'index.html' ? '' : fm.path)
 	const img = site.url + fm.image
+	const ogSize = imgSize(fm.image)
 	const ld = [{
 		'@context': 'https://schema.org', '@type': 'WebPage', name: fm.title, description: fm.description, url, inLanguage: 'uk',
+		dateModified: fm.lastmod, primaryImageOfPage: { '@type': 'ImageObject', url: img, ...(ogSize ? { width: ogSize[0], height: ogSize[1] } : {}) },
 		isPartOf: { '@type': 'WebSite', name: site.name, url: site.url },
 		about: { '@type': 'CollegeOrUniversity', name: 'НТУ «Дніпровська політехніка»', url: 'https://nmu.org.ua/' },
 	}]
@@ -142,12 +144,18 @@ function head(fm) {
 		`<meta property="og:description" content="${esc(fm.description)}">`,
 		`<meta property="og:url" content="${url}">`,
 		`<meta property="og:image" content="${img}">`,
+		ogSize ? `<meta property="og:image:width" content="${ogSize[0]}">` : null,
+		ogSize ? `<meta property="og:image:height" content="${ogSize[1]}">` : null,
+		`<meta property="og:image:alt" content="${esc(fm.title)}">`,
 		'<meta name="twitter:card" content="summary_large_image">',
 		`<meta name="twitter:title" content="${esc(fm.title)}">`,
 		`<meta name="twitter:description" content="${esc(fm.description)}">`,
 		`<meta name="twitter:image" content="${img}">`,
+		`<meta name="twitter:image:alt" content="${esc(fm.title)}">`,
 		'<link rel="preconnect" href="https://fonts.googleapis.com">', '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
-		`<link href="${site.fonts}" rel="stylesheet">`,
+		// шрифти не блокують першу відмальовку: preload + перемикання на stylesheet після завантаження (display=swap у URL)
+		`<link rel="preload" as="style" href="${site.fonts}" onload="this.onload=null;this.rel='stylesheet'">`,
+		`<noscript><link href="${site.fonts}" rel="stylesheet"></noscript>`,
 		'<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">',
 		'<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">',
 		'<link rel="icon" href="assets/img/favicon-16.png" sizes="16x16" type="image/png">',
@@ -186,6 +194,48 @@ function unifyCrumbs(fm, file, body) {
 /* ---------------------------------------------------------------- images */
 // <img src="assets/img/x.jpg|png"> with an x.webp next to it (outside a <picture>) gets a WebP <source>.
 // The <picture class="wp"> wrapper is display:contents, so the layout stays the same as with a bare <img>.
+/* ---------------------------------------------------------------- image sizes */
+// width/height on <img> let the browser reserve space before the image loads (no layout shift, better CLS).
+// Header parsing only, no dependencies: JPEG (SOFn), PNG (IHDR), WebP (VP8 / VP8L / VP8X), SVG (width/height or viewBox).
+const sizeCache = {}
+function imgSize(rel) {
+	if (rel in sizeCache) return sizeCache[rel]
+	let r = null
+	try {
+		const b = fs.readFileSync(path.join(ROOT, 'public', rel))
+		if (b[0] === 0x89 && b.toString('ascii', 1, 4) === 'PNG') r = [b.readUInt32BE(16), b.readUInt32BE(20)]
+		else if (b[0] === 0xff && b[1] === 0xd8) {
+			for (let i = 2; i < b.length - 9;) {
+				if (b[i] !== 0xff) { i++; continue }
+				const mk = b[i + 1], len = b.readUInt16BE(i + 2)
+				if (mk >= 0xc0 && mk <= 0xcf && mk !== 0xc4 && mk !== 0xc8 && mk !== 0xcc) { r = [b.readUInt16BE(i + 7), b.readUInt16BE(i + 5)]; break }
+				i += 2 + len
+			}
+		} else if (b.toString('ascii', 0, 4) === 'RIFF' && b.toString('ascii', 8, 12) === 'WEBP') {
+			const t = b.toString('ascii', 12, 16)
+			if (t === 'VP8 ') r = [b.readUInt16LE(26) & 0x3fff, b.readUInt16LE(28) & 0x3fff]
+			else if (t === 'VP8L') { const v = b.readUInt32LE(21); r = [(v & 0x3fff) + 1, ((v >> 14) & 0x3fff) + 1] }
+			else if (t === 'VP8X') r = [1 + b.readUIntLE(24, 3), 1 + b.readUIntLE(27, 3)]
+		} else if (/\.svg$/i.test(rel)) {
+			const t = b.toString('utf8', 0, 2000)
+			const w = t.match(/<svg[^>]*\swidth="([\d.]+)"/), h = t.match(/<svg[^>]*\sheight="([\d.]+)"/), vb = t.match(/viewBox="[\d.\s-]*?([\d.]+)\s+([\d.]+)"/)
+			if (w && h) r = [Math.round(+w[1]), Math.round(+h[1])]
+			else if (vb) r = [Math.round(+vb[1]), Math.round(+vb[2])]
+		}
+	} catch (e) { r = null }
+	if (r && !(r[0] > 0 && r[1] > 0)) r = null
+	return (sizeCache[rel] = r)
+}
+function imgDims(body) {
+	return body.replace(/<img\b[^>]*>/gi, tag => {
+		if (/\swidth=/.test(tag) || /\sheight=/.test(tag)) return tag
+		if (/\ssrc="https:\/\/i\.ytimg\.com\/vi\/[^"]+\/hqdefault\.jpg"/.test(tag)) return tag.replace(/^<img\b/i, '<img width="480" height="360"')
+		const m = tag.match(/\ssrc="(assets\/img\/[^"?#]+)"/)
+		const sz = m && imgSize(m[1])
+		return sz ? tag.replace(/^<img\b/i, `<img width="${sz[0]}" height="${sz[1]}"`) : tag
+	})
+}
+
 function webpPictures(body) {
 	return body.replace(/<picture[\s\S]*?<\/picture>|<img\b[^>]*\ssrc="(assets\/img\/[^"?]+)\.(jpe?g|png)"[^>]*>/gi, (tag, base) => {
 		if (!base || !fs.existsSync(path.join(ROOT, 'public', base + '.webp'))) return tag
@@ -208,6 +258,11 @@ function glassArt(body, file) {
 /* ---------------------------------------------------------------- pages */
 const FM_RE = /^<!--\s*(\{[\s\S]*?\})\s*-->\s*/
 const pages = []
+// Real «last modified» dates for sitemap.xml and JSON-LD: tools/lastmod.json keeps {page: [contentHash, date]};
+// the date moves only when the page source changes (a build alone does not make Google think everything changed).
+const LASTMOD_FILE = path.join(ROOT, 'tools', 'lastmod.json')
+const lastmodDb = fs.existsSync(LASTMOD_FILE) ? JSON.parse(read(LASTMOD_FILE)) : {}
+const today = new Date().toISOString().slice(0, 10)
 for (const f of listDir(path.join(SRC, 'pages'), '.html')) {
 	const raw = read(path.join(SRC, 'pages', f))
 	const m = raw.match(FM_RE)
@@ -217,13 +272,19 @@ for (const f of listDir(path.join(SRC, 'pages'), '.html')) {
 	for (const k of ['title', 'description', 'page']) if (!fm[k]) throw new Error(f + ': front matter needs "' + k + '"')
 	fm.path = fm.path || f
 	fm.image = fm.image || site.defaultImage
-	const body = glassArt(webpPictures(unifyCrumbs(fm, f, raw.slice(m[0].length).replace(/\s+$/, ''))), f)
+	{
+		const h = hash(raw)
+		if (!lastmodDb[f] || lastmodDb[f][0] !== h) lastmodDb[f] = [h, today]
+		fm.lastmod = lastmodDb[f][1]
+	}
+	const body = imgDims(glassArt(webpPictures(unifyCrumbs(fm, f, raw.slice(m[0].length).replace(/\s+$/, ''))), f))
 	const scripts = [...site.scripts, ...(fm.scripts || [])].map(s => `<script src="${asset('assets/js/' + s)}"></script>`)
 	const html = ['<!DOCTYPE html>', '<html lang="uk">', head(fm), '', `<body data-page="${esc(fm.page)}">`,
 		'<a class="skip-link" href="#main">Перейти до змісту</a>', partial('preloader'), header(fm.page), body, '', footer(), ...scripts, '</body>', '</html>', ''].join('\n')
 		// /index.html відповідає 301 на /, тому посилання на головну ведуть одразу на "./" (Search Console: «Сторінка з переадресацією»)
 		.replace(/href="index\.html(?=["#])/g, 'href="./')
 	write(path.join(OUT, f), html)
+	fm.file = f
 	pages.push(fm)
 }
 
@@ -260,12 +321,13 @@ for (const f of listDir(path.join(SRC, 'pages'), '.html')) {
 }
 
 /* ---------------------------------------------------------------- sitemap */
-const today = new Date().toISOString().slice(0, 10)
+for (const k of Object.keys(lastmodDb)) if (!pages.some(p => p.file === k)) delete lastmodDb[k]
+write(LASTMOD_FILE, JSON.stringify(Object.fromEntries(Object.entries(lastmodDb).sort()), null, '\t') + '\n')
 const indexable = pages.filter(p => !/noindex/.test(p.robots || '')).sort((a, b) => (a.path === 'index.html' ? -1 : b.path === 'index.html' ? 1 : a.path.localeCompare(b.path)))
 write(path.join(OUT, 'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
 	indexable.map(p => {
 		const sm = Object.assign({ changefreq: 'monthly', priority: '0.7' }, p.sitemap)
-		return `<url><loc>${site.url}${p.path === 'index.html' ? '' : p.path}</loc><lastmod>${today}</lastmod><changefreq>${sm.changefreq}</changefreq><priority>${sm.priority}</priority></url>`
+		return `<url><loc>${site.url}${p.path === 'index.html' ? '' : p.path}</loc><lastmod>${p.lastmod}</lastmod><changefreq>${sm.changefreq}</changefreq><priority>${sm.priority}</priority></url>`
 	}).join('\n') +
 	'\n</urlset>\n')
 
