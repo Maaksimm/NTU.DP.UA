@@ -53,3 +53,24 @@
 .admin-tools__files{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
 .admin-tools__files span{padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:13px}
 @media(max-width:560px){.admin-log__row{grid-template-columns:1fr}.admin-log__d{grid-column:1}}
+/* статистика відвідувачів (admin-stats.js) */
+[data-admin-stats][hidden]{display:none!important}
+.admin-stats__range{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px;margin:8px 0 14px}
+.admin-stats__range label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+.admin-stats__range input{padding:8px 10px;border:1px solid var(--line);border-radius:10px;font:inherit}
+.admin-stats__quick{display:flex;gap:6px;flex-wrap:wrap}
+.admin-stats__kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.admin-stats__kpi{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.admin-stats__kpi b{display:block;font:800 26px Manrope,sans-serif;color:var(--ink)}
+.admin-stats__kpi span{font-size:13px;color:var(--muted)}
+.admin-stats__chart{display:flex;align-items:flex-end;gap:4px;height:150px;padding:10px 4px 0;border-bottom:1px solid var(--line);overflow-x:auto}
+.admin-stats__bar{flex:1 0 14px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;min-width:14px}
+.admin-stats__bar i{display:block;width:100%;max-width:34px;border-radius:6px 6px 0 0;background:var(--blue);min-height:2px}
+.admin-stats__bar small{margin-top:4px;font-size:10px;color:var(--muted);white-space:nowrap}
+.admin-stats__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px}
+.admin-stats__box{padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.admin-stats__box h4{margin:0 0 8px;font:800 14px Manrope,sans-serif}
+.admin-stats__row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:4px 0;font-size:13px;position:relative}
+.admin-stats__row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;position:relative;z-index:1}
+.admin-stats__row b{position:relative;z-index:1}
+.admin-stats__row::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:var(--w,0);background:var(--blue-soft);border-radius:6px}

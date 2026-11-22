@@ -4,7 +4,7 @@
 	"description": "Особистий кабінет користувача студентської платформи World Students.",
 	"page": "account",
 	"robots": "noindex, follow",
-	"scripts": ["community.js", "dm.js", "role-admin.js", "admin-tools.js"],
+	"scripts": ["community.js", "dm.js", "role-admin.js", "admin-tools.js", "admin-stats.js"],
 	"breadcrumbs": [
 		["Головна", "index.html"],
 		["Платформа", "platform.html"],
@@ -76,6 +76,23 @@
 <h3 class="role-admin__h">Викладачі</h3>
 <div class="role-admin__list" data-ra-teachers></div>
 <p class="form-note-status" data-ra-status role="status"></p>
+</div>
+<div class="card account__panel role-admin admin-stats" data-admin-stats hidden>
+<h2 style="font-size:20px">Відвідувачі сайту</h2>
+<form class="admin-stats__range" data-st-form>
+<label>З <input type="date" name="from" required></label>
+<label>По <input type="date" name="to" required></label>
+<div class="admin-stats__quick"><button type="button" class="res-chip" data-st-quick="0">Сьогодні</button><button type="button" class="res-chip" data-st-quick="6">7 днів</button><button type="button" class="res-chip" data-st-quick="29">30 днів</button></div>
+<button type="submit" class="btn btn-primary">Показати</button>
+</form>
+<div class="admin-stats__kpis" data-st-kpis></div>
+<div class="admin-stats__chart" data-st-chart role="img" aria-label="Відвідувачі по днях"></div>
+<div class="admin-stats__grid" data-st-grid></div>
+<h3 class="role-admin__h">Зареєстровані користувачі, що заходили</h3>
+<div class="role-admin__list" data-st-users></div>
+<div class="actions"><button type="button" class="btn btn-secondary" data-st-csv="days">CSV по днях</button><button type="button" class="btn btn-secondary" data-st-csv="raw">CSV усі перегляди</button></div>
+<p class="account__hint">Гості рахуються без cookies: унікальний відвідувач за день визначається за одноразовим хешем, IP-адреса не зберігається. Для залогінених видно акаунт. Боти не враховуються.</p>
+<p class="form-note-status" data-st-status role="status"></p>
 </div>
 <div class="card account__panel role-admin admin-tools" data-admin-tools hidden>
 <h2 style="font-size:20px">Модерація</h2>

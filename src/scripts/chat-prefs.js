@@ -28,7 +28,7 @@
 	var BG_RE = /^https:\/\/ntu\.dp\.ua\/uploads\/\d{4}\/\d{2}\/[a-f0-9]{16,64}\.(jpg|jpeg|png|webp)$/
 	var COLOR_RE = /^#[0-9a-f]{6}$/
 	var DEFAULT_COLOR = '#1a6fc4'
-	var BG_MAX_PX = 1600
+	var BG_MAX_PX = 1920
 	var BG_MAX_MB = 15
 	var THEME_IDS = THEMES.map(function (x) { return x.id })
 
@@ -147,20 +147,96 @@
 		if (!node) return
 		var id = key ? theme(key) : 'base'
 		if (id === 'base') node.removeAttribute('data-ctheme'); else node.setAttribute('data-ctheme', id)
-		if (id !== 'custom') { ['--ct-bg', '--ct-own', '--ct-own2'].forEach(function (v) { node.style.removeProperty(v) }); return }
+		if (id !== 'custom') { ['--ct-bg', '--ct-own', '--ct-own2'].forEach(function (v) { node.style.removeProperty(v) }); dropFx(node); return }
 		var c = state.custom || {}, col = c.c || DEFAULT_COLOR
-		// URL перевірений BG_RE (лише латиниця, цифри, / . -), тож у CSS його можна вставити без екранування
-		var dark = document.documentElement.getAttribute('data-theme') === 'dark'
-		var tint = dark ? [shade(col, 0.22), shade(col, 0.14)] : [shade(col, 1.9), shade(col, 1.8)]
-		// фото: cover по центру - підлаштовується під будь-який розмір панелі (телефон, зміна розміру, повний екран);
-		// у темній темі поверх фото - напівпрозора темна вуаль, щоб світле фото не сліпило і бульбашки читались
-		var veil = dark ? 'linear-gradient(rgba(8,16,30,.46),rgba(8,16,30,.46)), ' : 'linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.08)), '
-		node.style.setProperty('--ct-bg', c.bg ? veil + 'url("' + c.bg + '") center / cover no-repeat ' + tint[1] : 'linear-gradient(160deg,' + tint[0] + ',' + tint[1] + ')')
 		node.style.setProperty('--ct-own', col)
 		node.style.setProperty('--ct-own2', shade(col, 0.78))
+		watch(node)
+		paintCustom(node)
 	}
 
-	/* ---------- своя тема: фото фону (стискаємо до 1600 px JPEG і вантажимо на сервер) + колір ---------- */
+	/* ---------- своє фото фону: підлаштування під розмір панелі ----------
+	   Фото малюється окремим шаром .ct-bgfx позаду списку повідомлень (z-index -1 в ізольованій панелі):
+	   розмита копія (CSS filter - працює з будь-якого домену, без canvas) + саме фото.
+	   Якщо пропорції фото й області повідомлень сильно різняться (портретне фото в широкому чаті) або фото
+	   довелося б розтягувати більш ніж удвічі - фото показується цілим (contain) на тлі своєї розмитої копії,
+	   інакше - cover. Шар з'являється плавно, коли фото завантажилось; до того видно колір теми.
+	   Перераховується при зміні розміру панелі (ResizeObserver). */
+	var bgInfo = {}
+	var painted = []
+	var pendingSrc = ''   // blob: щойно обраного фото, поки воно вантажиться на сервер
+	var localSrc = {}     // url на сервері -> blob: того самого файлу (без повторного скачування в цій сесії)
+	function loadBg(src) {
+		if (bgInfo[src]) return bgInfo[src]
+		var info = bgInfo[src] = { w: 0, h: 0, ok: false, bad: false }
+		var im = new Image()
+		im.decoding = 'async'
+		im.onload = function () {
+			info.w = im.naturalWidth
+			info.h = im.naturalHeight
+			info.ok = true
+			painted.forEach(function (n) { if (n.isConnected && n.getAttribute('data-ctheme') === 'custom') paintCustom(n) })
+		}
+		im.onerror = function () { info.ok = true; info.bad = true }
+		im.src = src
+		return info
+	}
+	function watch(node) {
+		if (painted.indexOf(node) >= 0) return
+		painted.push(node)
+		if (!('ResizeObserver' in window)) return
+		var raf = 0
+		new ResizeObserver(function () {
+			cancelAnimationFrame(raf)
+			raf = requestAnimationFrame(function () { if (node.getAttribute('data-ctheme') === 'custom') paintCustom(node) })
+		}).observe(node)
+	}
+	function dropFx(node) {
+		var fx = node.querySelector(':scope > .ct-bgfx')
+		if (fx) fx.remove()
+		node.removeAttribute('data-ctimg')
+	}
+	function paintCustom(node) {
+		var c = state.custom || {}, col = c.c || DEFAULT_COLOR
+		var dark = document.documentElement.getAttribute('data-theme') === 'dark'
+		var tint = dark ? [shade(col, 0.22), shade(col, 0.14)] : [shade(col, 1.9), shade(col, 1.8)]
+		node.style.setProperty('--ct-bg', 'linear-gradient(160deg,' + tint[0] + ',' + tint[1] + ')')
+		var src = pendingSrc || localSrc[c.bg] || c.bg || ''
+		if (!src) { dropFx(node); return }
+		node.setAttribute('data-ctimg', '')
+		var fx = node.querySelector(':scope > .ct-bgfx')
+		if (!fx) {
+			fx = document.createElement('div')
+			fx.className = 'ct-bgfx'
+			fx.setAttribute('aria-hidden', 'true')
+			fx.innerHTML = '<i class="ct-bgfx__blur"></i><i class="ct-bgfx__img"></i><i class="ct-bgfx__veil"></i>'
+			node.insertBefore(fx, node.firstChild)
+		}
+		// src - або blob:, або URL, перевірений BG_RE (лише латиниця, цифри, / . -): у CSS вставляється без екранування
+		if (fx.getAttribute('data-src') !== src) {
+			fx.setAttribute('data-src', src)
+			fx.classList.remove('is-ready')
+			fx.style.setProperty('--ct-img', 'url("' + src + '")')
+		}
+		// шар займає саме область повідомлень, щоб фото було по центру видимої частини
+		var list = node.querySelector('.chat-list, .dm__msgs')
+		if (list) { fx.style.top = list.offsetTop + 'px'; fx.style.height = list.offsetHeight + 'px' }
+		var info = loadBg(src)
+		if (!info.ok || info.bad) return
+		var bw = list ? list.clientWidth : node.clientWidth, bh = list ? list.clientHeight : node.clientHeight
+		var fit = 'cover'
+		if (bw > 0 && bh > 0 && info.w && info.h) {
+			var ratio = (info.w / info.h) / (bw / bh)
+			var scale = Math.max(bw / info.w, bh / info.h) * Math.min(window.devicePixelRatio || 1, 2)
+			if (ratio < 0.62 || ratio > 1.6 || scale > 2.2) fit = 'contain'
+		}
+		fx.setAttribute('data-fit', fit)
+		fx.classList.add('is-ready')
+	}
+	// фон завантажується одразу при відкритті сторінки, а не в момент відкриття чату
+	function preloadBg() { if (state.custom && state.custom.bg) loadBg(state.custom.bg) }
+
+	/* ---------- своя тема: фото фону (стискаємо до 2048 px WebP/JPEG і вантажимо на сервер) + колір ---------- */
 	function compressBg(file) {
 		return new Promise(function (res, rej) {
 			if (!file || !/^image\/(jpeg|png|webp)$/.test(file.type)) return rej(new Error(t('Оберіть фото у форматі JPG, PNG або WebP.')))
@@ -172,9 +248,19 @@
 				var cv = document.createElement('canvas')
 				cv.width = Math.round(img.width * k)
 				cv.height = Math.round(img.height * k)
-				cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height)
+				var g = cv.getContext('2d')
+				g.fillStyle = '#fff'
+				g.fillRect(0, 0, cv.width, cv.height)
+				g.drawImage(img, 0, 0, cv.width, cv.height)
 				URL.revokeObjectURL(url)
-				cv.toBlob(function (b) { b ? res(new File([b], 'chat-bg.jpg', { type: 'image/jpeg' })) : rej(new Error(t('Не вдалося прочитати зображення.'))) }, 'image/jpeg', 0.82)
+				// WebP (у 2-3 рази легший за JPEG тієї ж якості); браузер без WebP-кодера поверне PNG - тоді JPEG
+				var asJpeg = function () {
+					cv.toBlob(function (b) { b ? res(new File([b], 'chat-bg.jpg', { type: 'image/jpeg' })) : rej(new Error(t('Не вдалося прочитати зображення.'))) }, 'image/jpeg', 0.84)
+				}
+				cv.toBlob(function (b) {
+					if (b && b.type === 'image/webp') res(new File([b], 'chat-bg.webp', { type: 'image/webp' }))
+					else asJpeg()
+				}, 'image/webp', 0.82)
 			}
 			img.onerror = function () { URL.revokeObjectURL(url); rej(new Error(t('Не вдалося прочитати зображення.'))) }
 			img.src = url
@@ -186,16 +272,29 @@
 		writeLocal()
 		emit()
 	}
+	function repaint() { painted.forEach(function (n) { if (n.isConnected && n.getAttribute('data-ctheme') === 'custom') paintCustom(n) }) }
 	function uploadBg(file, onStatus) {
 		var a = A()
 		if (!a || !a.remote || !a.user) return Promise.reject(new Error(t('Увійдіть, щоб завантажити свій фон.')))
 		onStatus(t('Завантажуємо…'))
+		var blob = ''
 		return compressBg(file).then(function (f) {
+			// одразу показуємо стиснене фото з пам'яті - не чекаємо, поки воно дійде на сервер і завантажиться назад
+			blob = URL.createObjectURL(f)
+			pendingSrc = blob
+			repaint()
 			return a.upload(f, 'chat', function (pc) { onStatus(t('Завантажуємо…') + ' ' + pc + '%') })
 		}).then(function (r) {
 			if (!r || !BG_RE.test(r.url || '')) throw new Error(t('Не вдалося завантажити файл.'))
+			localSrc[r.url] = blob
+			pendingSrc = ''
 			var c = state.custom || {}
 			setCustom({ bg: r.url, c: c.c || '' }, true)
+		}, function (e) {
+			pendingSrc = ''
+			if (blob) URL.revokeObjectURL(blob)
+			repaint()
+			throw e
 		})
 	}
 
@@ -358,6 +457,9 @@
 	window.addEventListener('resize', place)
 
 	window.addEventListener('storage', function (e) { if (e.key === LS_KEY) { state = readLocal(); emit() } })
+	// своє фото фону - у кеш одразу (і після зміни теми / синхронізації з іншого пристрою)
+	preloadBg()
+	listeners.push(preloadBg)
 
 	window.NTU_CHATPREFS = {
 		THEMES: THEMES,

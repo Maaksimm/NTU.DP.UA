@@ -81,3 +81,15 @@
 .dm__item.is-pinned.is-active{background:var(--blue-soft)}
 .dm__pinmark{margin-right:4px;font-size:12px}
 @media(prefers-reduced-motion:reduce){.chat-members{animation:none}.chat-members__pin,.dm__tool{transition:none}}
+/* своє фото фону (chat-prefs.js paintCustom): шар .ct-bgfx позаду області повідомлень */
+[data-ctimg]{isolation:isolate}
+[data-ctimg] .chat-list,[data-ctimg] .dm__msgs{background:transparent}
+.ct-bgfx{position:absolute;left:0;right:0;top:0;height:100%;z-index:-1;overflow:hidden;pointer-events:none;background:var(--ct-bg)}
+.ct-bgfx i{position:absolute;inset:0;background-image:var(--ct-img);background-position:center;background-repeat:no-repeat;background-size:cover;opacity:0;transition:opacity .35s ease}
+.ct-bgfx.is-ready i{opacity:1}
+.ct-bgfx__blur{inset:-40px!important;filter:blur(30px) saturate(1.2) brightness(.92)}
+.ct-bgfx[data-fit=cover] .ct-bgfx__blur{display:none}
+.ct-bgfx[data-fit=contain] .ct-bgfx__img{background-size:contain}
+.ct-bgfx .ct-bgfx__veil{background:rgba(255,255,255,.06);opacity:1}
+[data-theme=dark] .ct-bgfx .ct-bgfx__veil{background:rgba(8,16,30,.46)}
+@media(prefers-reduced-motion:reduce){.ct-bgfx i{transition:none}}
