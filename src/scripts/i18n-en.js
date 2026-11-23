@@ -3829,6 +3829,7 @@ window.I18N_EN = {
  "🤝 Співавтор платформи": "🤝 Platform co-author",
  "Співавтор платформи, випускник 2020. Розробник платформи.": "Platform co-author, class of 2020. Developer of the platform.",
  "Студентки Дніпровської політехніки біля приймальної комісії": "Dnipro University of Technology students near the admissions office",
+ "Команда студентів Дніпровської політехніки з нагородами «Битви вишів»": "Dnipro University of Technology student team with their «Battle of Universities» awards",
  "Студентки Дніпровської політехніки в кампусі університету": "Dnipro University of Technology students on campus",
  "Твоя Політехніка. Твій студентський простір": "Your Polytechnic. Your student space",
  "Навчання, екзамени, матеріали, події та студентське життя - всі можливості Дніпровської політехніки в одному місці.": "Studies, exams, materials, events and student life - everything Dnipro University of Technology offers in one place.",
