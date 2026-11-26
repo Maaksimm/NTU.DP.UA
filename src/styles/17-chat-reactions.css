@@ -51,3 +51,10 @@ html.chat-full-open{overflow:hidden}
 .chat-toast[hidden]{display:none}
 @media(prefers-reduced-motion:reduce){.chat-heart,.chat-react,.chat-rpick,.chat-toast{animation:none}.chat-heart{display:none}}
 .chat.is-full{background:rgba(11,37,69,.35);backdrop-filter:blur(2px)}
+
+/* клікабельні посилання в загальному чаті та особистих повідомленнях */
+.chat-link{color:var(--blue);text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere;word-break:break-word}
+.chat-link:hover{text-decoration-thickness:2px}
+.chat-msg.is-mine .chat-link,.dm-msg.is-mine .chat-link{color:#fff}
+[data-theme=dark] .chat-link{color:#7cc4ff}
+[data-theme=dark] .chat-msg.is-mine .chat-link,[data-theme=dark] .dm-msg.is-mine .chat-link{color:#fff}

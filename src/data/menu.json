@@ -323,6 +323,12 @@
           "desc": "Ключові етапи з 1899 року"
         },
         {
+          "nav": "alumni",
+          "href": "alumni.html",
+          "label": "Видатні випускники",
+          "desc": "42 імені: уряд, наука, промисловість"
+        },
+        {
           "nav": "structure",
           "href": "structure.html",
           "label": "Структура",

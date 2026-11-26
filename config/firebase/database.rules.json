@@ -171,6 +171,16 @@
         }
       }
     },
+    "storyViews": {
+      "$sid": {
+        ".read": "auth != null && (root.child('stories/' + $sid + '/u').val() === auth.uid || root.child('admins/' + auth.uid).val() === true)",
+        ".write": "auth != null && !newData.exists() && (root.child('stories/' + $sid + '/u').val() === auth.uid || root.child('admins/' + auth.uid).val() === true)",
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid && root.child('stories/' + $sid).exists() && root.child('stories/' + $sid + '/u').val() !== auth.uid",
+          ".validate": "newData.isNumber() && newData.val() <= now"
+        }
+      }
+    },
     "admins": {
       "$uid": {
         ".read": "auth != null && auth.uid === $uid",
@@ -273,4 +283,3 @@
     }
   }
 }
- 

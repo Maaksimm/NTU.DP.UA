@@ -8,6 +8,7 @@
 	try { sessionStorage.setItem('ntu-pl', '1') } catch (e) {}
 	document.body.classList.add('loading')
 	const t0 = performance.now(), MIN = 1700
+	const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 	let loaded = false, shown = 0, finished = false
 	window.addEventListener('load', () => (loaded = true))
 	const bar = () => document.getElementById('plBar'), num = () => document.getElementById('plNum')
@@ -15,10 +16,23 @@
 		if (finished) return
 		finished = true
 		const p = document.querySelector('.preloader')
+		const n = num()
+		if (n) n.className = 'pl-num'
+		// 100 % stays a moment, the number lifts out of its mask, then the panel slides up
+		setTimeout(() => { if (p) p.classList.add('done') }, 320)
 		setTimeout(() => {
 			if (p) p.classList.add('hide')
 			document.body.classList.remove('loading')
-		}, 260)
+		}, 820)
+	}
+	// while counting, the digits switch between typefaces (Manrope, mono, serif italic, Onest)
+	let lastFont = 0, fontIdx = 0
+	function swapFont(now) {
+		if (now - lastFont < 140) return
+		lastFont = now
+		fontIdx = (fontIdx + 1 + Math.floor(Math.random() * 3)) % 4
+		const n = num()
+		if (n) n.className = 'pl-num' + (fontIdx ? ' f' + fontIdx : '')
 	}
 	function tick() {
 		const el = performance.now() - t0
@@ -28,6 +42,7 @@
 		if (bar()) bar().style.width = shown + '%'
 		if (num()) num().textContent = Math.round(shown)
 		if (shown >= 100) return finish()
+		if (!reduce) swapFont(performance.now())
 		requestAnimationFrame(tick)
 	}
 	requestAnimationFrame(tick)
@@ -100,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	initAuthorsPage()
 	initGalleryLightbox()
 	initResourceFilter()
+	initAlumni()
 	initAdmissionTable()
 	initDormSlider()
 	initMediaFilter()

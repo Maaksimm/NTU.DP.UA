@@ -218,6 +218,8 @@
 			'<button type="button" class="story-view__del" hidden></button><button type="button" class="story-view__close">✕</button></div>' +
 			'<div class="story-view__media"></div><p class="story-view__music" hidden></p><p class="story-view__cap"></p>' +
 			'<button type="button" class="story-view__like"><span class="story-view__heart" aria-hidden="true">♡</span><span class="story-view__likes"></span></button>' +
+			'<button type="button" class="story-view__stats" hidden><span class="story-view__eye" aria-hidden="true"></span><span class="story-view__views"></span></button>' +
+			'<div class="story-view__sheet" hidden></div>' +
 			'<span class="story-view__burst" aria-hidden="true">❤</span>' +
 			'<button type="button" class="story-view__nav story-view__nav--prev"></button>' +
 			'<button type="button" class="story-view__nav story-view__nav--next"></button></div>'
@@ -245,6 +247,13 @@
 				if (e.target.closest('.story-view__mute')) return toggleMute()
 				if (e.target.closest('.story-view__del')) return removeCurrent()
 				if (e.target.closest('.story-view__rep')) return reportCurrent()
+				if (e.target.closest('.story-view__stats')) return openStats()
+				if (e.target.closest('.story-view__sheet')) {
+					var tab = e.target.closest('[data-stab]')
+					if (tab) return paintStats(tab.getAttribute('data-stab'))
+					if (e.target.closest('.story-view__sheet-x')) return closeStats()
+					return
+				}
 				var nav = e.target.closest('.story-view__nav')
 				if (!nav) return
 				var now = Date.now()
@@ -266,7 +275,7 @@
 		}
 		function onKey(e) {
 			if (!viewer || document.querySelector('.modal--confirm')) return // відкрите вікно скарги/підтвердження
-			if (e.key === 'Escape') closeViewer()
+			if (e.key === 'Escape') { if (!viewer.ov.querySelector('.story-view__sheet').hidden) closeStats(); else closeViewer() }
 			else if (e.key === 'ArrowRight') step(1)
 			else if (e.key === 'ArrowLeft') step(-1)
 		}
@@ -304,6 +313,9 @@
 			syncMuteBtn()
 			markSeen(s.id)
 			loadLikes(s)
+			trackView(s)
+			closeStats(true)
+			loadStats(s)
 			// таймер цієї сторіз ще не запущено (відео чекає метаданих): пауза до старту не повинна «з'їсти» час
 			viewer.start = 0
 			viewer.ready = false
@@ -364,6 +376,7 @@
 		}
 		function resume() {
 			if (!viewer || !viewer.paused) return
+			if (!viewer.ov.querySelector('.story-view__sheet').hidden) return // відкрито список глядачів
 			viewer.paused = false
 			if (viewer.video) {
 				if (!(viewer.video.readyState >= 1)) return // метадані ще не прийшли - run() запустить loadedmetadata
@@ -449,6 +462,89 @@
 			setLike(true)
 		}
 
+		/* ---------- перегляди: storyViews/{id}/{uid} = час; список бачать лише автор і суперадмін ---------- */
+		var viewedNow = {}
+		function trackView(s) {
+			if (!A.user || !A.remote || A.user.uid === s.u || viewedNow[s.id]) return
+			viewedNow[s.id] = 1
+			A.db('PUT', 'storyViews/' + encodeURIComponent(s.id) + '/' + encodeURIComponent(A.user.uid), { '.sv': 'timestamp' }).catch(function () { delete viewedNow[s.id] })
+		}
+		function canSeeStats(s) { return !!(A.user && A.remote && (A.user.uid === s.u || isAdmin)) }
+		function loadStats(s) {
+			var btn = viewer.ov.querySelector('.story-view__stats'), box = viewer.ov.querySelector('.story-view__box')
+			var own = canSeeStats(s)
+			btn.hidden = !own
+			box.classList.toggle('has-stats', own)
+			viewer.stats = null
+			if (!own) return
+			var id = s.id
+			btn.querySelector('.story-view__views').textContent = ''
+			btn.setAttribute('aria-label', t('Хто переглянув і вподобав'))
+			Promise.all([
+				A.db('GET', 'storyViews/' + encodeURIComponent(id)).catch(function () { return null }),
+				A.db('GET', 'storyLikes/' + encodeURIComponent(id), undefined, false).catch(function () { return null })
+			]).then(function (r) {
+				if (!viewer || current().id !== id) return
+				var views = r[0] || {}, likes = r[1] || {}
+				// хто вподобав, але переглянув до появи лічильника, теж рахується глядачем
+				Object.keys(likes).forEach(function (u) { if (!views[u] && u !== s.u) views[u] = 0 })
+				viewer.stats = { id: id, views: views, likes: likes }
+				btn.querySelector('.story-view__views').textContent = String(Object.keys(views).length)
+				if (!viewer.ov.querySelector('.story-view__sheet').hidden) paintStats(viewer.stats.tab || 'v')
+			})
+		}
+		function openStats() {
+			if (!viewer || !viewer.stats) return
+			pause()
+			viewer.ov.querySelector('.story-view__sheet').hidden = false
+			paintStats('v')
+		}
+		function closeStats(silent) {
+			if (!viewer) return
+			var sh = viewer.ov.querySelector('.story-view__sheet')
+			if (sh.hidden) return
+			sh.hidden = true
+			sh.textContent = ''
+			if (!silent) resume()
+		}
+		function paintStats(tab) {
+			var st = viewer.stats, sh = viewer.ov.querySelector('.story-view__sheet')
+			if (!st) return
+			st.tab = tab
+			sh.textContent = ''
+			var head = el('div', 'story-view__sheet-head')
+			var nV = Object.keys(st.views).length, nL = Object.keys(st.likes).length
+			;[['v', t('Перегляди') + ' · ' + nV], ['l', t('Вподобання') + ' · ' + nL]].forEach(function (x) {
+				var b = el('button', 'story-view__stab' + (x[0] === tab ? ' is-on' : ''), x[1])
+				b.type = 'button'
+				b.setAttribute('data-stab', x[0])
+				b.setAttribute('aria-pressed', x[0] === tab ? 'true' : 'false')
+				head.appendChild(b)
+			})
+			var x = el('button', 'story-view__sheet-x', '✕')
+			x.type = 'button'
+			x.setAttribute('aria-label', t('Закрити'))
+			head.appendChild(x)
+			sh.appendChild(head)
+			var src = tab === 'l' ? st.likes : st.views
+			var uids = Object.keys(src).sort(function (a, b) { return (Number(st.views[b]) || 0) - (Number(st.views[a]) || 0) })
+			var list = el('ul', 'story-view__people')
+			if (!uids.length) list.appendChild(el('li', 'story-view__nobody', tab === 'l' ? t('Ще ніхто не вподобав') : t('Ще ніхто не переглянув')))
+			uids.forEach(function (u) {
+				var li = el('li', 'story-view__person')
+				var nm = el('b', null, '…')
+				li.appendChild(avatar(u, '', 'story-view__pava'))
+				var txt = el('span', 'story-view__ptxt')
+				txt.appendChild(nm)
+				if (st.views[u]) txt.appendChild(el('small', null, ago(st.views[u])))
+				li.appendChild(txt)
+				if (st.likes[u]) li.appendChild(el('span', 'story-view__pliked', '❤'))
+				profileOf(u).then(function (p) { nm.textContent = (p && p.n) || t('Користувач') })
+				list.appendChild(li)
+			})
+			sh.appendChild(list)
+		}
+
 		function reportCurrent() {
 			var s = current(), g = groups[viewer.gi]
 			pause()
@@ -461,6 +557,8 @@
 			if (!window.confirm(t('Видалити цю сторіз?'))) return resume()
 			// спершу лайки (правила дозволяють це автору, поки сторіз існує), потім саму сторіз
 			A.db('DELETE', 'storyLikes/' + encodeURIComponent(s.id)).catch(function () {}).then(function () {
+				return A.db('DELETE', 'storyViews/' + encodeURIComponent(s.id)).catch(function () {})
+			}).then(function () {
 				return A.db('DELETE', 'stories/' + encodeURIComponent(s.id))
 			}).then(function () {
 				if (A.user && s.u !== A.user.uid && A.adminLog) A.adminLog('story.delete', s.u, (owner || '') + (s.c ? ': ' + s.c : ''))

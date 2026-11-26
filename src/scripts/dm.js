@@ -273,7 +273,7 @@
 			if (isBad(m.t)) b.appendChild(el('p', 'dm-msg__text is-hidden', t('Повідомлення приховано: нецензурна лексика')))
 			else {
 				var tx = el('p', 'dm-msg__text')
-				if (MEDIA.appendRich) MEDIA.appendRich(tx, m.t); else tx.textContent = m.t
+				if (MEDIA.appendLinked) MEDIA.appendLinked(tx, m.t); else if (MEDIA.appendRich) MEDIA.appendRich(tx, m.t); else tx.textContent = m.t
 				b.appendChild(tx)
 			}
 		}

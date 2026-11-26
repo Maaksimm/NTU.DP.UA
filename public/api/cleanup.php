@@ -92,6 +92,7 @@ $removedStories = 0;
 if ($action === 'clean') {
     foreach ($expired as $id) {
         sdb('DELETE', 'storyLikes/' . $id);
+        sdb('DELETE', 'storyViews/' . $id);
         [$c] = sdb('DELETE', 'stories/' . $id);
         if ($c === 200) $removedStories++;
     }

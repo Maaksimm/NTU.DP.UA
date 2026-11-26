@@ -1,17 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="НТУ Дніпровська політехніка">
-  <rect x="0" y="0" width="64" height="64" rx="14" fill="#123a63"/>
-  <g>
-    <!-- column 1: 2 bars -->
-    <rect x="12" y="34" width="9" height="9" rx="2" fill="#7fb8e8"/>
-    <rect x="12" y="21" width="9" height="9" rx="2" fill="#bfe0f7"/>
-    <!-- column 2: 3 bars -->
-    <rect x="24.5" y="34" width="9" height="9" rx="2" fill="#4fa3dd"/>
-    <rect x="24.5" y="21" width="9" height="9" rx="2" fill="#7fb8e8"/>
-    <rect x="24.5" y="8" width="9" height="9" rx="2" fill="#bfe0f7"/>
-    <!-- column 3: 4 bars -->
-    <rect x="37" y="34" width="9" height="9" rx="2" fill="#1a6fc4"/>
-    <rect x="37" y="21" width="9" height="9" rx="2" fill="#4fa3dd"/>
-    <rect x="37" y="8" width="9" height="9" rx="2" fill="#7fb8e8"/>
-  </g>
-  <rect x="10" y="46" width="44" height="4" rx="2" fill="#ffcb47"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="World Students · Дніпровська політехніка">
+  <defs>
+    <linearGradient id="fvBadge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a6fc4"/>
+      <stop offset="1" stop-color="#0b3559"/>
+    </linearGradient>
+  </defs>
+  <clipPath id="fvFront"><rect x="0" y="34" width="32" height="30"/></clipPath>
+  <rect width="64" height="64" rx="16" fill="url(#fvBadge)"/>
+  <ellipse cx="32" cy="34" rx="28" ry="10.5" fill="none" stroke="#4fc3f7" stroke-width="3" stroke-opacity=".45" transform="rotate(-28 32 34)"/>
+  <path d="M11 54V42H23V30H35V18H50V54Z" fill="#fff" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>
+  <ellipse cx="32" cy="34" rx="28" ry="10.5" fill="none" stroke="#4fc3f7" stroke-width="3" transform="rotate(-28 32 34)" clip-path="url(#fvFront)"/>
+  <circle cx="55" cy="13" r="5.5" fill="#ffcb47"/>
 </svg>

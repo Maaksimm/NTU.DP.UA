@@ -94,6 +94,46 @@
 		}
 		if (last < text.length) node.appendChild(document.createTextNode(text.slice(last)))
 	}
+	// посилання в повідомленнях: http(s)://, www. і голі домени з поширеними зонами (example.com/шлях)
+	var URL_RE = /(^|[^A-Za-z0-9_@\/.-])((?:https?:\/\/|www\.)[^\s<>"'«»]+|(?:[A-Za-z0-9-]{1,63}\.)+(?:com|org|net|ua|io|dev|me|app|edu|gov|info|co|ai|gg|tv|eu|pl|de|uk|ly|to|site|online|tech|pro)(?![A-Za-z0-9-])(?:[\/?#][^\s<>"'«»]*)?)/gi
+	function cleanUrl(raw) {
+		var u = raw.replace(/[.,!?;:…»)\]]+$/, '')
+		// закриваюча дужка - частина адреси лише якщо в ній є відкриваюча (вікіпедія)
+		if (raw.charAt(u.length) === ')' && u.split('(').length > u.split(')').length) u += ')'
+		return u
+	}
+	function linkNode(text) {
+		var href = /^https?:\/\//i.test(text) ? text : 'https://' + text
+		var url
+		try { url = new URL(href) } catch (e) { return null }
+		if (url.protocol !== 'https:' && url.protocol !== 'http:') return null
+		var a = document.createElement('a')
+		a.className = 'chat-link'
+		a.href = url.href
+		a.textContent = text.length > 60 ? text.slice(0, 57) + '…' : text
+		a.title = url.href
+		if (url.host !== location.host) { a.target = '_blank'; a.rel = 'noopener noreferrer nofollow ugc' }
+		return a
+	}
+	// додає текст із клікабельними посиланнями; решту тексту обробляє inner (емодзі, згадки)
+	function appendLinked(node, text, inner) {
+		inner = inner || appendRich
+		var last = 0, m, found = false
+		URL_RE.lastIndex = 0
+		while ((m = URL_RE.exec(text))) {
+			var start = m.index + m[1].length, raw = m[2], u = cleanUrl(raw)
+			var a = u.length > 3 ? linkNode(u) : null
+			if (!a) continue
+			if (start > last) inner(node, text.slice(last, start))
+			node.appendChild(a)
+			found = true
+			last = start + u.length
+			URL_RE.lastIndex = last
+		}
+		if (!found) return inner(node, text)
+		if (last < text.length) inner(node, text.slice(last))
+		if (node.classList) node.classList.remove('is-emoji-only')
+	}
 	function onCustom(fn) { customHooks.push(fn); if (CUSTOM.length) fn(CUSTOM) }
 	try {
 		fetch('assets/emoji/custom.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : [] }).then(function (list) {
@@ -105,7 +145,7 @@
 		}, function () {})
 	} catch (e) {}
 
-	window.NTU_MEDIA = { EMOJI: EMOJI, GIFS: GIFS, gifUrl: gifUrl, GIF_RE: GIF_RE, emojiNode: emojiNode, appendRich: appendRich, onCustom: onCustom, isCustom: function (code) { var m = /^:([a-z0-9_-]+):$/.exec(code || ''); return !!(m && CUSTOM_BY[m[1]]) } }
+	window.NTU_MEDIA = { EMOJI: EMOJI, GIFS: GIFS, gifUrl: gifUrl, GIF_RE: GIF_RE, emojiNode: emojiNode, appendRich: appendRich, appendLinked: appendLinked, onCustom: onCustom, isCustom: function (code) { var m = /^:([a-z0-9_-]+):$/.exec(code || ''); return !!(m && CUSTOM_BY[m[1]]) } }
 
 	var isProfane = window.NTU_isProfane || function () { return false }
 
@@ -479,7 +519,13 @@
 		return ''
 	}
 	// Додає текст у вузол, перетворюючи @нік на посилання t.me. Повертає true, якщо тегнули поточного користувача.
+	// посилання + @згадки: згадки шукаються лише в тексті поза посиланнями
 	function appendWithMentions(node, text) {
+		var hit = false
+		appendLinked(node, text, function (n, part) { if (mentionsIn(n, part)) hit = true })
+		return hit
+	}
+	function mentionsIn(node, text) {
 		var mine = myTg(), hit = false, last = 0, m
 		MENTION_RE.lastIndex = 0
 		while ((m = MENTION_RE.exec(text))) {
